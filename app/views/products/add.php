@@ -1,5 +1,5 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
-  <a href="<?php echo URLROOT; ?>/products" class="btn btn-light mb-3"><i class="fa fa-backward"></i> Volver</a>
+<?php $currentPage = 'products'; require APPROOT . '/views/inc/header.php'; ?>
+<a href="<?php echo URLROOT; ?>/products" class="btn btn-light mb-3"><i class="fa fa-backward"></i> Volver</a>
   <div class="card card-body bg-light mt-2">
     <h2>Agregar Producto</h2>
     <p>Complete los datos para registrar un nuevo producto</p>

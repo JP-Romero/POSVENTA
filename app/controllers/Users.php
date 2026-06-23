@@ -42,15 +42,104 @@ class Users extends Controller {
         }
     }
 
-    public function login(){
-      // Check for POST
-      if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        // Process form
-        // Sanitize POST data
-        $usuario = filter_input(INPUT_POST, 'usuario', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $password = $_POST['password']; // Do NOT sanitize passwords
+    public function edit($id){
+        if(!isLoggedIn() || !isAdmin()){
+            redirect('users/login');
+        }
+        
+        // Prevent self-deactivation
+        if ((int)$id === (int)$_SESSION['user_id']) {
+            flash('user_message', 'No puede editar su propio usuario desde aquí', 'alert alert-warning');
+            redirect('users');
+        }
 
-        // Init data
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $data = [
+                'id' => $id,
+                'id_rol' => trim($_POST['id_rol']),
+                'nombre' => trim($_POST['nombre']),
+                'usuario' => trim($_POST['usuario']),
+                'estado' => isset($_POST['estado']) ? 1 : 0,
+                'password' => !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : '',
+                'nombre_err' => '',
+                'usuario_err' => '',
+            ];
+
+            // Validate
+            if(empty($data['nombre'])){
+                $data['nombre_err'] = 'Ingrese el nombre';
+            }
+            if(empty($data['usuario'])){
+                $data['usuario_err'] = 'Ingrese el usuario';
+            }
+
+            // Check username unique (excluding current)
+            $this->userModel->db->query('SELECT id FROM usuarios WHERE usuario = :usuario AND id != :id');
+            $this->userModel->db->bind(':usuario', $data['usuario']);
+            $this->userModel->db->bind(':id', $id);
+            if ($this->userModel->db->rowCount() > 0) {
+                $data['usuario_err'] = 'El nombre de usuario ya existe';
+            }
+
+            if(empty($data['nombre_err']) && empty($data['usuario_err'])){
+                if($this->userModel->updateUser($data)){
+                    flash('user_message', 'Usuario actualizado correctamente');
+                    redirect('users');
+                } else {
+                    die('Error al actualizar');
+                }
+            } else {
+                $roles = $this->userModel->getRoles();
+                $data['roles'] = $roles;
+                $this->view('users/edit', $data);
+            }
+        } else {
+            $user = $this->userModel->getUserById($id);
+            if(!$user){
+                redirect('users');
+            }
+            
+            $roles = $this->userModel->getRoles();
+            $data = [
+                'id' => $id,
+                'id_rol' => $user->id_rol,
+                'nombre' => $user->nombre,
+                'usuario' => $user->usuario,
+                'estado' => $user->estado,
+                'nombre_err' => '',
+                'usuario_err' => '',
+                'roles' => $roles
+            ];
+            $this->view('users/edit', $data);
+        }
+    }
+
+    public function toggle($id){
+        if(!isLoggedIn() || !isAdmin()){
+            redirect('users/login');
+        }
+        
+        // Prevent self-deactivation
+        if ((int)$id === (int)$_SESSION['user_id']) {
+            echo json_encode(['success' => false, 'message' => 'No puede desactivar su propio usuario']);
+            exit;
+        }
+        
+        if ($this->userModel->toggleStatus($id)) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al cambiar estado']);
+        }
+        exit;
+    }
+
+    public function login(){
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $usuario = filter_input(INPUT_POST, 'usuario', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $password = $_POST['password'];
+
         $data =[
           'usuario' => trim($usuario),
           'password' => trim($password),
@@ -58,54 +147,42 @@ class Users extends Controller {
           'password_err' => '',
         ];
 
-        // Validate Usuario
         if(empty($data['usuario'])){
           $data['usuario_err'] = 'Por favor ingrese su usuario';
         }
-
-        // Validate Password
         if(empty($data['password'])){
           $data['password_err'] = 'Por favor ingrese su contraseña';
         }
 
-        // Check for user/usuario
         if($this->userModel->findUserByUsername($data['usuario'])){
-          // User found
         } else {
-          // User not found
           $data['usuario_err'] = 'Usuario no encontrado';
         }
 
-        // Make sure errors are empty
         if(empty($data['usuario_err']) && empty($data['password_err'])){
-          // Validated
-          // Check and set logged in user
           $loggedInUser = $this->userModel->login($data['usuario'], $data['password']);
 
           if($loggedInUser){
-            // Create Session
+            if (!$loggedInUser->estado) {
+                $data['password_err'] = 'Usuario desactivado. Contacte al administrador.';
+                $this->view('users/login', $data);
+                return;
+            }
             $this->createUserSession($loggedInUser);
           } else {
             $data['password_err'] = 'Contraseña incorrecta';
-
             $this->view('users/login', $data);
           }
         } else {
-          // Load view with errors
           $this->view('users/login', $data);
         }
-
-
       } else {
-        // Init data
         $data =[
           'usuario' => '',
           'password' => '',
           'usuario_err' => '',
           'password_err' => '',
         ];
-
-        // Load view
         $this->view('users/login', $data);
       }
     }
@@ -127,10 +204,101 @@ class Users extends Controller {
       redirect('users/login');
     }
 
+    // Recuperar contraseña - Paso 1: Solicitar email
     public function recover(){
-      $data = [
-        'title' => 'Recuperar Contraseña'
-      ];
-      $this->view('users/recover', $data);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $email = trim($_POST['email'] ?? '');
+            
+            $data = [
+                'email' => $email,
+                'email_err' => '',
+                'success' => false
+            ];
+            
+            if (empty($email)) {
+                $data['email_err'] = 'Ingrese su correo electrónico';
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $data['email_err'] = 'Correo inválido';
+            } else {
+                $user = $this->userModel->getUserByEmail($email);
+                if ($user) {
+                    // Generar token
+                    $token = bin2hex(random_bytes(32));
+                    $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
+                    
+                    // Limpiar tokens viejos
+                    $this->userModel->db->query('DELETE FROM password_resets WHERE email = :email');
+                    $this->userModel->db->bind(':email', $email);
+                    $this->userModel->db->execute();
+                    
+                    // Crear nuevo token
+                    if ($this->userModel->createResetToken($email, $token, $expires)) {
+                        $resetLink = URLROOT . '/users/reset/' . $token;
+                        // En producción: enviar email
+                        // Por ahora: log a archivo
+                        $logMsg = "[".date('Y-m-d H:i:s')."] Password reset for $email: $resetLink\n";
+                        file_put_contents(APPROOT . '/../storage/logs/password_resets.log', $logMsg, FILE_APPEND);
+                        
+                        $data['success'] = true;
+                        $data['reset_link'] = $resetLink; // Solo para desarrollo
+                    }
+                }
+                // Siempre mostramos éxito por seguridad (no revelar si email existe)
+                $data['success'] = true;
+            }
+            
+            $this->view('users/recover', $data);
+        } else {
+            $data = ['email' => '', 'email_err' => '', 'success' => false];
+            $this->view('users/recover', $data);
+        }
     }
-  }
+
+    // Recuperar contraseña - Paso 2: Formulario nueva contraseña
+    public function reset($token = ''){
+        $reset = $this->userModel->validateResetToken($token);
+        
+        if (!$reset) {
+            flash('register_success', 'Token inválido o expirado', 'alert alert-danger');
+            redirect('users/recover');
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $password = $_POST['password'] ?? '';
+            $confirm = $_POST['confirm_password'] ?? '';
+            
+            $data = [
+                'token' => $token,
+                'password_err' => '',
+                'confirm_err' => ''
+            ];
+            
+            if (empty($password)) {
+                $data['password_err'] = 'Ingrese la nueva contraseña';
+            } elseif (strlen($password) < 6) {
+                $data['password_err'] = 'Mínimo 6 caracteres';
+            }
+            
+            if ($password !== $confirm) {
+                $data['confirm_err'] = 'Las contraseñas no coinciden';
+            }
+            
+            if (empty($data['password_err']) && empty($data['confirm_err'])) {
+                if ($this->userModel->resetPassword($reset->email, $password)) {
+                    $this->userModel->useResetToken($token);
+                    flash('register_success', 'Contraseña actualizada. Ya puede iniciar sesión.', 'alert alert-success');
+                    redirect('users/login');
+                } else {
+                    $data['password_err'] = 'Error al actualizar contraseña';
+                }
+            }
+            
+            $this->view('users/reset', $data);
+        } else {
+            $data = ['token' => $token, 'password_err' => '', 'confirm_err' => ''];
+            $this->view('users/reset', $data);
+        }
+    }
+}

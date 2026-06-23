@@ -1,4 +1,4 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
+<?php $currentPage = 'providers'; require APPROOT . '/views/inc/header.php'; ?>
   <a href="<?php echo URLROOT; ?>/providers" class="btn btn-light mb-3"><i class="fa fa-backward"></i> Volver</a>
   <div class="card card-body bg-light mt-2">
     <h2>Editar Proveedor</h2>

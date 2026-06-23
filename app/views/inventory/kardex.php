@@ -1,5 +1,5 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
-  <h1>Kardex de Inventario</h1>
+<?php $currentPage = 'kardex'; require APPROOT . '/views/inc/header.php'; ?>
+<h1>Kardex de Inventario</h1>
   <div class="card card-body bg-light mt-3">
     <form action="<?php echo URLROOT; ?>/inventories/kardex" method="get" class="row mb-4">
         <div class="col-md-8">

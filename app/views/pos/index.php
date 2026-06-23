@@ -1,4 +1,4 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
+<?php $currentPage = 'pos'; require APPROOT . '/views/inc/header.php'; ?>
 <div class="row">
     <!-- POS Area -->
     <div class="col-md-8">

@@ -1,41 +1,96 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
-  <div class="row mb-3">
+<?php $currentPage = 'users'; require APPROOT . '/views/inc/header.php'; ?>
+<?php flash('user_message'); ?>
+
+<div class="row mb-3">
     <div class="col-md-6">
-      <h1>Usuarios</h1>
+        <h1>Usuarios</h1>
     </div>
     <div class="col-md-6 text-end">
-      <a href="<?php echo URLROOT; ?>/users/add" class="btn btn-primary">
-        <i class="fa fa-plus"></i> Nuevo Usuario
-      </a>
+        <a href="<?= URLROOT ?>/users/add" class="btn btn-primary">
+            <i class="fa fa-plus"></i> Nuevo Usuario
+        </a>
     </div>
-  </div>
-  <?php flash('user_message'); ?>
-  <div class="card card-body bg-light">
-    <table id="users-table" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Usuario</th>
-                <th>Rol</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($data['users'] as $user) : ?>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table id="users-table" class="table table-hover mb-0">
+            <thead class="table-light">
                 <tr>
-                    <td><?php echo $user->nombre; ?></td>
-                    <td><?php echo $user->usuario; ?></td>
-                    <td><?php echo $user->rol_nombre; ?></td>
-                    <td>
-                        <?php if($user->estado) : ?>
-                            <span class="badge bg-success">Activo</span>
-                        <?php else : ?>
-                            <span class="badge bg-danger">Inactivo</span>
-                        <?php endif; ?>
-                    </td>
+                    <th>Nombre</th>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th style="width: 120px;">Acciones</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-  </div>
+            </thead>
+            <tbody>
+                <?php foreach($data['users'] as $user) : ?>
+                    <tr>
+                        <td><?= h($user->nombre) ?></td>
+                        <td><?= h($user->usuario) ?></td>
+                        <td>
+                            <span class="badge bg-<?= $user->id_rol == 1 ? 'primary' : 'info' ?>">
+                                <?= h($user->rol_nombre) ?>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" 
+                                    data-user-id="<?= $user->id ?>" 
+                                    <?= $user->estado ? 'checked' : '' ?>
+                                    onchange="toggleUserStatus(this)">
+                                <label class="form-check-label ms-1">
+                                    <?= $user->estado ? 'Activo' : 'Inactivo' ?>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="<?= URLROOT ?>/users/edit/<?= $user->id ?>" class="btn btn-sm btn-outline-primary" title="Editar">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function toggleUserStatus(checkbox) {
+    const userId = checkbox.dataset.userId;
+    const originalState = checkbox.checked;
+    const label = checkbox.nextElementSibling;
+    
+    checkbox.disabled = true;
+    label.textContent = 'Cambiando...';
+    
+    fetch('<?= URLROOT ?>/users/toggle/' + userId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .then(r => r.json())
+    .then(res => {
+        checkbox.disabled = false;
+        if (res.success) {
+            checkbox.checked = !originalState;
+            label.textContent = checkbox.checked ? 'Activo' : 'Inactivo';
+            checkbox.parentElement.querySelector('.form-check-input').checked = checkbox.checked;
+            // Update badge if needed
+        } else {
+            checkbox.checked = originalState;
+            label.textContent = originalState ? 'Activo' : 'Inactivo';
+            alert('Error: ' + (res.message || 'No se pudo cambiar el estado'));
+        }
+    })
+    .catch(() => {
+        checkbox.disabled = false;
+        checkbox.checked = originalState;
+        label.textContent = originalState ? 'Activo' : 'Inactivo';
+        alert('Error de conexión');
+    });
+}
+</script>
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>

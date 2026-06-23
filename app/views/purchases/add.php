@@ -1,4 +1,4 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
+<?php $currentPage = 'purchases'; require APPROOT . '/views/inc/header.php'; ?>
   <div class="row">
     <div class="col-md-12">
         <a href="<?php echo URLROOT; ?>/purchases" class="btn btn-light mb-3"><i class="fa fa-backward"></i> Volver</a>

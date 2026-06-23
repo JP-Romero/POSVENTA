@@ -188,4 +188,29 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
 -- Insertar configuración inicial
 INSERT INTO `configuracion` (`nombre_negocio`, `ruc`, `iva`) VALUES ('Mi Librería Pro', '1234567890001', 15.00);
 
+-- 14. Tabla Impresoras
+CREATE TABLE IF NOT EXISTS `impresoras` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `tipo` enum('USB','RED','BLUETOOTH','WINDOWS') NOT NULL DEFAULT 'USB',
+  `conexion` varchar(255) NOT NULL COMMENT 'Ruta dispositivo, IP:puerto, o nombre impresora Windows',
+  `ancho_papel` tinyint(2) NOT NULL DEFAULT 58 COMMENT '58 o 80 mm',
+  `activa` tinyint(1) NOT NULL DEFAULT 0,
+  `fecha_creacion` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 15. Tabla Password Resets
+CREATE TABLE IF NOT EXISTS `password_resets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `used` tinyint(1) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_token` (`token`),
+  KEY `idx_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 COMMIT;

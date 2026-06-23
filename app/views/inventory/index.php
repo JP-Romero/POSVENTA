@@ -1,5 +1,5 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
-  <h1>Control de Inventario</h1>
+<?php $currentPage = 'inventories'; require APPROOT . '/views/inc/header.php'; ?>
+<h1>Control de Inventario</h1>
   <?php flash('inventory_message'); ?>
   <div class="card card-body bg-light mt-3">
     <table id="inventory-table" class="table table-striped table-bordered" style="width:100%">

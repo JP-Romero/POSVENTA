@@ -12,20 +12,26 @@ class Pos extends Controller {
         $this->saleModel = $this->model('Sale');
         $this->productModel = $this->model('Product');
         $this->clientModel = $this->model('Client');
+        $this->db = new Database;
     }
 
     public function index() {
         $clients = $this->clientModel->getClients();
         $invoiceNumber = $this->saleModel->getNextInvoiceNumber();
 
-        $this->db = new Database;
         $this->db->query('SELECT * FROM configuracion WHERE id = 1');
         $settings = $this->db->single();
+
+        // Get active printer
+        $this->db->query('SELECT * FROM impresoras WHERE activa = 1 LIMIT 1');
+        $printer = $this->db->single();
 
         $data = [
             'clients' => $clients,
             'invoiceNumber' => $invoiceNumber,
-            'iva' => $settings->iva ?? 0
+            'iva' => $settings->iva ?? 0,
+            'settings' => $settings,
+            'printer' => $printer
         ];
 
         $this->view('pos/index', $data);
@@ -33,8 +39,7 @@ class Pos extends Controller {
 
     public function searchProduct() {
         $query = $_GET['q'] ?? '';
-        $this->db = new Database;
-        $this->db->query('SELECT * FROM productos WHERE (nombre LIKE :q OR codigo_barras = :code OR codigo_interno = :code) AND estado = 1');
+        $this->db->query('SELECT * FROM productos WHERE (nombre LIKE :q OR codigo_barras = :code OR codigo_interno = :code) AND estado = 1 AND stock > 0');
         $this->db->bind(':q', '%'.$query.'%');
         $this->db->bind(':code', $query);
         $products = $this->db->resultSet();
@@ -47,6 +52,11 @@ class Pos extends Controller {
             if ($jsonData) {
                 $sale_id = $this->saleModel->saveSale($jsonData);
                 if ($sale_id) {
+                    // Auto-print if enabled and printer configured
+                    $autoPrint = $jsonData['auto_print'] ?? false;
+                    if ($autoPrint) {
+                        $this->printReceipt($sale_id);
+                    }
                     echo json_encode(['status' => 'success', 'sale_id' => $sale_id]);
                 } else {
                     echo json_encode(['status' => 'error']);
@@ -54,5 +64,64 @@ class Pos extends Controller {
                 exit;
             }
         }
+    }
+
+    public function printReceipt($sale_id) {
+        $this->db->query('SELECT * FROM impresoras WHERE activa = 1 LIMIT 1');
+        $printer = $this->db->single();
+        
+        if (!$printer) {
+            return ['success' => false, 'message' => 'No hay impresora configurada'];
+        }
+
+        $this->db->query('SELECT v.*, u.nombre as usuario_nombre, c.nombre as cliente_nombre, c.direccion as cliente_direccion, c.telefono as cliente_telefono
+                          FROM ventas v
+                          INNER JOIN usuarios u ON v.id_usuario = u.id
+                          INNER JOIN clientes c ON v.id_cliente = c.id
+                          WHERE v.id = :id');
+        $this->db->bind(':id', $sale_id);
+        $sale = $this->db->single();
+
+        $this->db->query('SELECT dv.*, p.nombre as producto_nombre
+                          FROM detalle_ventas dv
+                          INNER JOIN productos p ON dv.id_producto = p.id
+                          WHERE dv.id_venta = :id');
+        $this->db->bind(':id', $sale_id);
+        $details = $this->db->resultSet();
+
+        require_once APPROOT . '/lib/ReceiptPrinter.php';
+        $rp = \App\Lib\ReceiptPrinter::fromDatabase([
+            'tipo' => $printer->tipo,
+            'conexion' => $printer->conexion,
+            'ancho_papel' => $printer->ancho_papel,
+        ]);
+
+        $settings = [
+            'nombre_negocio' => getConfig('nombre_negocio', 'POSVENTA'),
+            'ruc' => getConfig('ruc', ''),
+            'direccion' => getConfig('direccion', ''),
+            'telefono' => getConfig('telefono', ''),
+            'iva' => getConfig('iva', 15),
+        ];
+
+        $success = $rp->printSaleReceipt(
+            (array)$sale,
+            array_map(function($d) { return (array)$d; }, $details),
+            $settings
+        );
+
+        return ['success' => $success];
+    }
+
+    public function printLastReceipt() {
+        $this->db->query('SELECT MAX(id) as last_id FROM ventas');
+        $row = $this->db->single();
+        if ($row->last_id) {
+            $result = $this->printReceipt($row->last_id);
+            echo json_encode($result);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No hay ventas']);
+        }
+        exit;
     }
 }

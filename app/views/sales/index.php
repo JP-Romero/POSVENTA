@@ -1,5 +1,5 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
-  <div class="row mb-3">
+<?php $currentPage = 'sales'; require APPROOT . '/views/inc/header.php'; ?>
+<div class="row mb-3">
     <div class="col-md-6">
       <h1>Historial de Ventas</h1>
     </div>

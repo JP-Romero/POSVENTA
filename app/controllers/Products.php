@@ -289,4 +289,77 @@
         fclose($output);
         exit;
     }
+
+    // Print single barcode label
+    public function printBarcode($id){
+        if (!isLoggedIn() || !isAdmin()) {
+            redirect('users/login');
+        }
+        
+        $product = $this->productModel->getProductById($id);
+        if (!$product) {
+            flash('product_message', 'Producto no encontrado', 'alert alert-danger');
+            redirect('products');
+        }
+        
+        require_once APPROOT . '/lib/BarcodeGenerator.php';
+        $generator = new \App\Lib\BarcodeGenerator();
+        
+        $label = $generator->generateProductLabel([
+            'id' => $product->id,
+            'nombre' => $product->nombre,
+            'codigo_barras' => $product->codigo_barras,
+            'codigo_interno' => $product->codigo_interno,
+            'precio_venta' => $product->precio_venta,
+        ], [
+            'business_name' => getConfig('nombre_negocio', 'POSVENTA'),
+            'currency_symbol' => getConfig('moneda_simbolo', 'C$'),
+        ]);
+        
+        $data = [
+            'product' => $product,
+            'label_base64' => $label
+        ];
+        
+        $this->view('products/barcode', $data);
+    }
+    
+    // Print barcode batch
+    public function printBarcodeBatch(){
+        if (!isLoggedIn() || !isAdmin()) {
+            redirect('users/login');
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $ids = $_POST['product_ids'] ?? [];
+            
+            if (empty($ids)) {
+                flash('product_message', 'Seleccione al menos un producto', 'alert alert-warning');
+                redirect('products');
+            }
+            
+            $placeholders = implode(',', array_fill(0, count($ids), '?'));
+            $this->productModel->db->query("SELECT * FROM productos WHERE id IN ($placeholders)");
+            foreach ($ids as $i => $id) {
+                $this->productModel->db->bind($i + 1, $id);
+            }
+            $products = $this->productModel->db->resultSet();
+            
+            require_once APPROOT . '/lib/BarcodeGenerator.php';
+            $generator = new \App\Lib\BarcodeGenerator();
+            
+            $labels = $generator->generateBatchLabels($products, [
+                'business_name' => getConfig('nombre_negocio', 'POSVENTA'),
+                'currency_symbol' => getConfig('moneda_simbolo', 'C$'),
+            ]);
+            
+            $data = [
+                'labels' => $labels
+            ];
+            
+            $this->view('products/barcode_batch', $data);
+        } else {
+            redirect('products');
+        }
+    }
   }

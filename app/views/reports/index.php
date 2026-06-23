@@ -1,5 +1,5 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
-  <h1>Reportes y Estadísticas</h1>
+<?php $currentPage = 'reports'; require APPROOT . '/views/inc/header.php'; ?>
+<h1>Reportes y Estadísticas</h1>
 
   <div class="row mt-4">
     <div class="col-md-6 mb-4">
