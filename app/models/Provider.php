@@ -58,4 +58,25 @@
         return false;
       }
     }
+    
+    // Get purchase history for provider
+    public function getPurchaseHistory($id){
+      $this->db->query('SELECT c.*, u.nombre as usuario_nombre
+                        FROM compras c
+                        INNER JOIN usuarios u ON c.id_usuario = u.id
+                        WHERE c.id_proveedor = :id
+                        ORDER BY c.fecha DESC');
+      $this->db->bind(':id', $id);
+      return $this->db->resultSet();
+    }
+    
+    // Get purchase details for a specific purchase
+    public function getPurchaseDetails($purchaseId){
+      $this->db->query('SELECT dc.*, p.nombre as producto_nombre
+                        FROM detalle_compras dc
+                        INNER JOIN productos p ON dc.id_producto = p.id
+                        WHERE dc.id_compra = :id');
+      $this->db->bind(':id', $purchaseId);
+      return $this->db->resultSet();
+    }
   }

@@ -8,6 +8,9 @@
             <button type="submit" class="btn btn-info" id="btnBatchPrint" disabled>
                 <i class="fa fa-print me-1"></i> Imprimir Etiquetas Seleccionadas
             </button>
+            <a href="<?= URLROOT ?>/products/import" class="btn btn-outline-primary">
+                <i class="fa fa-upload me-1"></i> Importar
+            </a>
             <a href="<?= URLROOT ?>/products/export" class="btn btn-success">
                 <i class="fa fa-file-excel"></i> Exportar CSV
             </a>

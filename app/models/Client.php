@@ -45,4 +45,25 @@
         return false;
       }
     }
+    
+    // Get purchase history for client
+    public function getPurchaseHistory($id){
+      $this->db->query('SELECT v.*, u.nombre as usuario_nombre
+                        FROM ventas v
+                        INNER JOIN usuarios u ON v.id_usuario = u.id
+                        WHERE v.id_cliente = :id
+                        ORDER BY v.fecha DESC');
+      $this->db->bind(':id', $id);
+      return $this->db->resultSet();
+    }
+    
+    // Get sale details for a specific sale
+    public function getSaleDetails($saleId){
+      $this->db->query('SELECT dv.*, p.nombre as producto_nombre
+                        FROM detalle_ventas dv
+                        INNER JOIN productos p ON dv.id_producto = p.id
+                        WHERE dv.id_venta = :id');
+      $this->db->bind(':id', $saleId);
+      return $this->db->resultSet();
+    }
   }

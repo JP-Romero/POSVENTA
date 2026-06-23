@@ -362,4 +362,126 @@
             redirect('products');
         }
     }
+    
+    // Import products from Excel/CSV
+    public function import(){
+        if (!isLoggedIn() || !isAdmin()) {
+            redirect('users/login');
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!isset($_FILES['import_file']) || $_FILES['import_file']['error'] !== UPLOAD_ERR_OK) {
+                flash('product_message', 'Archivo no válido', 'alert alert-danger');
+                redirect('products');
+            }
+            
+            $file = $_FILES['import_file']['tmp_name'];
+            $ext = strtolower(pathinfo($_FILES['import_file']['name'], PATHINFO_EXTENSION));
+            
+            if (!in_array($ext, ['csv', 'xlsx', 'xls'])) {
+                flash('product_message', 'Formato no soportado. Use CSV, XLSX o XLS', 'alert alert-danger');
+                redirect('products');
+            }
+            
+            require_once APPROOT . '/../vendor/autoload.php';
+            use PhpOffice\PhpSpreadsheet\IOFactory;
+            use PhpOffice\PhpSpreadsheet\Spreadsheet;
+            
+            try {
+                $spreadsheet = IOFactory::load($file);
+                $sheet = $spreadsheet->getActiveSheet();
+                $rows = $sheet->toArray(null, true, true, true);
+                
+                // Skip header row
+                $header = array_shift($rows);
+                
+                // Map columns (flexible matching)
+                $colMap = [];
+                foreach ($header as $col => $val) {
+                    $key = strtolower(trim($val));
+                    if (strpos($key, 'codigo') !== false && strpos($key, 'interno') !== false) $colMap['codigo_interno'] = $col;
+                    elseif (strpos($key, 'codigo') !== false && strpos($key, 'barras') !== false) $colMap['codigo_barras'] = $col;
+                    elseif (strpos($key, 'nombre') !== false) $colMap['nombre'] = $col;
+                    elseif (strpos($key, 'descripcion') !== false) $colMap['descripcion'] = $col;
+                    elseif (strpos($key, 'categoria') !== false) $colMap['categoria'] = $col;
+                    elseif (strpos($key, 'proveedor') !== false) $colMap['proveedor'] = $col;
+                    elseif (strpos($key, 'precio') !== false && strpos($key, 'compra') !== false) $colMap['precio_compra'] = $col;
+                    elseif (strpos($key, 'precio') !== false && strpos($key, 'venta') !== false) $colMap['precio_venta'] = $col;
+                    elseif (strpos($key, 'stock') !== false && strpos($key, 'min') !== false) $colMap['stock_minimo'] = $col;
+                    elseif (strpos($key, 'stock') !== false) $colMap['stock'] = $col;
+                }
+                
+                // Get categories and providers for lookup
+                $this->db->query('SELECT id, nombre FROM categorias');
+                $cats = $this->db->resultSet();
+                $catMap = [];
+                foreach ($cats as $c) $catMap[strtolower($c->nombre)] = $c->id;
+                
+                $this->db->query('SELECT id, nombre FROM proveedores');
+                $provs = $this->db->resultSet();
+                $provMap = [];
+                foreach ($provs as $p) $provMap[strtolower($p->nombre)] = $p->id;
+                
+                $imported = 0;
+                $errors = [];
+                
+                foreach ($rows as $rowNum => $row) {
+                    if (empty($row[$colMap['nombre'] ?? 'A'])) continue;
+                    
+                    $catName = strtolower(trim($row[$colMap['categoria'] ?? ''] ?? ''));
+                    $provName = strtolower(trim($row[$colMap['proveedor'] ?? ''] ?? ''));
+                    
+                    $catId = $catMap[$catName] ?? 1;
+                    $provId = $provMap[$provName] ?? 1;
+                    
+                    $data = [
+                        'codigo_interno' => trim($row[$colMap['codigo_interno'] ?? ''] ?? ''),
+                        'codigo_barras' => trim($row[$colMap['codigo_barras'] ?? ''] ?? ''),
+                        'nombre' => trim($row[$colMap['nombre'] ?? ''] ?? ''),
+                        'descripcion' => trim($row[$colMap['descripcion'] ?? ''] ?? ''),
+                        'id_categoria' => $catId,
+                        'id_proveedor' => $provId,
+                        'precio_compra' => (float)($row[$colMap['precio_compra'] ?? ''] ?? 0),
+                        'precio_venta' => (float)($row[$colMap['precio_venta'] ?? ''] ?? 0),
+                        'stock' => (int)($row[$colMap['stock'] ?? ''] ?? 0),
+                        'stock_minimo' => (int)($row[$colMap['stock_minimo'] ?? ''] ?? 5),
+                        'estado' => 1,
+                        'imagen' => ''
+                    ];
+                    
+                    if ($this->productModel->addProduct($data)) {
+                        $imported++;
+                    } else {
+                        $errors[] = "Fila " . ($rowNum + 2) . ": " . $data['nombre'];
+                    }
+                }
+                
+                $msg = "Importados: $imported productos";
+                if ($errors) $msg .= ". Errores: " . count($errors);
+                flash('product_message', $msg, empty($errors) ? 'alert alert-success' : 'alert alert-warning');
+                
+            } catch (\Exception $e) {
+                flash('product_message', 'Error al importar: ' . $e->getMessage(), 'alert alert-danger');
+            }
+            
+            redirect('products');
+        }
+        
+        // GET: show import form
+        $data = ['title' => 'Importar Productos'];
+        $this->view('products/import', $data);
+    }
+    
+    // Download import template
+    public function importTemplate(){
+        $filename = "plantilla_importacion_productos.csv";
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['codigo_interno', 'codigo_barras', 'nombre', 'descripcion', 'categoria', 'proveedor', 'precio_compra', 'precio_venta', 'stock', 'stock_minimo']);
+        fputcsv($output, ['PROD001', '7501234567890', 'Producto Ejemplo', 'Descripción del producto', 'Papelería', 'Proveedor Ejemplo', '10.00', '15.00', '100', '10']);
+        fclose($output);
+        exit;
+    }
   }

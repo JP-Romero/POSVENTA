@@ -118,4 +118,44 @@
         redirect('providers');
       }
     }
+    
+    public function history($id){
+      $provider = $this->providerModel->getProviderById($id);
+      if(!$provider) redirect('providers');
+      
+      $purchases = $this->providerModel->getPurchaseHistory($id);
+      
+      $data = [
+        'provider' => $provider,
+        'purchases' => $purchases
+      ];
+      $this->view('providers/history', $data);
+    }
+    
+    public function apiPurchaseDetails($id){
+      header('Content-Type: application/json');
+      
+      $this->db->query('SELECT * FROM compras WHERE id = :id');
+      $this->db->bind(':id', $id);
+      $purchase = $this->db->single();
+      
+      if (!$purchase) {
+        echo json_encode(['success' => false]);
+        exit;
+      }
+      
+      $this->db->query('SELECT dc.*, p.nombre as producto_nombre
+                        FROM detalle_compras dc
+                        INNER JOIN productos p ON dc.id_producto = p.id
+                        WHERE dc.id_compra = :id');
+      $this->db->bind(':id', $id);
+      $items = $this->db->resultSet();
+      
+      echo json_encode([
+        'success' => true,
+        'data' => (array)$purchase,
+        'items' => array_map(function($i) { return (array)$i; }, $items)
+      ]);
+      exit;
+    }
   }

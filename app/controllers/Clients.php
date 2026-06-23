@@ -96,4 +96,47 @@
         $this->view('clients/edit', $data);
       }
     }
+    
+    public function history($id){
+      $client = $this->clientModel->getClientById($id);
+      if(!$client) redirect('clients');
+      
+      $sales = $this->clientModel->getPurchaseHistory($id);
+      
+      $data = [
+        'client' => $client,
+        'sales' => $sales
+      ];
+      $this->view('clients/history', $data);
+    }
+    
+    public function apiSaleDetails($id){
+      header('Content-Type: application/json');
+      
+      $this->db->query('SELECT v.*, u.nombre as usuario_nombre
+                        FROM ventas v
+                        INNER JOIN usuarios u ON v.id_usuario = u.id
+                        WHERE v.id = :id');
+      $this->db->bind(':id', $id);
+      $sale = $this->db->single();
+      
+      if (!$sale) {
+        echo json_encode(['success' => false]);
+        exit;
+      }
+      
+      $this->db->query('SELECT dv.*, p.nombre as producto_nombre
+                        FROM detalle_ventas dv
+                        INNER JOIN productos p ON dv.id_producto = p.id
+                        WHERE dv.id_venta = :id');
+      $this->db->bind(':id', $id);
+      $items = $this->db->resultSet();
+      
+      echo json_encode([
+        'success' => true,
+        'data' => (array)$sale,
+        'items' => array_map(function($i) { return (array)$i; }, $items)
+      ]);
+      exit;
+    }
   }
