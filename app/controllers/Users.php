@@ -1,9 +1,45 @@
 <?php
-  class Users extends Controller {
+class Users extends Controller {
     private $userModel;
 
     public function __construct(){
       $this->userModel = $this->model('User');
+    }
+
+    public function index(){
+        if(!isLoggedIn() || !isAdmin()){
+            redirect('users/login');
+        }
+        $users = $this->userModel->getUsers();
+        $data = ['users' => $users];
+        $this->view('users/index', $data);
+    }
+
+    public function add(){
+        if(!isLoggedIn() || !isAdmin()){
+            redirect('users/login');
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $data = [
+                'id_rol' => trim($_POST['id_rol']),
+                'nombre' => trim($_POST['nombre']),
+                'usuario' => trim($_POST['usuario']),
+                'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+                'estado' => 1
+            ];
+
+            if($this->userModel->addUser($data)){
+                flash('user_message', 'Usuario creado correctamente');
+                redirect('users');
+            }
+        } else {
+            $roles = $this->userModel->getRoles();
+            $data = ['roles' => $roles];
+            $this->view('users/add', $data);
+        }
     }
 
     public function login(){

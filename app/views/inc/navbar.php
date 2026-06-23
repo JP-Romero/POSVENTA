@@ -29,8 +29,31 @@
               <a class="nav-link" href="<?php echo URLROOT; ?>/products">Productos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo URLROOT; ?>/pos">Punto de Venta</a>
+              <a class="nav-link" href="<?php echo URLROOT; ?>/purchases">Compras</a>
             </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="inventoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Inventario
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
+                <li><a class="dropdown-item" href="<?php echo URLROOT; ?>/inventories">Existencias</a></li>
+                <li><a class="dropdown-item" href="<?php echo URLROOT; ?>/inventories/kardex">Kardex</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo URLROOT; ?>/pos">POS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo URLROOT; ?>/sales">Ventas</a>
+            </li>
+            <?php if(isAdmin()) : ?>
+              <li class="nav-item">
+                <a class="nav-link" href="<?php echo URLROOT; ?>/reports">Reportes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="<?php echo URLROOT; ?>/settings">Configuración</a>
+              </li>
+            <?php endif; ?>
           <?php endif; ?>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo URLROOT; ?>/pages/about">Sobre Nosotros</a>

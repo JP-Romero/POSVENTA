@@ -52,4 +52,34 @@
 
       return $row;
     }
+
+    // Get all users
+    public function getUsers(){
+      $this->db->query('SELECT u.*, r.nombre as rol_nombre
+                        FROM usuarios u
+                        INNER JOIN roles r ON u.id_rol = r.id');
+      return $this->db->resultSet();
+    }
+
+    // Add user
+    public function addUser($data){
+      $this->db->query('INSERT INTO usuarios (id_rol, nombre, usuario, password, estado) VALUES (:id_rol, :nombre, :usuario, :password, :estado)');
+      $this->db->bind(':id_rol', $data['id_rol']);
+      $this->db->bind(':nombre', $data['nombre']);
+      $this->db->bind(':usuario', $data['usuario']);
+      $this->db->bind(':password', $data['password']);
+      $this->db->bind(':estado', $data['estado']);
+
+      if($this->db->execute()){
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    // Get roles
+    public function getRoles(){
+      $this->db->query('SELECT * FROM roles');
+      return $this->db->resultSet();
+    }
   }
