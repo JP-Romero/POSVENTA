@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 -- Insertar usuario admin inicial (password: admin123)
 -- Hash generado con password_hash() en PHP
 INSERT INTO `usuarios` (`id_rol`, `nombre`, `usuario`, `password`, `estado`) VALUES
-(1, 'Administrador Principal', 'admin', '$2y$10$7R8siitZls.TqhC/B3/Ym.D5k8v8K3Z8B5K3Z8B5K3Z8B5K3Z8B5K', 1);
+(1, 'Administrador Principal', 'admin', '$2y$10$PKy58HpI2rqvx5r80JP3W.mo76gG3WPA.MY9mme2P5QR7jvN9zt5C', 1);
 
 -- 4. Tabla Categorías
 CREATE TABLE IF NOT EXISTS `categorias` (

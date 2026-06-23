@@ -10,15 +10,40 @@
           <li class="nav-item">
             <a class="nav-link" href="<?php echo URLROOT; ?>">Inicio</a>
           </li>
+          <?php if(isset($_SESSION['user_id'])) : ?>
+            <?php if(isAdmin()) : ?>
+              <li class="nav-item">
+                <a class="nav-link" href="<?php echo URLROOT; ?>/users">Usuarios</a>
+              </li>
+            <?php endif; ?>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo URLROOT; ?>/categories">Categorías</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo URLROOT; ?>/products">Productos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo URLROOT; ?>/pos">Punto de Venta</a>
+            </li>
+          <?php endif; ?>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo URLROOT; ?>/pages/about">Sobre Nosotros</a>
           </li>
         </ul>
 
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
-          </li>
+          <?php if(isset($_SESSION['user_id'])) : ?>
+            <li class="nav-item">
+              <span class="nav-link text-white">Bienvenido, <?php echo $_SESSION['user_nombre']; ?></span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo URLROOT; ?>/users/logout">Salir</a>
+            </li>
+          <?php else : ?>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo URLROOT; ?>/users/login">Login</a>
+            </li>
+          <?php endif; ?>
         </ul>
       </div>
     </div>
