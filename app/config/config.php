@@ -8,7 +8,7 @@ define('DB_NAME', 'libreria_db');
 // App Root
 define('APPROOT', dirname(dirname(__FILE__)));
 // URL Root
-define('URLROOT', 'http://localhost/libreria');
+define('URLROOT', 'http://localhost/POSVENTA');
 // Site Name
 define('SITENAME', 'Librería Pos');
 // App Version

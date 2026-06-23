@@ -4,7 +4,7 @@ Para ejecutar este sistema en un entorno local con XAMPP, siga estos pasos:
 
 ## 1. Preparación de carpetas
 - Clone o descargue este repositorio.
-- Copie la carpeta del proyecto en el directorio `htdocs` de su instalación de XAMPP (por lo general `C:\xampp\htdocs\libreria`).
+- Copie la carpeta del proyecto en el directorio `htdocs` de su instalación de XAMPP (por lo general `C:\xampp\htdocs\POSVENTA`).
 
 ## 2. Configuración de Base de Datos
 - Inicie los módulos **Apache** y **MySQL** desde el Panel de Control de XAMPP.
@@ -22,11 +22,11 @@ Para ejecutar este sistema en un entorno local con XAMPP, siga estos pasos:
   ```
 - Asegúrese de que `URLROOT` coincida con la ruta de su proyecto:
   ```php
-  define('URLROOT', 'http://localhost/libreria');
+  define('URLROOT', 'http://localhost/POSVENTA');
   ```
 
 ## 4. Acceso al sistema
-- Abra su navegador y acceda a: `http://localhost/libreria`
+- Abra su navegador y acceda a: `http://localhost/POSVENTA`
 
 ---
 **Nota:** El sistema utiliza `.htaccess` para URLs amigables. Asegúrese de que el módulo `mod_rewrite` esté habilitado en su configuración de Apache (habilitado por defecto en XAMPP).
