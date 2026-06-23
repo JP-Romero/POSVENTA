@@ -1,4 +1,7 @@
 <?php
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 class Sales extends Controller {
     private $saleModel;
 
@@ -92,7 +95,7 @@ class Sales extends Controller {
         }
         redirect('sales');
     }
-    
+
     public function invoicePdf($id) {
         $this->db->query('SELECT v.*, u.nombre as usuario_nombre, c.nombre as cliente_nombre, c.direccion as cliente_direccion, c.telefono as cliente_telefono
                           FROM ventas v
@@ -113,10 +116,6 @@ class Sales extends Controller {
                           WHERE dv.id_venta = :id');
         $this->db->bind(':id', $id);
         $details = $this->db->resultSet();
-        
-        require_once APPROOT . '/../vendor/autoload.php';
-        use Dompdf\Dompdf;
-        use Dompdf\Options;
         
         $options = new Options();
         $options->set('isRemoteEnabled', true);
