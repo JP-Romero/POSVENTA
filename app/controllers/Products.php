@@ -1,4 +1,6 @@
 <?php
+
+
   class Products extends Controller {
     private $productModel;
     private $categoryModel;
@@ -383,9 +385,7 @@
                 redirect('products');
             }
             
-            require_once APPROOT . '/../vendor/autoload.php';
-            use PhpOffice\PhpSpreadsheet\IOFactory;
-            use PhpOffice\PhpSpreadsheet\Spreadsheet;
+require_once APPROOT . '/../vendor/autoload.php';
             
             try {
                 $spreadsheet = IOFactory::load($file);
