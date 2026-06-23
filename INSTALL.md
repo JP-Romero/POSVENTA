@@ -9,7 +9,7 @@ Para ejecutar este sistema en un entorno local con XAMPP, siga estos pasos:
 ## 2. Configuración de Base de Datos
 - Inicie los módulos **Apache** y **MySQL** desde el Panel de Control de XAMPP.
 - Acceda a `phpMyAdmin` (http://localhost/phpmyadmin).
-- Importe el archivo `sql/create_db.sql` o cree manualmente una base de datos llamada `libreria_db`.
+- Importe el archivo `sql/libreria_db.sql`. Este script creará la base de datos `libreria_db` y todas las tablas necesarias con datos iniciales.
 
 ## 3. Configuración del Proyecto
 - Abra el archivo `app/config/config.php`.
