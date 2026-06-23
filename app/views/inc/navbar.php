@@ -60,7 +60,12 @@
           </li>
         </ul>
 
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item me-3">
+              <button id="theme-toggle" class="btn btn-outline-light btn-sm rounded-circle">
+                  <i class="fa fa-moon"></i>
+              </button>
+          </li>
           <?php if(isset($_SESSION['user_id'])) : ?>
             <li class="nav-item">
               <span class="nav-link text-white">Bienvenido, <?php echo $_SESSION['user_nombre']; ?></span>

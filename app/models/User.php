@@ -8,7 +8,7 @@
 
     // Login User
     public function login($username, $password){
-      $this->db->query('SELECT * FROM usuarios WHERE usuario = :username');
+      $this->db->query('SELECT * FROM usuarios WHERE usuario = :username AND estado = 1');
       $this->db->bind(':username', $username);
 
       $row = $this->db->single();
@@ -81,5 +81,39 @@
     public function getRoles(){
       $this->db->query('SELECT * FROM roles');
       return $this->db->resultSet();
+    }
+
+    // Update user
+    public function updateUser($data){
+      if(!empty($data['password'])){
+        $this->db->query('UPDATE usuarios SET id_rol = :id_rol, nombre = :nombre, usuario = :usuario, password = :password WHERE id = :id');
+        $this->db->bind(':password', $data['password']);
+      } else {
+        $this->db->query('UPDATE usuarios SET id_rol = :id_rol, nombre = :nombre, usuario = :usuario WHERE id = :id');
+      }
+
+      $this->db->bind(':id', $data['id']);
+      $this->db->bind(':id_rol', $data['id_rol']);
+      $this->db->bind(':nombre', $data['nombre']);
+      $this->db->bind(':usuario', $data['usuario']);
+
+      if($this->db->execute()){
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    // Toggle status
+    public function toggleStatus($id, $estado){
+      $this->db->query('UPDATE usuarios SET estado = :estado WHERE id = :id');
+      $this->db->bind(':id', $id);
+      $this->db->bind(':estado', $estado);
+
+      if($this->db->execute()){
+        return true;
+      } else {
+        return false;
+      }
     }
   }

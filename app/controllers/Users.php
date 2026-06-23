@@ -118,6 +118,51 @@ class Users extends Controller {
       redirect('pages/index');
     }
 
+    public function edit($id){
+        if(!isLoggedIn() || !isAdmin()){
+            redirect('users/login');
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $data = [
+                'id' => $id,
+                'id_rol' => trim($_POST['id_rol']),
+                'nombre' => trim($_POST['nombre']),
+                'usuario' => trim($_POST['usuario']),
+                'password' => !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : ''
+            ];
+
+            if($this->userModel->updateUser($data)){
+                flash('user_message', 'Usuario actualizado correctamente');
+                redirect('users');
+            }
+        } else {
+            $user = $this->userModel->getUserById($id);
+            $roles = $this->userModel->getRoles();
+            $data = [
+                'user' => $user,
+                'roles' => $roles
+            ];
+            $this->view('users/edit', $data);
+        }
+    }
+
+    public function toggle($id){
+        if(!isLoggedIn() || !isAdmin()){
+            redirect('users/login');
+        }
+
+        $user = $this->userModel->getUserById($id);
+        $new_status = ($user->estado == 1) ? 0 : 1;
+
+        if($this->userModel->toggleStatus($id, $new_status)){
+            flash('user_message', 'Estado del usuario actualizado');
+            redirect('users');
+        }
+    }
+
     public function logout(){
       unset($_SESSION['user_id']);
       unset($_SESSION['user_usuario']);

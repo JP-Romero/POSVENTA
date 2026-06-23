@@ -18,6 +18,7 @@
                 <th>Usuario</th>
                 <th>Rol</th>
                 <th>Estado</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -31,6 +32,14 @@
                             <span class="badge bg-success">Activo</span>
                         <?php else : ?>
                             <span class="badge bg-danger">Inactivo</span>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <a href="<?php echo URLROOT; ?>/users/edit/<?php echo $user->id; ?>" class="btn btn-warning btn-sm">Editar</a>
+                        <?php if($user->id != $_SESSION['user_id']) : ?>
+                            <a href="<?php echo URLROOT; ?>/users/toggle/<?php echo $user->id; ?>" class="btn btn-<?php echo $user->estado ? 'secondary' : 'info'; ?> btn-sm">
+                                <?php echo $user->estado ? 'Desactivar' : 'Activar'; ?>
+                            </a>
                         <?php endif; ?>
                     </td>
                 </tr>

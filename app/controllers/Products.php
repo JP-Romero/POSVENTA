@@ -289,4 +289,47 @@
         fclose($output);
         exit;
     }
+
+    public function import(){
+        if(!isAdmin()){
+            redirect('products');
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES['csv_file']['name'])){
+            $file = $_FILES['csv_file']['tmp_name'];
+            $handle = fopen($file, "r");
+
+            // Skip first row (header)
+            fgetcsv($handle);
+
+            $success = 0;
+            while(($data = fgetcsv($handle, 1000, ",")) !== FALSE){
+                // ID, Código Interno, Código Barras, Nombre, ID_Categoría, ID_Proveedor, Precio Compra, Precio Venta, Stock, Stock Mínimo
+                // Assuming CSV structure: codigo_interno, codigo_barras, nombre, descripcion, id_categoria, id_proveedor, precio_compra, precio_venta, stock, stock_minimo
+                $prodData = [
+                    'codigo_interno' => $data[0],
+                    'codigo_barras' => $data[1],
+                    'nombre' => $data[2],
+                    'descripcion' => $data[3],
+                    'id_categoria' => $data[4],
+                    'id_proveedor' => $data[5],
+                    'precio_compra' => $data[6],
+                    'precio_venta' => $data[7],
+                    'stock' => $data[8],
+                    'stock_minimo' => $data[9],
+                    'estado' => 1,
+                    'imagen' => ''
+                ];
+
+                if($this->productModel->addProduct($prodData)){
+                    $success++;
+                }
+            }
+            fclose($handle);
+            flash('product_message', "Se importaron $success productos correctamente");
+            redirect('products');
+        }
+
+        $this->view('products/import');
+    }
   }

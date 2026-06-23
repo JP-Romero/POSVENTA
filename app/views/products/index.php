@@ -4,12 +4,19 @@
       <h1>Productos</h1>
     </div>
     <div class="col-md-8 text-end">
+      <?php if(isAdmin()) : ?>
+      <a href="<?php echo URLROOT; ?>/products/import" class="btn btn-info text-white">
+        <i class="fa fa-file-import"></i> Importar CSV
+      </a>
+      <?php endif; ?>
       <a href="<?php echo URLROOT; ?>/products/export" class="btn btn-success">
         <i class="fa fa-file-excel"></i> Exportar CSV
       </a>
+      <?php if(isAdmin()) : ?>
       <a href="<?php echo URLROOT; ?>/products/add" class="btn btn-primary">
         <i class="fa fa-plus"></i> Nuevo Producto
       </a>
+      <?php endif; ?>
     </div>
   </div>
   <?php flash('product_message'); ?>
