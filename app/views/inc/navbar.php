@@ -20,6 +20,12 @@
               <a class="nav-link" href="<?php echo URLROOT; ?>/categories">Categorías</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="<?php echo URLROOT; ?>/providers">Proveedores</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo URLROOT; ?>/clients">Clientes</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="<?php echo URLROOT; ?>/products">Productos</a>
             </li>
             <li class="nav-item">
