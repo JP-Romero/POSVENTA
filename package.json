@@ -1,9 +1,11 @@
 {
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/style.css --minify",
+    "watch:css": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/style.css --watch"
   },
   "main": "index.js",
-  "description": "Actúa como un Arquitecto de Software Senior, Desarrollador Full Stack Senior, Diseñador UX/UI y Analista de Sistemas con más de 15 años de experiencia.",
+  "description": "Act�a como un Arquitecto de Software Senior, Desarrollador Full Stack Senior, Dise�ador UX/UI y Analista de Sistemas con m�s de 15 a�os de experiencia.",
   "license": "ISC",
   "homepage": "https://github.com/JP-Romero/POSVENTA#readme",
   "author": "",
@@ -17,5 +19,10 @@
   "name": "posventa",
   "bugs": {
     "url": "https://github.com/JP-Romero/POSVENTA/issues"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.1",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.1"
   }
 }

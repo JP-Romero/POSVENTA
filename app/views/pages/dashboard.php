@@ -30,7 +30,7 @@
                             <i class="fa fa-boxes fa-2x"></i>
                         </div>
                     </div>
-                    <div class="display-4 fw-bold mb-2"><?= number_format($total_products) ?></div>
+                    <div class="display-4 fw-bold mb-2"><?= number_format($total_products ?? 0) ?></div>
                     <div class="text-white-50 fs-6">Productos en inventario</div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                             <i class="fa fa-exclamation-triangle fa-2x"></i>
                         </div>
                     </div>
-                    <div class="display-4 fw-bold mb-2"><?= number_format($low_stock) ?></div>
+                    <div class="display-4 fw-bold mb-2"><?= number_format($low_stock ?? 0) ?></div>
                     <div class="text-white-50 fs-6">Productos que requieren atención</div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                             <i class="fa fa-dollar-sign fa-2x"></i>
                         </div>
                     </div>
-                    <div class="display-4 fw-bold mb-2"><?= number_format($daily_sales, 0, ',', '.') ?></div>
+                    <div class="display-4 fw-bold mb-2"><?= number_format($daily_sales ?? 0, 0, ',', '.') ?></div>
                     <div class="text-white-50 fs-6">Ingresos de hoy</div>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                             <i class="fa fa-clock-rotate-left fa-2x"></i>
                         </div>
                     </div>
-                    <div class="fs-5 fw-medium"><?= count($recent_sales) ?></div>
+                    <div class="fs-5 fw-medium"><?= count($recent_sales ?? []) ?></div>
                     <div class="text-white-50 fs-6">Últimas transacciones</div>
                 </div>
             </div>
@@ -187,10 +187,10 @@
         const salesChart = new Chart(salesCtx, {
             type: 'line',
             data: {
-                labels: <?php echo $chart_sales_labels; ?>,
+                labels: <?php echo $chart_sales_labels ?? '[]'; ?>,
                 datasets: [{
                     label: 'Ventas ($)',
-                    data: <?php echo $chart_sales_data; ?>,
+                    data: <?php echo $chart_sales_data ?? '[]'; ?>,
                     borderColor: '#4361ee',
                     backgroundColor: 'rgba(67, 97, 238, 0.1)',
                     tension: 0.3,
@@ -244,10 +244,10 @@
         const categoryChart = new Chart(categoryCtx, {
             type: 'bar',
             data: {
-                labels: <?php echo $chart_cat_labels; ?>,
+                labels: <?php echo $chart_cat_labels ?? '[]'; ?>,
                 datasets: [{
                     label: 'Unidades Vendidas',
-                    data: <?php echo $chart_cat_data; ?>,
+                    data: <?php echo $chart_cat_data ?? '[]'; ?>,
                     backgroundColor: [
                         '#4cc9f0',
                         '#f72585',
@@ -296,10 +296,10 @@
         const paymentChart = new Chart(paymentCtx, {
             type: 'doughnut',
             data: {
-                labels: <?php echo $chart_pay_labels; ?>,
+                labels: <?php echo $chart_pay_labels ?? '[]'; ?>,
                 datasets: [{
                     label: 'Métodos de Pago',
-                    data: <?php echo $chart_pay_data; ?>,
+                    data: <?php echo $chart_pay_data ?? '[]'; ?>,
                     backgroundColor: [
                         '#4cc9f0',
                         '#f72585',
