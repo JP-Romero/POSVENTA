@@ -1,4 +1,4 @@
-// POS V2 - Three Panel Design (SambaPOS Style)
+// POS V2.0 - Hybrid Librería Design
 let cart = [];
 const IVA_RATE = <?= $data['iva'] / 100 ?>;
 let currentCategory = 'all';
@@ -20,8 +20,8 @@ function loadProducts() {
             
             products.forEach(p => {
                 const imgHtml = p.imagen ? 
-                    `<img src="${p.imagen}" alt="${p.nombre}" onerror="this.outerHTML='<div class=\'pos-product-placeholder\'>📕</div>'">` :
-                    '<div class="pos-product-placeholder">📕</div>';
+                    `<img src="${p.imagen}" alt="${p.nombre}" onerror="this.outerHTML='<div class=\'pos-product-placeholder\'><i class=\'fas fa-book\'></i></div>'">` :
+                    '<div class="pos-product-placeholder"><i class="fas fa-book"></i></div>';
             
                 html += `
                     <div class="pos-product-card" onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')})">
@@ -36,7 +36,7 @@ function loadProducts() {
         })
         .catch(err => {
             console.error('Error:', err);
-            document.getElementById('products-grid').innerHTML = '<div style="text-align:center;color:var(--gray)">Error al cargar</div>';
+            document.getElementById('products-grid').innerHTML = '<div style="text-align:center;color:var(--gray);padding:20px;">Error al cargar productos</div>';
         });
 }
 
@@ -50,21 +50,20 @@ function addToCart(p) {
             id: p.id,
             nombre: p.nombre,
             precio: parseFloat(p.precio_venta),
-            quantity: 1,
-            imagen: p.imagen || null
+            quantity: 1
         });
     }
     renderCart();
     updateTotal();
-    showSuccess(p.nombre);
+    showSuccessToast(p.nombre);
 }
 
-// Render cart - Compact
+// Render cart
 function renderCart() {
     const container = document.getElementById('ticket-items');
     
     if (cart.length === 0) {
-        container.innerHTML = '<div style="text-align:center;color:var(--gray);padding:20px;font-size:0.8rem;">Carrito vacío</div>';
+        container.innerHTML = '<div class="empty-cart">Carrito vacío<br><small>Escanee o seleccione productos</small></div>';
         return;
     }
     
@@ -72,9 +71,8 @@ function renderCart() {
     cart.forEach(item => {
         html += `
             <div class="pos-ticket-item">
-                <span class="pos-item-name">${item.nombre}</span>
-                <span style="margin: 0 4px;color:var(--gray);">x${item.quantity}</span>
-                <span class="pos-item-price">$${item.precio.toFixed(2)}</span>
+                <span class="pos-item-name">${item.nombre} (x${item.quantity})</span>
+                <span class="pos-item-price">$${(item.precio * item.quantity).toFixed(2)}</span>
             </div>
         `;
     });
@@ -82,13 +80,15 @@ function renderCart() {
     container.innerHTML = html;
 }
 
-// Update total
+// Update totals
 function updateTotal() {
     const subtotal = cart.reduce((sum, item) => sum + (item.precio * item.quantity), 0);
     const tax = subtotal * IVA_RATE;
     const total = subtotal + tax;
     
-    document.querySelectorAll('.btn-amount').forEach(el => el.textContent = '$' + total.toFixed(2));
+    document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+    document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+    document.querySelectorAll('.btn-amount, #total-amount').forEach(el => el.textContent = '$' + total.toFixed(2));
 }
 
 // Clear cart
@@ -99,8 +99,8 @@ function clearCart() {
         title: '¿Limpiar carrito?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#dc2626',
-        cancelButtonColor: '#64748b',
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
         confirmButtonText: 'Sí, limpiar'
     }).then(result => {
         if (result.isConfirmed) {
@@ -112,8 +112,8 @@ function clearCart() {
 }
 
 // Show success toast
-function showSuccess(productName) {
-    const toast = Swal.fire({
+function showSuccessToast(productName) {
+    Swal.fire({
         toast: true,
         position: 'top',
         icon: 'success',
@@ -123,8 +123,8 @@ function showSuccess(productName) {
     });
 }
 
-// Complete sale
-document.getElementById('complete-sale').addEventListener('click', function() {
+// Handle payment
+function handlePayment(type) {
     if(cart.length === 0) {
         Swal.fire({
             icon: 'warning',
@@ -141,7 +141,7 @@ document.getElementById('complete-sale').addEventListener('click', function() {
     const data = {
         id_cliente: document.getElementById('id_cliente').value,
         numero_factura: document.querySelector('.pos-invoice').textContent.replace('#', ''),
-        metodo_pago: 'Efectivo',
+        metodo_pago: type === 'efectivo' ? 'Efectivo' : 'Tarjeta',
         subtotal: subtotal,
         impuesto: tax,
         total: total,
@@ -154,7 +154,7 @@ document.getElementById('complete-sale').addEventListener('click', function() {
         }))
     };
     
-    const btn = this;
+    const btn = document.getElementById('complete-sale');
     const originalHtml = btn.innerHTML;
     btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Procesando...';
     btn.disabled = true;
@@ -183,13 +183,12 @@ document.getElementById('complete-sale').addEventListener('click', function() {
             updateTotal();
             document.getElementById('search-input').focus();
             
-            // Update invoice number display
             if (res.invoiceNumber) {
                 document.querySelector('.pos-invoice').textContent = '#' + res.invoiceNumber;
             }
         }
     });
-});
+}
 
 // Print last receipt
 function printLastReceipt() {
@@ -227,7 +226,7 @@ document.addEventListener('keydown', function(e) {
     }
     if (e.key === 'F12') {
         e.preventDefault();
-        document.getElementById('complete-sale').click();
+        handlePayment('efectivo');
     }
     if (e.key === 'Escape') {
         clearCart();

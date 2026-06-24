@@ -3,67 +3,81 @@
 <link rel="stylesheet" href="<?= URLROOT ?>/css/pos-v2.css">
 
 <div class="pos-v2-app">
-    <div class="pos-v2-container">
-        <!-- Panel Categorías - Icon Only -->
-        <div class="pos-panel pos-categories">
-            <div class="pos-panel-header">
+    <header class="pos-header">
+        <div class="pos-header-brand">
+            <i class="fas fa-store"></i>
+            <span>POSVENTA LIBRERÍA</span>
+        </div>
+        <div class="pos-header-info">
+            <span class="pos-user"><i class="fas fa-user"></i> <?= $_SESSION['user_name'] ?? 'Usuario' ?></span>
+            <span class="pos-invoice">#<?= $data['invoiceNumber'] ?></span>
+        </div>
+        <div class="pos-header-shortcuts">
+            <kbd>F5</kbd> Buscar | <kbd>F12</kbd> Cobrar | <kbd>Esc</kbd> Cancelar
+        </div>
+    </header>
+
+    <div class="pos-container">
+        <aside class="pos-categories">
+            <button class="pos-cat-btn active" data-category="all" title="Todo">
+                <i class="fas fa-th-large"></i>
+                <span>TODO</span>
+            </button>
+            <button class="pos-cat-btn" data-category="libros" title="Libros">
+                <i class="fas fa-book"></i>
+                <span>LIBROS</span>
+            </button>
+            <button class="pos-cat-btn" data-category="papel" title="Papelería">
+                <i class="fas fa-file-alt"></i>
+                <span>PAPEL</span>
+            </button>
+            <button class="pos-cat-btn" data-category="ofertas" title="Ofertas">
                 <i class="fas fa-tags"></i>
-            </div>
-            <div class="pos-categories-list">
-                <button class="pos-cat-btn active" data-category="all" title="Todo">
-                    <i class="fas fa-th-large"></i>
-                </button>
-                <button class="pos-cat-btn" data-category="libros" title="Libros" style="color: #fbbf24;">
-                    <i class="fas fa-book"></i>
-                </button>
-                <button class="pos-cat-btn" data-category="papel" title="Papelería" style="color: #60a5fa;">
-                    <i class="fas fa-file-alt"></i>
-                </button>
-                <button class="pos-cat-btn" data-category="ofertas" title="Ofertas" style="color: #f87171;">
-                    <i class="fas fa-tags"></i>
-                </button>
-                <button class="pos-cat-btn" data-category="mas-vendidos" title="Más vendidos" style="color: #c084fc;">
-                    <i class="fas fa-fire"></i>
-                </button>
-            </div>
+                <span>OFERTAS</span>
+            </button>
+            <button class="pos-cat-btn" data-category="mas-vendidos" title="Más vendidos">
+                <i class="fas fa-fire"></i>
+                <span>HOT</span>
+            </button>
             
             <div class="pos-search-box">
                 <i class="fas fa-search pos-search-icon"></i>
-                <input type="text" id="search-input" class="pos-search-input" 
-                       placeholder="ISBN...">
+                <input type="text" id="search-input" class="pos-search-input" placeholder="ISBN/Código...">
             </div>
-        </div>
+        </aside>
 
-        <!-- Panel Productos -->
-        <div class="pos-panel pos-products">
-            <div class="pos-panel-header">
-                <i class="fas fa-box"></i>
-                <span>PRODUCTOS</span>
-            </div>
+        <main class="pos-products">
             <div class="pos-products-grid" id="products-grid">
             </div>
-        </div>
+        </main>
 
-        <!-- Panel Ticket - Compact -->
-        <div class="pos-panel pos-ticket">
+        <aside class="pos-ticket">
             <div class="pos-ticket-header">
-                <div>
-                    <i class="fas fa-receipt"></i>
-                    <span>TICKET</span>
-                </div>
-                <div class="pos-invoice">#<?= $data['invoiceNumber'] ?></div>
+                <i class="fas fa-receipt"></i>
+                <span>TICKET</span>
             </div>
-
+            
             <div class="pos-ticket-items" id="ticket-items">
+                <div class="empty-cart">Carrito vacío</div>
             </div>
 
             <div class="pos-ticket-footer">
-                <div class="pos-ticket-total">
-                    <span>TOTAL:</span>
-                    <span class="total-amount" id="total-amount">$0.00</span>
+                <div class="pos-ticket-summary">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>IVA (15%)</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span>TOTAL</span>
+                        <span class="total-amount" id="total-amount">$0.00</span>
+                    </div>
                 </div>
                 
-<select id="id_cliente" class="pos-client-select">
+                <select id="id_cliente" class="pos-client-select">
                     <?php foreach($data['clients'] as $client) : ?>
                         <option value="<?= $client->id ?>"><?= $client->nombre ?></option>
                     <?php endforeach; ?>
@@ -71,10 +85,13 @@
 
                 <button class="pos-btn-pay" id="complete-sale">
                     <span class="btn-amount">$0.00</span>
-                    <span class="btn-text">COBRAR</span>
+                    <span class="btn-text">COBRAR EFECTIVO</span>
                 </button>
 
                 <div class="pos-actions-bottom">
+                    <button class="pos-btn-action" onclick="handlePayment('tarjeta')" title="Cobrar con tarjeta">
+                        <i class="fas fa-credit-card"></i>
+                    </button>
                     <button class="pos-btn-action" onclick="printLastReceipt()" title="Reimprimir">
                         <i class="fas fa-print"></i>
                     </button>
@@ -83,7 +100,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </aside>
     </div>
 </div>
 
