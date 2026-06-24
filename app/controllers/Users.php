@@ -32,12 +32,23 @@ class Users extends Controller {
             ];
 
             if($this->userModel->addUser($data)){
+                // Give default permissions to non-admin users
+                if ($data['id_rol'] != 1) {
+                    $userId = $this->userModel->db->lastInsertId();
+                    $modules = $this->userModel->getModules();
+                    $permissions = [];
+                    foreach ($modules as $modulo => $nombre) {
+                        $permissions[$modulo] = isset($_POST['perm_' . $modulo]) ? 1 : 0;
+                    }
+                    $this->userModel->updateUserPermissions($userId, $permissions);
+                }
                 flash('user_message', 'Usuario creado correctamente');
                 redirect('users');
             }
         } else {
             $roles = $this->userModel->getRoles();
-            $data = ['roles' => $roles];
+            $modules = $this->userModel->getModules();
+            $data = ['roles' => $roles, 'modules' => $modules];
             $this->view('users/add', $data);
         }
     }
@@ -85,6 +96,14 @@ class Users extends Controller {
 
             if(empty($data['nombre_err']) && empty($data['usuario_err'])){
                 if($this->userModel->updateUser($data)){
+                    // Update permissions if provided (for non-admin users)
+                    if ($data['id_rol'] != 1) {
+                        $permissions = [];
+                        foreach ($this->userModel->getModules() as $modulo => $nombre) {
+                            $permissions[$modulo] = isset($_POST['perm_' . $modulo]) ? 1 : 0;
+                        }
+                        $this->userModel->updateUserPermissions($id, $permissions);
+                    }
                     flash('user_message', 'Usuario actualizado correctamente');
                     redirect('users');
                 } else {
@@ -94,6 +113,8 @@ class Users extends Controller {
             } else {
                 $roles = $this->userModel->getRoles();
                 $data['roles'] = $roles;
+                $data['permissions'] = $this->userModel->getUserPermissions($id);
+                $data['modules'] = $this->userModel->getModules();
                 $this->view('users/edit', $data);
             }
         } else {
@@ -103,6 +124,9 @@ class Users extends Controller {
             }
             
             $roles = $this->userModel->getRoles();
+            $permissions = $this->userModel->getUserPermissions($id);
+            $modules = $this->userModel->getModules();
+            
             $data = [
                 'id' => $id,
                 'id_rol' => $user->id_rol,
@@ -111,7 +135,9 @@ class Users extends Controller {
                 'estado' => $user->estado,
                 'nombre_err' => '',
                 'usuario_err' => '',
-                'roles' => $roles
+                'roles' => $roles,
+                'permissions' => $permissions,
+                'modules' => $modules
             ];
             $this->view('users/edit', $data);
         }

@@ -2,20 +2,20 @@
   class Providers extends Controller {
     private $providerModel;
 
-    public function __construct(){
+public function __construct(){
       if(!isLoggedIn()){
         redirect('users/login');
       }
-
-      if(!isAdmin()){
-        flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
-        redirect('pages/index');
-      }
-
+      
       $this->providerModel = $this->model('Provider');
     }
 
     public function index(){
+      if(!canAccess('providers')){
+        flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
+        redirect('pages/index');
+      }
+      
       $providers = $this->providerModel->getProviders();
       $data = ['providers' => $providers];
       $this->view('providers/index', $data);

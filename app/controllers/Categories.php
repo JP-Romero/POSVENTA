@@ -2,21 +2,20 @@
   class Categories extends Controller {
     private $categoryModel;
 
-    public function __construct(){
+public function __construct(){
       if(!isLoggedIn()){
         redirect('users/login');
       }
-
-      // Admin only for critical actions, but let's assume all category management is admin for now
-      if(!isAdmin()){
-        flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
-        redirect('pages/index');
-      }
-
+      
       $this->categoryModel = $this->model('Category');
     }
 
     public function index(){
+      if(!canAccess('categories')){
+        flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
+        redirect('pages/index');
+      }
+      
       $categories = $this->categoryModel->getCategories();
 
       $data = [

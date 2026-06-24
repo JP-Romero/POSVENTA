@@ -1,13 +1,18 @@
 <?php
 class Reports extends Controller {
     public function __construct() {
-        if (!isLoggedIn() || !isAdmin()) {
+        if (!isLoggedIn()) {
             redirect('users/login');
         }
         $this->db = new Database;
     }
 
     public function index() {
+        if(!canAccess('reports')){
+            flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
+            redirect('pages/index');
+        }
+        
         $tab = $_GET['tab'] ?? 'ventas';
         $fecha_inicio = $_GET['fecha_inicio'] ?? date('Y-m-01');
         $fecha_fin = $_GET['fecha_fin'] ?? date('Y-m-d');

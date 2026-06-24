@@ -7,12 +7,17 @@ class Inventories extends Controller {
         if (!isLoggedIn()) {
             redirect('users/login');
         }
-
+        
         $this->inventoryModel = $this->model('Inventory');
         $this->productModel = $this->model('Product');
     }
 
     public function index() {
+        if(!canAccess('inventory')){
+            flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
+            redirect('pages/index');
+        }
+        
         $stock = $this->inventoryModel->getStockStatus();
         $data = ['stock' => $stock];
         $this->view('inventory/index', $data);

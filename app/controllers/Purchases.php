@@ -8,18 +8,18 @@ class Purchases extends Controller {
         if (!isLoggedIn()) {
             redirect('users/login');
         }
-
-        if (!isAdmin()) {
-            flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
-            redirect('pages/index');
-        }
-
+        
         $this->purchaseModel = $this->model('Purchase');
         $this->providerModel = $this->model('Provider');
         $this->productModel = $this->model('Product');
     }
 
     public function index() {
+        if(!canAccess('purchases')){
+            flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
+            redirect('pages/index');
+        }
+        
         $purchases = $this->purchaseModel->getPurchases();
         $data = ['purchases' => $purchases];
         $this->view('purchases/index', $data);

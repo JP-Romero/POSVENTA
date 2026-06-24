@@ -100,6 +100,61 @@
       return $this->db->execute();
     }
     
+    // Get user permissions
+    public function getUserPermissions($userId){
+      $this->db->query('SELECT modulo, acceso FROM usuario_permisos WHERE id_usuario = :id_usuario');
+      $this->db->bind(':id_usuario', $userId);
+      $results = $this->db->resultSet();
+      
+      $permissions = [];
+      foreach ($results as $row) {
+        $permissions[$row->modulo] = (int)$row->acceso;
+      }
+      return $permissions;
+    }
+    
+    // Get all modules
+    public function getModules(){
+      return [
+        'products' => 'Productos',
+        'categories' => 'Categorías',
+        'providers' => 'Proveedores',
+        'purchases' => 'Compras',
+        'sales' => 'Ventas',
+        'inventory' => 'Inventario',
+        'reports' => 'Reportes',
+        'settings' => 'Configuración',
+        'users' => 'Usuarios'
+      ];
+    }
+    
+    // Update user permissions
+    public function updateUserPermissions($userId, $permissions){
+      // Delete existing permissions
+      $this->db->query('DELETE FROM usuario_permisos WHERE id_usuario = :id_usuario');
+      $this->db->bind(':id_usuario', $userId);
+      $this->db->execute();
+      
+      // Insert new permissions
+      $this->db->query('INSERT INTO usuario_permisos (id_usuario, modulo, acceso) VALUES (:id_usuario, :modulo, :acceso)');
+      foreach ($permissions as $modulo => $acceso) {
+        $this->db->bind(':id_usuario', $userId);
+        $this->db->bind(':modulo', $modulo);
+        $this->db->bind(':acceso', $acceso ? 1 : 0);
+        $this->db->execute();
+      }
+      return true;
+    }
+    
+    // Check user module access
+    public function canAccessModule($userId, $module){
+      $this->db->query('SELECT acceso FROM usuario_permisos WHERE id_usuario = :id_usuario AND modulo = :modulo');
+      $this->db->bind(':id_usuario', $userId);
+      $this->db->bind(':modulo', $module);
+      $result = $this->db->single();
+      return $result ? (bool)$result->acceso : false;
+    }
+    
     // Toggle user status
     public function toggleStatus($id){
       $this->db->query('UPDATE usuarios SET estado = CASE WHEN estado = 1 THEN 0 ELSE 1 END WHERE id = :id');

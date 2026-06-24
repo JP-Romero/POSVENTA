@@ -6,26 +6,22 @@
     private $categoryModel;
     private $providerModel;
 
-    public function __construct(){
+public function __construct(){
       if(!isLoggedIn()){
         redirect('users/login');
       }
-
-      // Check for Admin for management actions
-      $url = isset($_GET['url']) ? explode('/', rtrim($_GET['url'], '/')) : [];
-      $method = isset($url[1]) ? $url[1] : 'index';
-
-      if($method != 'index' && !isAdmin()){
-        flash('access_error', 'No tiene permisos para realizar esta acción', 'alert alert-danger');
-        redirect('products');
-      }
-
+      
       $this->productModel = $this->model('Product');
       $this->categoryModel = $this->model('Category');
       $this->providerModel = $this->model('Provider');
     }
-
+    
     public function index(){
+      if(!canAccess('products')){
+        flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
+        redirect('pages/index');
+      }
+      
       $products = $this->productModel->getProducts();
 
       $data = [
@@ -34,8 +30,12 @@
 
       $this->view('products/index', $data);
     }
-
+    
     public function add(){
+      if(!canAccess('products')){
+        flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
+        redirect('pages/index');
+      }
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
         // Sanitize
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);

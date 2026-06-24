@@ -44,7 +44,27 @@
                     <label class="form-check-label" for="estado">Activo</label>
                 </div>
                 
-                <div class="d-flex gap-2">
+                <?php if ($data['id_rol'] != 1 && !empty($data['modules'])): ?>
+                <hr>
+                <h5 class="mb-3">Permisos de Acceso</h5>
+                <p class="text-muted small">Configure el acceso a cada módulo del sistema para este usuario.</p>
+                
+                <div class="row g-3">
+                    <?php foreach($data['modules'] as $modulo => $nombre): ?>
+                        <?php $acceso = $data['permissions'][$modulo] ?? 1; ?>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" id="perm_<?= $modulo ?>" name="perm_<?= $modulo ?>" <?= $acceso ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="perm_<?= $modulo ?>">
+                                    <?= h($nombre) ?>
+                                </label>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
+                
+                <div class="d-flex gap-2 mt-4">
                     <button type="submit" class="btn btn-primary">Actualizar Usuario</button>
                     <a href="<?= URLROOT ?>/users" class="btn btn-secondary">Cancelar</a>
                 </div>
@@ -52,5 +72,14 @@
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('id_rol').addEventListener('change', function() {
+    const permSection = document.querySelector('.row.g-3');
+    if (this.value == 1) {
+        permSection?.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+    }
+});
+</script>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>

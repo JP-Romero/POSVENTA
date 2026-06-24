@@ -14,6 +14,11 @@ class Sales extends Controller {
     }
 
     public function index() {
+        if(!canAccess('sales')){
+            flash('access_error', 'No tiene permisos para acceder a este módulo', 'alert alert-danger');
+            redirect('pages/index');
+        }
+        
         $sales = $this->saleModel->getSales();
         $data = ['sales' => $sales];
         $this->view('sales/index', $data);

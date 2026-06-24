@@ -213,4 +213,28 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
   KEY `idx_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- 16. Tabla Permisos por Usuario
+CREATE TABLE IF NOT EXISTS `usuario_permisos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL,
+  `modulo` varchar(50) NOT NULL COMMENT 'Nombre del módulo: products, categories, providers, purchases, sales, inventory, reports, settings, users',
+  `acceso` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1: Tiene acceso, 0: No tiene acceso',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `usuario_modulo_unique` (`id_usuario`, `modulo`),
+  KEY `fk_permiso_usuario` (`id_usuario`),
+  CONSTRAINT `fk_permiso_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Permisos por defecto para Administradores (acceso total)
+INSERT INTO `usuario_permisos` (`id_usuario`, `modulo`, `acceso`) VALUES
+(1, 'products', 1),
+(1, 'categories', 1),
+(1, 'providers', 1),
+(1, 'purchases', 1),
+(1, 'sales', 1),
+(1, 'inventory', 1),
+(1, 'reports', 1),
+(1, 'settings', 1),
+(1, 'users', 1);
+
 COMMIT;

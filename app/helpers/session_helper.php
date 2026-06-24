@@ -33,3 +33,18 @@
       return false;
     }
   }
+  
+  // Check if user has access to a specific module
+  function canAccess($module){
+    if (isAdmin()) {
+      return true;
+    }
+    
+    if (!isLoggedIn()) {
+      return false;
+    }
+    
+    require_once APPROOT . '/models/User.php';
+    $userModel = new User;
+    return $userModel->canAccessModule($_SESSION['user_id'], $module);
+  }

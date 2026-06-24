@@ -46,9 +46,7 @@ html.dark-mode {
     --bg-tertiary: #334155;
     --text-primary: #f1f5f9;
     --text-secondary: #94a3b8;
-    --text-muted:root {
-        --border-color: #334155;
-    }
+    --border-color: #334155;
 }
 
 /* Light Mode (default) */
@@ -59,15 +57,6 @@ html.dark-mode {
     --text-primary: #1e293b;
     --text-secondary: #64748b;
     --border-color: #e2e8f0;
-}
-
-html.dark-mode {
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-tertiary: #334155;
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --border-color: #334155;
 }
 
 /* --- Base --- */
@@ -337,7 +326,171 @@ html.dark-mode .sidebar-nav .nav-link.active {
     padding: 1.5rem;
 }
 
-/* --- Cards --- */
+/* Text color utilities for dark mode compatibility */
+.text-white-75 {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.text-gray-900 {
+    color: #1e293b !important;
+}
+
+.text-gray-800 {
+    color: #1e293b !important;
+}
+
+.text-gray-700 {
+    color: #334155 !important;
+}
+
+.text-gray-600 {
+    color: #475569 !important;
+}
+
+.text-gray-500 {
+    color: #64748b !important;
+}
+
+html.dark-mode .text-gray-900,
+html.dark-mode .text-gray-800,
+html.dark-mode .text-gray-700 {
+    color: #f1f5f9 !important;
+}
+
+html.dark-mode .text-gray-500 {
+    color: #94a3b8 !important;
+}
+
+html.dark-mode .dropdown-menu {
+    background: var(--bg-secondary) !important;
+}
+
+html.dark-mode .dropdown-item {
+    color: var(--text-primary) !important;
+}
+
+html.dark-mode .dropdown-item:hover {
+    background: var(--bg-tertiary) !important;
+}
+
+html.dark-mode a.text-gray-800:hover,
+html.dark-mode a.text-gray-700:hover,
+html.dark-mode .group:hover .text-gray-800 {
+    color: #93c5fd !important;
+}
+
+html.dark-mode .text-indigo-600,
+html.dark-mode .text-blue-600,
+html.dark-mode .text-emerald-600,
+html.dark-mode .text-amber-600,
+html.dark-mode .text-violet-600,
+html.dark-mode .text-sky-600,
+html.dark-mode .text-rose-600,
+html.dark-mode .text-orange-600,
+html.dark-mode .text-cyan-600,
+html.dark-mode .text-teal-600,
+html.dark-mode .text-purple-600 {
+    color: #93c5fd !important;
+}
+
+/* Background color utilities */
+.bg-gray-100 {
+    background-color: #f1f5f9 !important;
+}
+
+html.dark-mode .bg-gray-100 {
+    background-color: #334155 !important;
+}
+
+/* Tailwind color utilities for cards in index.php */
+.bg-white { background-color: #ffffff !important; }
+html.dark-mode .bg-white { background-color: #1e293b !important; }
+
+.border-gray-200 { border: 1px solid #e2e8f0 !important; }
+html.dark-mode .border-gray-200 { border-color: #334155 !important; }
+
+.text-gray-800.group-hover\:text-indigo-600:hover { color: #4f46e5 !important; }
+
+/* Background colors */
+.bg-indigo-50 { background-color: #eef2ff !important; }
+html.dark-mode .bg-indigo-50 { background-color: #312e81 !important; }
+
+.bg-blue-50 { background-color: #eff6ff !important; }
+html.dark-mode .bg-blue-50 { background-color: #1e3a8a !important; }
+
+.bg-emerald-50 { background-color: #ecfdf5 !important; }
+html.dark-mode .bg-emerald-50 { background-color: #064e3b !important; }
+
+.bg-amber-50 { background-color: #fffbeb !important; }
+html.dark-mode .bg-amber-50 { background-color: #78350f !important; }
+
+.bg-violet-50 { background-color: #f5f3ff !important; }
+html.dark-mode .bg-violet-50 { background-color: #312e81 !important; }
+
+.bg-sky-50 { background-color: #f0f9ff !important; }
+html.dark-mode .bg-sky-50 { background-color: #0c4a6e !important; }
+
+.bg-rose-50 { background-color: #fff1f2 !important; }
+html.dark-mode .bg-rose-50 { background-color: #88134f !important; }
+
+.bg-orange-50 { background-color: #fff7ed !important; }
+html.dark-mode .bg-orange-50 { background-color: #7c2d12 !important; }
+
+.bg-cyan-50 { background-color: #ecfeffff !important; }
+html.dark-mode .bg-cyan-50 { background-color: #164e63 !important; }
+
+.bg-teal-50 { background-color: #f0fdfa !important; }
+html.dark-mode .bg-teal-50 { background-color: #134e4a !important; }
+
+.bg-purple-50 { background-color: #faf5ff !important; }
+html.dark-mode .bg-purple-50 { background-color: #4a044e !important; }
+
+/* Border colors on hover */
+.group:hover .border-indigo-500 { border-color: #6366f1 !important; }
+.group:hover .border-blue-500 { border-color: #3b82f6 !important; }
+.group:hover .border-emerald-500 { border-color: #10b981 !important; }
+.group:hover .border-amber-500 { border-color: #f59e0b !important; }
+.group:hover .border-violet-500 { border-color: #8b5cf6 !important; }
+.group:hover .border-sky-500 { border-color: #0ea5e9 !important; }
+.group:hover .border-rose-500 { border-color: #f43f5e !important; }
+.group:hover .border-orange-500 { border-color: #f97316 !important; }
+.group:hover .border-cyan-500 { border-color: #0891b2 !important; }
+.group:hover .border-teal-500 { border-color: #14b8a6 !important; }
+.group:hover .border-purple-500 { border-color: #a855f7 !important; }
+.group:hover .border-gray-500 { border-color: #6b7280 !important; }
+
+html.dark-mode .group:hover .border-indigo-500 { border-color: #818cf8 !important; }
+
+/* Group hover text colors */
+.group:hover .group-hover-text-indigo-600 { color: #4f46e5 !important; }
+.group:hover .group-hover-text-blue-600 { color: #2563eb !important; }
+.group:hover .group-hover-text-emerald-600 { color: #059669 !important; }
+.group:hover .group-hover-text-amber-600 { color: #d97706 !important; }
+.group:hover .group-hover-text-violet-600 { color: #7c3aed !important; }
+.group:hover .group-hover-text-sky-600 { color: #0284c7 !important; }
+.group:hover .group-hover-text-rose-600 { color: #e11d48 !important; }
+.group:hover .group-hover-text-orange-600 { color: #ea580c !important; }
+.group:hover .group-hover-text-cyan-600 { color: #0891b2 !important; }
+.group:hover .group-hover-text-teal-600 { color: #0d9488 !important; }
+.group:hover .group-hover-text-purple-600 { color: #9333ea !important; }
+.group:hover .group-hover-text-gray-700 { color: #374151 !important; }
+
+html.dark-mode .group:hover .group-hover-text-indigo-600,
+html.dark-mode .group:hover .group-hover-text-blue-600,
+html.dark-mode .group:hover .group-hover-text-emerald-600,
+html.dark-mode .group:hover .group-hover-text-amber-600,
+html.dark-mode .group:hover .group-hover-text-violet-600,
+html.dark-mode .group:hover .group-hover-text-sky-600,
+html.dark-mode .group:hover .group-hover-text-rose-600,
+html.dark-mode .group:hover .group-hover-text-orange-600,
+html.dark-mode .group:hover .group-hover-text-cyan-600,
+html.dark-mode .group:hover .group-hover-text-teal-600,
+html.dark-mode .group:hover .group-hover-text-purple-600,
+html.dark-mode .group:hover .group-hover-text-gray-700 {
+    color: #93c5fd !important;
+}
+
+/* Cards --- */
 .card {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
