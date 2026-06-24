@@ -61,9 +61,11 @@
     
     // Get purchase history for provider
     public function getPurchaseHistory($id){
+      // Nota: Ajustar 'id_usuario' al nombre real de la columna en tu tabla compras
+      // Opciones comunes: id_usuario, usuario_id, id_empleado, id_vendedor
       $this->db->query('SELECT c.*, u.nombre as usuario_nombre
                         FROM compras c
-                        INNER JOIN usuarios u ON c.id_usuario = u.id
+                        LEFT JOIN usuarios u ON c.id_usuario = u.id
                         WHERE c.id_proveedor = :id
                         ORDER BY c.fecha DESC');
       $this->db->bind(':id', $id);
