@@ -304,6 +304,12 @@ html.dark-mode .sidebar-nav .nav-link.active {
     }
 }
 
+/* Main Content sin sidebar */
+.main-content.no-sidebar {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
 /* --- Main Content --- */
 .main-content {
     margin-left: var(--sidebar-width);

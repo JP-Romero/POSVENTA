@@ -1,11 +1,15 @@
 <header id="topbar" class="topbar no-sidebar" role="banner">
     <div class="d-flex align-items-center justify-content-between">
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center gap-3">
+            <a href="<?= URLROOT ?>" class="btn btn-primary btn-sm d-flex align-items-center gap-2 fw-semibold" title="Ir al inicio">
+                <i class="fa fa-home"></i>
+                <span class="d-none d-sm-inline">Inicio</span>
+            </a>
             <h4 class="mb-0 fw-bold text-primary d-none d-sm-block">POSVENTA</h4>
         </div>
         
         <div class="d-flex align-items-center gap-2">
-            <div id="clockDisplay" class="text-muted small" style="font-family: monospace;"></div>
+            <div id="clockDisplay" class="fw-bold" style="font-family: monospace; font-size: 1.1rem;"></div>
             <div class="dropdown position-relative">
                 <button class="btn btn-outline-secondary btn-sm position-relative" id="notificationsToggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notificaciones">
                     <i class="fa fa-bell"></i>
