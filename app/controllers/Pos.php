@@ -52,12 +52,11 @@ class Pos extends Controller {
             if ($jsonData) {
                 $sale_id = $this->saleModel->saveSale($jsonData);
                 if ($sale_id) {
-                    // Auto-print if enabled and printer configured
                     $autoPrint = $jsonData['auto_print'] ?? false;
                     if ($autoPrint) {
                         $this->printReceipt($sale_id);
                     }
-                    echo json_encode(['status' => 'success', 'sale_id' => $sale_id]);
+                    echo json_encode(['status' => 'success', 'sale_id' => $sale_id, 'invoiceNumber' => $jsonData['numero_factura']]);
                 } else {
                     echo json_encode(['status' => 'error']);
                 }

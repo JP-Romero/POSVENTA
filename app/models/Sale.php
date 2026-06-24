@@ -75,4 +75,11 @@ class Sale {
         $next = ($row->last_id ?? 0) + 1;
         return 'FAC-' . str_pad($next, 6, '0', STR_PAD_LEFT);
     }
+
+    public function getInvoiceNumber($sale_id) {
+        $this->db->query('SELECT numero_factura FROM ventas WHERE id = :id');
+        $this->db->bind(':id', $sale_id);
+        $row = $this->db->single();
+        return $row->numero_factura ?? null;
+    }
 }

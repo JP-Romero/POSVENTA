@@ -1,0 +1,378 @@
+/* ========================================
+   POSVENTA V2 - SambaPOS Style
+   ======================================== */
+
+:root {
+    --primary: #2563eb;
+    --success: #10b981;
+    --danger: #dc2626;
+    --dark: #0f172a;
+    --dark-secondary: #111827;
+    --dark-tertiary: #1f2937;
+    --light: #f9fafb;
+    --gray: #9ca3af;
+    --radius-sm: 4px;
+    --radius: 6px;
+    --radius-lg: 8px;
+    --transition: all 0.12s ease;
+    --shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.pos-v2-app {
+    height: calc(100vh - 60px);
+    background: var(--dark);
+    color: var(--light);
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.pos-v2-container {
+    display: flex;
+    height: 100%;
+    gap: 1px;
+    padding: 8px;
+}
+
+/* Panel Base */
+.pos-panel {
+    background: var(--dark-secondary);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.pos-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--dark);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.pos-panel-header i {
+    color: var(--primary);
+}
+
+/* Categories - Icon Only */
+.pos-categories {
+    flex: 0 0 70px;
+    max-width: 70px;
+}
+
+.pos-categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 4px;
+    overflow-y: auto;
+}
+
+.pos-cat-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 4px;
+    background: var(--dark);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--gray);
+    font-size: 0.65rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    width: 100%;
+}
+
+.pos-cat-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.05);
+}
+
+.pos-cat-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.pos-cat-btn i {
+    font-size: 1.2rem;
+}
+
+.pos-search-box {
+    position: relative;
+    margin: 4px;
+}
+
+.pos-search-input {
+    width: 100%;
+    padding: 6px 8px 6px 28px;
+    background: var(--dark);
+    border: 1px solid var(--dark-tertiary);
+    border-radius: var(--radius-sm);
+    color: var(--light);
+    font-size: 0.75rem;
+}
+
+.pos-search-icon {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+    font-size: 0.8rem;
+}
+
+/* Products */
+.pos-products {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.pos-products-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 8px;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.pos-product-card {
+    background: var(--dark);
+    border-radius: var(--radius-lg);
+    padding: 10px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    box-shadow: var(--shadow);
+}
+
+.pos-product-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+}
+
+.pos-product-card:active {
+    transform: scale(0.95);
+}
+
+.pos-product-card img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 6px;
+    display: block;
+}
+
+.pos-product-placeholder {
+    width: 48px;
+    height: 48px;
+    background: var(--dark-tertiary);
+    border-radius: 50%;
+    margin: 0 auto 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--gray);
+}
+
+.pos-product-name {
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pos-product-price {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--success);
+}
+
+/* Ticket */
+.pos-ticket {
+    flex: 0 0 280px;
+    max-width: 280px;
+    display: flex;
+    flex-direction: column;
+}
+
+.pos-ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--dark);
+}
+
+.pos-ticket-header i {
+    color: var(--primary);
+    margin-right: 6px;
+}
+
+.pos-invoice {
+    font-size: 0.7rem;
+    color: var(--gray);
+}
+
+.pos-ticket-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.pos-ticket-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 4px;
+    border-bottom: 1px solid var(--dark-tertiary);
+    font-size: 0.85rem;
+}
+
+.pos-ticket-item:last-child {
+    border-bottom: none;
+}
+
+.pos-item-name {
+    flex: 1;
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.pos-item-qty {
+    color: var(--gray);
+    margin: 0 4px;
+    font-size: 0.75rem;
+}
+
+.pos-item-price {
+    color: var(--success);
+    font-weight: 600;
+    font-size: 0.85rem;
+    min-width: 60px;
+    text-align: right;
+}
+
+.pos-ticket-footer {
+    padding: 12px;
+    background: var(--dark);
+}
+
+.pos-ticket-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 1.3rem;
+}
+
+.total-amount {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--success);
+}
+
+.pos-client-select {
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--dark-secondary);
+    border: 1px solid var(--dark-tertiary);
+    border-radius: var(--radius);
+    color: var(--light);
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+}
+
+.pos-btn-pay {
+    width: 100%;
+    padding: 20px 16px;
+    border: none;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: var(--transition);
+    margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+}
+
+.pos-btn-pay:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+}
+
+.btn-amount {
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.btn-text {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.9;
+}
+
+.pos-actions-bottom {
+    display: flex;
+    gap: 8px;
+}
+
+.pos-btn-action {
+    flex: 1;
+    padding: 8px;
+    background: var(--dark);
+    border: 1px solid var(--dark-tertiary);
+    border-radius: var(--radius);
+    color: var(--gray);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.pos-btn-action:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .pos-v2-container {
+        flex-direction: column;
+    }
+    
+    .pos-categories {
+        flex: none;
+        max-width: none;
+    }
+    
+    .pos-products {
+        flex: none;
+        max-height: 300px;
+    }
+    
+    .pos-ticket {
+        flex: none;
+        max-width: none;
+    }
+}
