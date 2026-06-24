@@ -532,6 +532,33 @@
                 <span>Limpiar</span>
                 <span class="pos-shortcut-hint">Esc</span>
             </button>
+<div class="row">
+    <!-- POS Area -->
+    <div class="col-md-8">
+        <div class="card card-body bg-light">
+            <div class="mb-3">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-primary text-white"><i class="fa fa-barcode"></i></span>
+                    <input type="text" id="search-input" class="form-control" placeholder="Escanear código o buscar producto... (F5 para enfocar)" autofocus autocomplete="off">
+                </div>
+                <div id="search-results" class="list-group position-absolute w-100 z-3" style="display:none; max-height: 200px; overflow-y: auto;"></div>
+            </div>
+
+            <div class="table-responsive" style="height: calc(100vh - 350px); min-height: 400px;">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Producto</th>
+                            <th width="100">Cant.</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart-body">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
