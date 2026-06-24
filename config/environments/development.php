@@ -22,4 +22,6 @@ return [
         'enabled' => false,
         'driver' => 'file',
     ],
+    'nombre_negocio' => 'POSVENTA',
+    'moneda_simbolo' => 'C$',
 ];
