@@ -61,9 +61,8 @@
     
     // Get purchase history for provider
     public function getPurchaseHistory($id){
-      $this->db->query('SELECT c.*, u.nombre as usuario_nombre
+      $this->db->query('SELECT c.*
                         FROM compras c
-                        INNER JOIN usuarios u ON c.id_usuario = u.id
                         WHERE c.id_proveedor = :id
                         ORDER BY c.fecha DESC');
       $this->db->bind(':id', $id);
