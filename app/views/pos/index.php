@@ -1,4 +1,6 @@
 <?php $currentPage = 'pos'; require APPROOT . '/views/inc/header.php'; ?>
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="row">
     <!-- POS Area -->
     <div class="col-md-8">
@@ -6,12 +8,12 @@
             <div class="mb-3">
                 <div class="input-group input-group-lg">
                     <span class="input-group-text bg-primary text-white"><i class="fa fa-barcode"></i></span>
-                    <input type="text" id="search-input" class="form-control" placeholder="Escanear código o buscar producto..." autofocus autocomplete="off">
+                    <input type="text" id="search-input" class="form-control" placeholder="Escanear código o buscar producto... (F5 para enfocar)" autofocus autocomplete="off">
                 </div>
                 <div id="search-results" class="list-group position-absolute w-100 z-3" style="display:none; max-height: 200px; overflow-y: auto;"></div>
             </div>
 
-            <div class="table-responsive" style="height: 400px;">
+            <div class="table-responsive" style="height: calc(100vh - 350px); min-height: 400px;">
                 <table class="table table-hover align-middle">
                     <thead class="table-dark">
                         <tr>

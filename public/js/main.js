@@ -1,23 +1,58 @@
 // Main JS file - POSVENTA
 document.addEventListener('DOMContentLoaded', function() {
-    // Sidebar toggle
+    // Sidebar toggle - siempre visible como menú hamburguesa
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
     const mainContent = document.getElementById('mainContent');
     
     if (sidebarToggle && sidebar) {
-        // Restore state from localStorage
+        // Restaurar estado desde localStorage
         const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
         if (sidebarCollapsed) {
             sidebar.classList.add('collapsed');
             if (mainContent) mainContent.classList.add('expanded');
         }
         
+        // Toggle colapsado/expandido en desktop
         sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            if (mainContent) mainContent.classList.toggle('expanded');
-            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+            const isMobile = window.innerWidth < 992;
+            
+            if (isMobile) {
+                // En móvil: mostrar/ocultar con overlay
+                sidebar.classList.toggle('show');
+                if (sidebarOverlay) {
+                    sidebarOverlay.classList.toggle('show');
+                }
+                const isShown = sidebar.classList.contains('show');
+                sidebarToggle.setAttribute('aria-expanded', isShown);
+                
+                // Cerrar al hacer click en overlay
+                if (sidebarOverlay && !sidebarOverlay.hasClickListener) {
+                    sidebarOverlay.addEventListener('click', function() {
+                        sidebar.classList.remove('show');
+                        sidebarOverlay.classList.remove('show');
+                        sidebarToggle.setAttribute('aria-expanded', 'false');
+                    });
+                    sidebarOverlay.hasClickListener = true;
+                }
+            } else {
+                // En desktop: colapsar/expandir sidebar
+                sidebar.classList.toggle('collapsed');
+                if (mainContent) mainContent.classList.toggle('expanded');
+                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+            }
         });
+        
+        // Botón cerrar sidebar (móvil)
+        const sidebarClose = document.getElementById('sidebarClose');
+        if (sidebarClose && sidebarOverlay) {
+            sidebarClose.addEventListener('click', function() {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+                sidebarToggle.setAttribute('aria-expanded', 'false');
+            });
+        }
     }
     
     // Dark mode toggle
