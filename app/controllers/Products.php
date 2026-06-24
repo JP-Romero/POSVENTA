@@ -106,7 +106,8 @@
             flash('product_message', 'Producto agregado correctamente');
             redirect('products');
           } else {
-            die('Algo salió mal');
+            flash('product_message', 'Error al agregar producto', 'alert alert-danger');
+            redirect('products/add');
           }
         } else {
           $this->view('products/add', $data);
@@ -202,7 +203,8 @@
             flash('product_message', 'Producto actualizado correctamente');
             redirect('products');
           } else {
-            die('Algo salió mal');
+            flash('product_message', 'Error al actualizar producto', 'alert alert-danger');
+            redirect('products/edit/' . $id);
           }
         } else {
           $this->view('products/edit', $data);
@@ -256,7 +258,8 @@
           flash('product_message', 'Producto eliminado correctamente');
           redirect('products');
         } else {
-          die('Algo salió mal');
+          flash('product_message', 'Error al eliminar producto', 'alert alert-danger');
+          redirect('products');
         }
       } else {
         redirect('products');

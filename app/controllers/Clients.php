@@ -37,7 +37,8 @@
             flash('client_message', 'Cliente agregado correctamente');
             redirect('clients');
           } else {
-            die('Algo salió mal');
+            flash('client_message', 'Error al agregar cliente', 'alert alert-danger');
+            redirect('clients/add');
           }
         } else {
           $this->view('clients/add', $data);
@@ -76,7 +77,8 @@
             flash('client_message', 'Cliente actualizado correctamente');
             redirect('clients');
           } else {
-            die('Algo salió mal');
+            flash('client_message', 'Error al actualizar cliente', 'alert alert-danger');
+            redirect('clients/edit/' . $id);
           }
         } else {
           $this->view('clients/edit', $data);

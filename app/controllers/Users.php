@@ -88,7 +88,8 @@ class Users extends Controller {
                     flash('user_message', 'Usuario actualizado correctamente');
                     redirect('users');
                 } else {
-                    die('Error al actualizar');
+                    flash('user_message', 'Error al actualizar usuario', 'alert alert-danger');
+                    redirect('users/edit/' . $id);
                 }
             } else {
                 $roles = $this->userModel->getRoles();

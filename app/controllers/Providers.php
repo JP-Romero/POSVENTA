@@ -43,7 +43,8 @@
             flash('provider_message', 'Proveedor agregado correctamente');
             redirect('providers');
           } else {
-            die('Algo salió mal');
+            flash('provider_message', 'Error al agregar proveedor', 'alert alert-danger');
+            redirect('providers/add');
           }
         } else {
           $this->view('providers/add', $data);
@@ -84,7 +85,8 @@
             flash('provider_message', 'Proveedor actualizado correctamente');
             redirect('providers');
           } else {
-            die('Algo salió mal');
+            flash('provider_message', 'Error al actualizar proveedor', 'alert alert-danger');
+            redirect('providers/edit/' . $id);
           }
         } else {
           $this->view('providers/edit', $data);
@@ -112,7 +114,8 @@
           flash('provider_message', 'Proveedor eliminado correctamente');
           redirect('providers');
         } else {
-          die('Algo salió mal');
+          flash('provider_message', 'Error al eliminar proveedor', 'alert alert-danger');
+          redirect('providers');
         }
       } else {
         redirect('providers');

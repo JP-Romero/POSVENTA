@@ -48,10 +48,10 @@
             flash('category_message', 'Categoría agregada correctamente');
             redirect('categories');
           } else {
-            die('Algo salió mal');
+            flash('category_message', 'Error al agregar categoría', 'alert alert-danger');
+            redirect('categories/add');
           }
         } else {
-          // Load view with errors
           $this->view('categories/add', $data);
         }
 
@@ -89,10 +89,10 @@
             flash('category_message', 'Categoría actualizada correctamente');
             redirect('categories');
           } else {
-            die('Algo salió mal');
+            flash('category_message', 'Error al actualizar categoría', 'alert alert-danger');
+            redirect('categories/edit/' . $id);
           }
         } else {
-          // Load view with errors
           $this->view('categories/edit', $data);
         }
 
@@ -121,7 +121,8 @@
           flash('category_message', 'Categoría eliminada correctamente');
           redirect('categories');
         } else {
-          die('Algo salió mal');
+          flash('category_message', 'Error al eliminar categoría', 'alert alert-danger');
+          redirect('categories');
         }
       } else {
         redirect('categories');
