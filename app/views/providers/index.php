@@ -39,11 +39,9 @@
                                 <a href="<?= URLROOT ?>/providers/history/<?= $provider->id ?>" class="btn btn-outline-info" title="Ver Historial">
                                     <i class="fa fa-history"></i>
                                 </a>
-                                <form class="d-inline" action="<?= URLROOT ?>/providers/delete/<?= $provider->id ?>" method="post" onsubmit="return confirm('¿Está seguro de eliminar este proveedor?')">
-                                    <button type="submit" class="btn btn-outline-danger" title="Eliminar">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </form>
+                                <button type="button" class="btn btn-outline-danger delete-provider" data-id="<?= $provider->id ?>" data-name="<?= h($provider->nombre) ?>" title="Eliminar">
+                                    <i class="fa fa-trash"></i>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -59,6 +57,19 @@ $(document).ready(function () {
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
         }
+    });
+    
+    // Delete provider confirmation
+    $(document).on('click', '.delete-provider', function() {
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        showConfirm('¿Eliminar el proveedor "' + name + '"?', function(result) {
+            if (result) {
+                $.post('<?= URLROOT ?>/providers/delete/' + id, function(r) {
+                    location.reload();
+                });
+            }
+        });
     });
 });
 </script>

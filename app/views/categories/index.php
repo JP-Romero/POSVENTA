@@ -26,9 +26,7 @@
                     <td><?php echo $category->descripcion; ?></td>
                     <td>
                         <a href="<?php echo URLROOT; ?>/categories/edit/<?php echo $category->id; ?>" class="btn btn-warning btn-sm">Editar</a>
-                        <form class="d-inline" action="<?php echo URLROOT; ?>/categories/delete/<?php echo $category->id; ?>" method="post">
-                            <input type="submit" value="Eliminar" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar esta categoría?')">
-                        </form>
+                        <button type="button" class="btn btn-danger btn-sm delete-category" data-id="<?php echo $category->id; ?>" data-name="<?php echo h($category->nombre); ?>">Eliminar</button>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -45,6 +43,19 @@
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
             }
+        });
+        
+        // Delete category confirmation
+        $(document).on('click', '.delete-category', function() {
+            const id = $(this).data('id');
+            const name = $(this).data('name');
+            showConfirm('¿Eliminar la categoría "' + name + '"?', function(result) {
+                if (result) {
+                    $.post('<?php echo URLROOT; ?>/categories/delete/' + id, function(r) {
+                        location.reload();
+                    });
+                }
+            });
         });
     });
   </script>

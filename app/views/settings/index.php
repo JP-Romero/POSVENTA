@@ -137,11 +137,9 @@
                                             <button class="btn btn-sm btn-outline-success" onclick="testPrinter(<?= $p->id ?>)">
                                                 <i class="fa fa-print"></i>
                                             </button>
-                                            <form action="<?= URLROOT ?>/settings?tab=impresoras" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar esta impresora?')">
-                                                <input type="hidden" name="action" value="delete_printer">
-                                                <input type="hidden" name="imp_id" value="<?= $p->id ?>">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i></button>
-                                            </form>
+                                            <button class="btn btn-sm btn-outline-danger delete-printer" data-id="<?= $p->id ?>" data-name="<?= h($p->nombre) ?>">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                     <?php endforeach; ?>
@@ -297,6 +295,35 @@ document.getElementById('printerModal').addEventListener('hidden.bs.modal', func
     document.getElementById('printerAction').value = 'add_printer';
     document.getElementById('printerId').value = '';
     document.getElementById('printerForm').reset();
+});
+
+// Delete printer confirmation
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.delete-printer')) {
+        const btn = e.target.closest('.delete-printer');
+        const id = btn.dataset.id;
+        const name = btn.dataset.name;
+        showConfirm('¿Eliminar la impresora "' + name + '"?', function(result) {
+            if (result) {
+                const formData = new FormData();
+                formData.append('action', 'delete_printer');
+                formData.append('imp_id', id);
+                fetch('<?= URLROOT ?>/settings?tab=impresoras', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success) {
+                        btn.closest('tr').remove();
+                    } else {
+                        alert('Error: ' + (res.message || 'No se pudo eliminar'));
+                    }
+                })
+                .catch(() => alert('Error de conexión'));
+            }
+        });
+    }
 });
 </script>
 

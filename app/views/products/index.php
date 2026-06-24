@@ -79,11 +79,9 @@
                                     <i class="fa fa-barcode"></i>
                                 </a>
                                 <?php if(isAdmin()) : ?>
-                                <form class="d-inline" action="<?= URLROOT ?>/products/delete/<?= $product->id ?>" method="post" onsubmit="return confirm('¿Está seguro de eliminar este producto?')">
-                                    <button type="submit" class="btn btn-outline-danger" title="Eliminar">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </form>
+                                <button type="button" class="btn btn-outline-danger delete-product" data-id="<?= $product->id ?>" data-name="<?= h($product->nombre) ?>" title="Eliminar">
+                                    <i class="fa fa-trash"></i>
+                                </button>
                                 <?php endif; ?>
                             </div>
                         </td>
@@ -123,6 +121,19 @@ $(document).ready(function () {
         $('#btnBatchPrint').prop('disabled', count === 0)
             .html('<i class="fa fa-print me-1"></i> Imprimir Etiquetas (' + count + ')');
     }
+    
+    // Delete product confirmation
+    $(document).on('click', '.delete-product', function() {
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        showConfirm('¿Eliminar el producto "' + name + '"?', function(result) {
+            if (result) {
+                $.post('<?= URLROOT ?>/products/delete/' + id, function(r) {
+                    location.reload();
+                });
+            }
+        });
+    });
 });
 </script>
 
