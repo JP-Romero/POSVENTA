@@ -37,7 +37,6 @@
     <title><?php echo SITENAME; ?></title>
 </head>
 <body>
-    <div class="wrapper">
-        <?php require APPROOT . '/views/inc/topbar.php'; ?>
-        <main class="main-content no-sidebar" id="mainContent" role="main">
-            <div class="page-content">
+    <?php require APPROOT . '/views/inc/topbar.php'; ?>
+    <main class="w-100" id="mainContent" role="main" style="width: 100%;">
+        <div class="page-content">
