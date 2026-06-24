@@ -1,10 +1,11 @@
-<header id="topbar" class="topbar" role="banner">
+<header id="topbar" class="topbar no-sidebar" role="banner">
     <div class="d-flex align-items-center justify-content-between">
-<div class="d-flex align-items-center">
+        <div class="d-flex align-items-center">
             <h4 class="mb-0 fw-bold text-primary d-none d-sm-block">POSVENTA</h4>
         </div>
         
         <div class="d-flex align-items-center gap-2">
+            <div id="clockDisplay" class="text-muted small" style="font-family: monospace;"></div>
             <div class="dropdown position-relative">
                 <button class="btn btn-outline-secondary btn-sm position-relative" id="notificationsToggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notificaciones">
                     <i class="fa fa-bell"></i>
@@ -78,4 +79,3 @@
         </div>
     </div>
 </header>
-

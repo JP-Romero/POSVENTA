@@ -37,9 +37,6 @@
     <title><?php echo SITENAME; ?></title>
 </head>
 <body>
-    <div class="wrapper">
-        <!-- Sidebar removed - using full width dashboard -->
-        <?php require APPROOT . '/views/inc/topbar.php'; ?>
-        <main class="main-content" id="mainContent" role="main" style="width: 100%; margin-left: 0;">
-            <div class="page-content">
-
+    <?php require APPROOT . '/views/inc/topbar.php'; ?>
+    <main class="main-content w-100" id="mainContent" role="main" style="width: 100%; margin-left: 0;">
+        <div class="page-content">

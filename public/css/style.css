@@ -285,6 +285,12 @@ html.dark-mode .sidebar-nav .nav-link.active {
     padding: 0 1.5rem;
 }
 
+/* Topbar sin sidebar */
+.topbar.no-sidebar {
+    left: 0 !important;
+    padding: 0 1.5rem;
+}
+
 /* Ajuste cuando sidebar está colapsado */
 .sidebar.collapsed ~ .topbar,
 .sidebar.collapsed + .topbar {
