@@ -5,16 +5,16 @@ __pycache__/
 
 # Dependencies
 vendor/
-composer.lock
 
 # Logs and temp files
 *.log
 *.tmp
+*.swp
 
 # Environment
 .env
 .env.local
-.env.*
+*.env.*
 
 # Editors
 .vscode/
@@ -23,4 +23,16 @@ composer.lock
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Cache directories
+.cache/
+.php_cs.cache
+
+# Distribution / packaging
+dist/
+build/
+*.phar
+
+# Testing
+.phpunit.result.cache
 ```

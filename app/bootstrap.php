@@ -4,6 +4,7 @@
   // Load Helpers
   require_once 'helpers/url_helper.php';
   require_once 'helpers/session_helper.php';
+  require_once 'helpers/config_helper.php';
 
   // Load Composer Autoload
   require_once __DIR__ . '/../vendor/autoload.php';
