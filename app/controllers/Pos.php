@@ -124,4 +124,18 @@ class Pos extends Controller {
         }
         exit;
     }
+
+    public function getFrequentProducts() {
+        $limit = $_GET['limit'] ?? 12;
+        $this->db->query('SELECT p.*, COUNT(dv.id) as ventas_count
+                          FROM productos p
+                          INNER JOIN detalle_ventas dv ON p.id = dv.id_producto
+                          WHERE p.estado = 1
+                          GROUP BY p.id
+                          ORDER BY ventas_count DESC, p.nombre ASC
+                          LIMIT :limit');
+        $this->db->bind(':limit', $limit, 'int');
+        $products = $this->db->resultSet();
+        echo json_encode($products);
+    }
 }

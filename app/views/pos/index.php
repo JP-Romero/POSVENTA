@@ -49,7 +49,7 @@
                     </table>
                 </div>
 
-                <div class="pos-frequent-products" id="frequent-products" style="display:none;">
+                <div class="pos-frequent-products" id="frequent-products">
                 </div>
             </div>
         </div>
@@ -194,12 +194,13 @@ document.getElementById('search-input').addEventListener('input', function() {
             
             let html = '';
             products.forEach(p => {
-                const stockColor = p.stock > 10 ? 'text-success' : (p.stock > 0 ? 'text-warning' : 'text-danger');
+                const stockClass = p.stock > 10 ? 'text-success' : (p.stock > 0 ? 'text-warning' : 'text-danger');
+                const stockIcon = p.stock > 10 ? 'fa-check-circle' : (p.stock > 0 ? 'fa-exclamation-triangle' : 'fa-times-circle');
                 html += `<div class="pos-search-item" onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')})">
                     ${p.imagen ? `<img src="${p.imagen}" alt="${p.nombre}" onerror="this.style.display='none'">` : ''}
                     <div class="pos-search-item-info">
                         <div class="pos-search-item-name">${p.nombre}</div>
-                        <div class="pos-search-item-stock ${stockColor}">Stock: ${p.stock}</div>
+                        <div class="pos-search-item-stock ${stockClass}"><i class="fa ${stockIcon} me-1"></i>Stock: ${p.stock}</div>
                     </div>
                     <div class="pos-search-item-price">$${parseFloat(p.precio_venta).toFixed(2)}</div>
                 </div>`;
@@ -262,7 +263,7 @@ function renderCart() {
             html += `<tr class="animate-fade-in">
                 <td>
                     <div class="d-flex align-items-center gap-2">
-                        ${item.imagen ? `<img src="${item.imagen}" width="32" height="32" style="object-fit:cover;border-radius:4px" onerror="this.style.display='none'">` : ''}
+                        ${item.imagen ? `<img src="${item.imagen}" width="32" height="32" style="object-fit:cover;border-radius:4px" onerror="this.style.display='none'">` : '<div class="bg-secondary" style="width:32px;height:32px;border-radius:4px"></div>'}
                         <span class="fw-medium">${item.nombre}</span>
                     </div>
                 </td>
@@ -513,8 +514,31 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+function loadFrequentProducts() {
+    fetch('<?= URLROOT ?>/pos/getFrequentProducts?limit=12')
+        .then(res => res.json())
+        .then(products => {
+            if (products.length === 0) {
+                document.getElementById('frequent-products').style.display = 'none';
+                return;
+            }
+            let html = '';
+            products.forEach(p => {
+                html += `<div class="pos-frequent-item" onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+                    ${p.imagen ? `<img src="${p.imagen}" alt="${p.nombre}" class="pos-frequent-item-img" onerror="this.style.display='none'">` : '<div class="pos-frequent-item-img bg-secondary"></div>'}
+                    <div class="pos-frequent-item-name">${p.nombre}</div>
+                    <div class="pos-frequent-item-price">$${parseFloat(p.precio_venta).toFixed(2)}</div>
+                </div>`;
+            });
+            document.getElementById('frequent-products').innerHTML = html;
+            document.getElementById('frequent-products').style.display = 'grid';
+        })
+        .catch(err => console.error('Error loading frequent products:', err));
+}
+
 focusSearch();
 renderCart();
+loadFrequentProducts();
 </script>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>

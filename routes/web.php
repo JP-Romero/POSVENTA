@@ -77,6 +77,10 @@ $router->post('purchases/add', PurchasesController::class . '@add');
 $router->get('sales', SalesController::class . '@index');
 $router->get('pos', PosController::class . '@index');
 $router->post('pos/process', PosController::class . '@process');
+$router->get('pos/searchProduct', PosController::class . '@searchProduct');
+$router->post('pos/save', PosController::class . '@save');
+$router->post('pos/printLastReceipt', PosController::class . '@printLastReceipt');
+$router->get('pos/getFrequentProducts', PosController::class . '@getFrequentProducts');
 $router->get('sales/invoice/{id}', SalesController::class . '@invoice');
 $router->get('sales/invoice-pdf/{id}', SalesController::class . '@invoicePdf');
 
