@@ -1,3 +1,10 @@
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+
+# Dependencies
+vendor/
 Nothing should be ignored based on the provided file changes. The only modified file is a PHP source file (`app/views/pos/index.php`), which is a legitimate source code file that should not be ignored. There are no build artifacts, dependencies, temporary files, or other items in the change list that warrant being added to .gitignore.
 ```
 # Backup directories
@@ -29,12 +36,32 @@ venv/
 *.log
 *.tmp
 *.swp
-*.swo
+
+# Environment
+.env
+.env.local
+*.env.*
 
 # Editors
 .vscode/
 .idea/
 
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Cache directories
+.cache/
+.php_cs.cache
+
+# Distribution / packaging
+dist/
+build/
+*.phar
+
+# Testing
+.phpunit.result.cache
+```
 # System files
 .DS_Store
 Thumbs.db

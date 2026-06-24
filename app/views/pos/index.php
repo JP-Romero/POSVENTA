@@ -532,6 +532,528 @@
                 <span>Limpiar</span>
                 <span class="pos-shortcut-hint">Esc</span>
             </button>
+
+/* Toolbar compacta superior */
+.pos-toolbar {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+    padding: 8px 16px;
+    margin-bottom: 12px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow-md);
+}
+
+.pos-toolbar-title {
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pos-toolbar-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.pos-toolbar-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pos-toolbar-btn:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-1px);
+}
+
+.pos-toolbar-btn:active {
+    transform: translateY(0);
+}
+
+/* Búsqueda mejorada */
+.pos-search-wrapper {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.pos-search-input {
+    font-size: 1.1rem;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    transition: all 0.2s;
+}
+
+.pos-search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.pos-search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    display: none;
+}
+
+.pos-search-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pos-search-item:last-child {
+    border-bottom: none;
+}
+
+.pos-search-item:hover {
+    background: var(--primary-light);
+}
+
+.pos-search-item img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: var(--bg-tertiary);
+}
+
+.pos-search-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.pos-search-item-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pos-search-item-stock {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.pos-search-item-price {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+/* Tabla de carrito optimizada */
+.pos-cart-table {
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.pos-cart-table thead {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--dark-hover) 100%);
+    color: white;
+}
+
+.pos-cart-table th {
+    padding: 10px 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+}
+
+.pos-cart-table td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.pos-cart-table tbody tr {
+    transition: background 0.15s;
+}
+
+.pos-cart-table tbody tr:hover {
+    background: var(--primary-light);
+}
+
+.pos-cart-qty-input {
+    width: 70px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.pos-cart-remove-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.pos-cart-remove-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Panel de resumen premium */
+.pos-summary-panel {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: white;
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    position: sticky;
+    top: 20px;
+}
+
+.pos-summary-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.pos-summary-field {
+    margin-bottom: 16px;
+}
+
+.pos-summary-label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pos-summary-control {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.pos-summary-control:focus {
+    background: rgba(255,255,255,0.15);
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.pos-summary-control option {
+    background: var(--dark);
+    color: white;
+}
+
+.pos-summary-divider {
+    border-top: 1px solid rgba(255,255,255,0.15);
+    margin: 20px 0;
+}
+
+.pos-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.pos-summary-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid rgba(255,255,255,0.2);
+}
+
+.pos-summary-total-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pos-summary-total-amount {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #10b981;
+    text-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.pos-printer-status {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pos-printer-status.success {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #10b981;
+}
+
+.pos-printer-status.warning {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #f59e0b;
+}
+
+.pos-auto-print-toggle {
+    background: rgba(255,255,255,0.05);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pos-complete-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+    color: white;
+    padding: 16px;
+    border-radius: var(--radius);
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    transition: all 0.2s;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.pos-complete-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+}
+
+.pos-complete-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.pos-complete-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.pos-reprint-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 10px;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.pos-reprint-btn:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+}
+
+/* Grid de productos frecuentes */
+.pos-frequent-products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.pos-frequent-item {
+    background: var(--bg-tertiary);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.pos-frequent-item:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.pos-frequent-item:active {
+    transform: translateY(0);
+}
+
+.pos-frequent-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: var(--bg-secondary);
+}
+
+.pos-frequent-item-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.pos-frequent-item-price {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Atajos de teclado visibles */
+.pos-shortcut-hint {
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    font-family: monospace;
+}
+
+/* Animaciones */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.pos-summary-panel {
+    animation: slideInRight 0.3s ease forwards;
+}
+
+@keyframes pulse-success {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+}
+
+.pos-complete-btn.just-completed {
+    animation: pulse-success 1s ease;
+}
+
+/* Responsive optimizado */
+@media (max-width: 1024px) {
+    .pos-frequent-products {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+    }
+    
+    .pos-frequent-item-img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .pos-frequent-item-name {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .pos-toolbar {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+    
+    .pos-toolbar-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .pos-summary-total-amount {
+        font-size: 1.5rem;
+    }
+}
+</style>
+<div class="pos-container">
+    <!-- Toolbar Superior -->
+    <div class="pos-toolbar">
+        <div class="pos-toolbar-title">
+            <i class="fas fa-cash-register"></i>
+            <span>Punto de Venta</span>
+        </div>
+        <div class="pos-toolbar-actions">
+            <button class="pos-toolbar-btn" onclick="focusSearch()" title="F5">
+                <i class="fas fa-search"></i>
+                <span>Buscar</span>
+                <span class="pos-shortcut-hint">F5</span>
+            </button>
+            <button class="pos-toolbar-btn" onclick="document.getElementById('complete-sale').click()" title="F12">
+                <i class="fas fa-check-circle"></i>
+                <span>Vender</span>
+                <span class="pos-shortcut-hint">F12</span>
+            </button>
+            <button class="pos-toolbar-btn" onclick="clearCart()" title="Escape">
+                <i class="fas fa-trash"></i>
+                <span>Limpiar</span>
+                <span class="pos-shortcut-hint">Esc</span>
+            </button>
 <div class="row">
     <!-- POS Area -->
     <div class="col-md-8">
