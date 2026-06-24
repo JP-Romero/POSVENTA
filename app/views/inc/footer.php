@@ -8,5 +8,8 @@
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 <script src="<?php echo URLROOT; ?>/js/main.js"></script>
 <script src="<?php echo URLROOT; ?>/js/barcode-handler.js"></script>
+<script>
+    lucide.createIcons();
+</script>
 </body>
 </html>
