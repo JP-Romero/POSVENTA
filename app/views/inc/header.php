@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/style.css">
-    <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/sidebar-modern.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -16,7 +15,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <?php require APPROOT . '/views/inc/sidebar.php'; ?>
+        <!-- Sidebar removed - using full width dashboard -->
         <?php require APPROOT . '/views/inc/topbar.php'; ?>
-        <main class="main-content" id="mainContent" role="main">
+        <main class="main-content" id="mainContent" role="main" style="width: 100%; margin-left: 0;">
             <div class="page-content">

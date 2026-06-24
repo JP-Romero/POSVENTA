@@ -1,9 +1,6 @@
 <header id="topbar" class="topbar" role="banner">
     <div class="d-flex align-items-center justify-content-between">
-        <div class="d-flex align-items-center">
-            <button class="btn btn-sm btn-outline-secondary me-3" id="sidebarToggle" aria-label="Abrir menú" aria-expanded="false" title="Menú">
-                <i class="fa fa-bars"></i>
-            </button>
+<div class="d-flex align-items-center">
             <h4 class="mb-0 fw-bold text-primary d-none d-sm-block">POSVENTA</h4>
         </div>
         
@@ -82,25 +79,3 @@
     </div>
 </header>
 
-<script>
-// Sidebar toggle functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    
-    function toggleSidebar() {
-        sidebar.classList.toggle('show');
-        sidebarOverlay.classList.toggle('show');
-        document.body.classList.toggle('sidebar-open');
-    }
-    
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', toggleSidebar);
-    }
-    
-    if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', toggleSidebar);
-    }
-});
-</script>
