@@ -5,6 +5,10 @@
     public function __construct(){
       $this->db = new Database;
     }
+    
+    public function getLastInsertId(){
+      return $this->db->lastInsertId();
+    }
 
     // Login User
     public function login($username, $password){

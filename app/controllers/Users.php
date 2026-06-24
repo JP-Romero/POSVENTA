@@ -1,9 +1,11 @@
 <?php
 class Users extends Controller {
     private $userModel;
+    private $db;
 
     public function __construct(){
       $this->userModel = $this->model('User');
+      $this->db = new Database;
     }
 
     public function index(){
@@ -34,7 +36,7 @@ class Users extends Controller {
             if($this->userModel->addUser($data)){
                 // Give default permissions to non-admin users
                 if ($data['id_rol'] != 1) {
-                    $userId = $this->userModel->db->lastInsertId();
+                    $userId = $this->db->lastInsertId();
                     $modules = $this->userModel->getModules();
                     $permissions = [];
                     foreach ($modules as $modulo => $nombre) {
@@ -87,10 +89,10 @@ class Users extends Controller {
             }
 
             // Check username unique (excluding current)
-            $this->userModel->db->query('SELECT id FROM usuarios WHERE usuario = :usuario AND id != :id');
-            $this->userModel->db->bind(':usuario', $data['usuario']);
-            $this->userModel->db->bind(':id', $id);
-            if ($this->userModel->db->rowCount() > 0) {
+            $this->db->query('SELECT id FROM usuarios WHERE usuario = :usuario AND id != :id');
+            $this->db->bind(':usuario', $data['usuario']);
+            $this->db->bind(':id', $id);
+            if ($this->db->rowCount() > 0) {
                 $data['usuario_err'] = 'El nombre de usuario ya existe';
             }
 
