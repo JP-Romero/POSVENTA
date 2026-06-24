@@ -285,11 +285,13 @@ html.dark-mode .sidebar-nav .nav-link.active {
     padding: 0 1.5rem;
 }
 
+/* Ajuste cuando sidebar está colapsado */
 .sidebar.collapsed ~ .topbar,
 .sidebar.collapsed + .topbar {
     left: var(--sidebar-collapsed-width);
 }
 
+/* En móvil, topbar ocupa todo el ancho */
 @media (max-width: 991.98px) {
     .topbar {
         left: 0;

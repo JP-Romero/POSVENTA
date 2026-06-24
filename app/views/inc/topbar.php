@@ -1,7 +1,8 @@
 <header id="topbar" class="topbar" role="banner">
     <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
-            <button class="btn btn-sm btn-outline-secondary me-3 d-md-none" id="sidebarToggle" aria-label="Abrir menú" aria-expanded="false">
+            <!-- Botón hamburguesa siempre visible -->
+            <button class="btn btn-sm btn-outline-secondary me-3" id="sidebarToggle" aria-label="Abrir menú" aria-expanded="false" title="Menú">
                 <i class="fa fa-bars"></i>
             </button>
             <h4 class="mb-0 fw-bold text-primary d-none d-sm-block">POSVENTA</h4>
