@@ -14,7 +14,7 @@
     <nav class="sidebar-nav flex-grow-1 px-2">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'dashboard') ? 'active' : '' ?>" href="<?= URLROOT ?>">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'dashboard') ? 'active' : '' ?>" href="<?= URLROOT ?>/pages/dashboard">
                     <i class="fa fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
