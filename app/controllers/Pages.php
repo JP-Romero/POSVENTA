@@ -8,6 +8,14 @@
     }
 
     public function index(){
+      // Render the main dashboard (button grid) - no data needed
+      $this->view('pages/index');
+    }
+
+    public function dashboard(){
+      // Original dashboard logic with charts and stats
+      $this->db = new Database;
+      
       // Totals for dashboard
       $this->db->query('SELECT COUNT(*) as total FROM productos');
       $total_products = $this->db->single()->total;
@@ -83,7 +91,7 @@
         'chart_pay_data' => json_encode($chart_pay_data)
       ];
 
-      $this->view('pages/index', $data);
+      $this->view('pages/dashboard', $data);
     }
 
     public function about(){

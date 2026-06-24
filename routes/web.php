@@ -18,6 +18,7 @@ $router = $app->getRouter();
 
 // Public routes
 $router->get('', 'App\Controllers\PagesController@index');
+$router->get('dashboard', 'App\Controllers\PagesController@dashboard');
 $router->get('login', UsersController::class . '@login');
 $router->post('login', UsersController::class . '@login');
 $router->get('logout', UsersController::class . '@logout');
