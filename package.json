@@ -1,28 +1,21 @@
 {
-  "name": "posventa",
-  "version": "1.0.0",
-  "description": "Actúa como un Arquitecto de Software Senior, Desarrollador Full Stack Senior, Diseñador UX/UI y Analista de Sistemas con más de 15 años de experiencia.",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "node node_modules/tailwindcss/dist/lib.js -i ./public/css/tailwind.css -o ./public/css/style.css",
-    "watch:css": "node node_modules/tailwindcss/dist/lib.js -i ./public/css/tailwind.css -o ./public/css/style.css --watch"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JP-Romero/POSVENTA.git"
-  },
-  "keywords": [],
-  "author": "",
+  "main": "index.js",
+  "description": "Actúa como un Arquitecto de Software Senior, Desarrollador Full Stack Senior, Diseñador UX/UI y Analista de Sistemas con más de 15 años de experiencia.",
   "license": "ISC",
+  "homepage": "https://github.com/JP-Romero/POSVENTA#readme",
+  "author": "",
+  "repository": {
+    "url": "git+https://github.com/JP-Romero/POSVENTA.git",
+    "type": "git"
+  },
+  "version": "1.0.0",
+  "keywords": [],
   "type": "commonjs",
+  "name": "posventa",
   "bugs": {
     "url": "https://github.com/JP-Romero/POSVENTA/issues"
-  },
-  "homepage": "https://github.com/JP-Romero/POSVENTA#readme",
-  "devDependencies": {
-    "autoprefixer": "^10.5.1",
-    "postcss": "^8.5.15",
-    "tailwindcss": "^4.3.1"
   }
 }
