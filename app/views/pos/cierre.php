@@ -310,6 +310,46 @@
     </div>
 </div>
 
+<!-- Modal Turno Cerrado -->
+<div class="modal fade" id="turnoCerradoModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="fa fa-check-circle me-2"></i> Turno Cerrado Exitosamente</h5>
+            </div>
+            <div class="modal-body text-center p-4">
+                <i class="fa fa-cash-register text-success mb-3" style="font-size: 3rem;"></i>
+                <h4 class="mb-4">El Reporte Z ha sido generado</h4>
+                
+                <div class="bg-light p-3 rounded text-start mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Efectivo Esperado:</span>
+                        <strong id="modal-esperado">$0.00</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Efectivo Real (Contado):</span>
+                        <strong id="modal-real">$0.00</strong>
+                    </div>
+                    <div class="d-flex justify-content-between border-top pt-2 mt-2">
+                        <span>Diferencia (Sobrante/Faltante):</span>
+                        <strong id="modal-diferencia">$0.00</strong>
+                    </div>
+                </div>
+                
+                <p class="text-muted small">Tu turno ha terminado. Puedes volver al inicio o imprimir tu reporte.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <a href="<?= URLROOT ?>/pages/dashboard" class="btn btn-secondary">
+                    <i class="fa fa-home me-2"></i> Volver al Inicio
+                </a>
+                <button type="button" class="btn btn-primary" onclick="alert('Funcionalidad de impresión en desarrollo');">
+                    <i class="fa fa-print me-2"></i> Imprimir Reporte Z
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const esperado = parseFloat(document.getElementById('efectivo_esperado').value);
@@ -333,31 +373,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const formCierre = document.getElementById('form-cierre');
     formCierre.addEventListener('submit', function(e) {
         e.preventDefault();
-        Swal.fire({
-            title: '¿Cerrar la caja?',
-            text: 'Esto iniciará un nuevo turno.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Sí, cerrar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (!result.isConfirmed) return;
-            const formData = new FormData(this);
-            fetch(this.action, {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.status === 'success') {
-                    Swal.fire({ icon: 'success', title: 'Caja cerrada', text: 'Reporte Z #' + data.id });
-                    window.location.href = '<?= URLROOT ?>/pos';
-                } else {
-                    Swal.fire({ icon: 'error', title: 'Error', text: 'Hubo un error al cerrar la caja' });
-                }
-            });
+        if(!confirm('¿Estás seguro de que deseas cerrar la caja? Esto iniciará un nuevo turno.')) return;
+        
+        const formData = new FormData(this);
+        fetch(this.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === 'success') {
+                // Populate Modal Data
+                document.getElementById('modal-esperado').textContent = '$' + parseFloat(data.esperado).toFixed(2);
+                document.getElementById('modal-real').textContent = '$' + parseFloat(data.real).toFixed(2);
+                
+                const dif = parseFloat(data.diferencia);
+                const difEl = document.getElementById('modal-diferencia');
+                difEl.textContent = '$' + dif.toFixed(2);
+                if (dif < 0) difEl.classList.add('text-danger');
+                else if (dif > 0) difEl.classList.add('text-warning');
+                else difEl.classList.add('text-success');
+
+                // Show Modal
+                const cerradoModal = new bootstrap.Modal(document.getElementById('turnoCerradoModal'));
+                cerradoModal.show();
+            } else {
+                alert('Hubo un error al cerrar la caja');
+            }
+        })
+        .catch(err => {
+            alert('Error de red al procesar el cierre');
         });
     });
 });
