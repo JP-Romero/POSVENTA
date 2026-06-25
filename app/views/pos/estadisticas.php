@@ -108,7 +108,7 @@
                 <a class="nav-link" href="<?= URLROOT ?>/reports">Compras</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= URLROOT ?>/caja">Cierre de Caja</a>
+                <a class="nav-link" href="<?= URLROOT ?>/cierre">Cierre de Caja</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="<?= URLROOT ?>/estadisticas">Estadísticas</a>

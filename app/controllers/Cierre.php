@@ -1,5 +1,5 @@
 <?php
-class CajaController extends Controller {
+class Cierre extends Controller {
     private $cajaModel;
     private $saleModel;
 
@@ -78,7 +78,7 @@ class CajaController extends Controller {
             } else {
                 flash('caja_message', 'Error al registrar movimiento', 'alert alert-danger');
             }
-            redirect('caja');
+            redirect('cierre');
         }
     }
 

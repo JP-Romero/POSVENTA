@@ -31,7 +31,7 @@
                 <button class="nav-link" id="compras-tab" data-bs-toggle="tab" data-bs-target="#compras" type="button" role="tab">Compras</button>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= URLROOT ?>/caja">Cierre de Caja</a>
+                <a class="nav-link" href="<?= URLROOT ?>/cierre">Cierre de Caja</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?= URLROOT ?>/estadisticas">Estadísticas</a>

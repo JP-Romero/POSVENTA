@@ -123,7 +123,7 @@
                 <a class="nav-link" href="<?= URLROOT ?>/reports">Compras</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="<?= URLROOT ?>/caja">Cierre de Caja</a>
+                <a class="nav-link active" href="<?= URLROOT ?>/cierre">Cierre de Caja</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?= URLROOT ?>/estadisticas">Estadísticas</a>
@@ -238,7 +238,7 @@
             </div>
         </div>
 
-        <form action="<?= URLROOT ?>/caja/cerrarTurno" method="POST" id="form-cierre">
+        <form action="<?= URLROOT ?>/cierre/cerrarTurno" method="POST" id="form-cierre">
             <div class="cierre-section" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 4px;">
                 <div class="cierre-section-title" style="margin-bottom: 0.5rem;">AUDITORÍA DE CAJA (Arqueo)</div>
                 <div class="form-group mb-2">
@@ -278,7 +278,7 @@
                 <h5 class="modal-title">Registrar Movimiento de Caja</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <form action="<?= URLROOT ?>/caja/registrarMovimiento" method="POST">
+            <form action="<?= URLROOT ?>/cierre/registrarMovimiento" method="POST">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label>Tipo de Movimiento</label>
