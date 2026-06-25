@@ -1,7 +1,7 @@
 <?php $currentPage = 'dashboard'; require APPROOT . '/views/inc/header.php'; ?>
 
 <!-- Dashboard de Botones Grandes y Elegantes -->
-<div class="mb-8">
+<div class="mb-8 pt-16 mt-4">
     <h2 class="text-2xl font-bold text-gray-900 mb-text-900">¿Qué deseas hacer hoy?</h2>
     <p class="text-sm text-gray-600 mb-text-500 mt-1">Selecciona una de las opciones del módulo del sistema.</p>
 </div>
