@@ -20,6 +20,13 @@
                 </a>
             </li>
             
+            <li class="nav-item">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'pos') ? 'active' : '' ?>" href="<?= URLROOT ?>/pos">
+                    <i class="fa fa-cash-register"></i>
+                    <span>Punto de Venta</span>
+                </a>
+            </li>
+            
             <?php if(isAdmin()) : ?>
             <li class="nav-item">
                 <a class="nav-link <?= (isset($currentPage) && $currentPage === 'users') ? 'active' : '' ?>" href="<?= URLROOT ?>/users">
@@ -89,13 +96,6 @@
                         </li>
                     </ul>
                 </div>
-            </li>
-            
-            <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'pos') ? 'active' : '' ?>" href="<?= URLROOT ?>/pos">
-                    <i class="fa fa-cash-register"></i>
-                    <span>Punto de Venta</span>
-                </a>
             </li>
             
             <li class="nav-item">
