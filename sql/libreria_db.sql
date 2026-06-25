@@ -103,12 +103,15 @@ CREATE TABLE IF NOT EXISTS `productos` (
 CREATE TABLE IF NOT EXISTS `compras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_proveedor` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   `fecha` timestamp DEFAULT CURRENT_TIMESTAMP,
   `total` decimal(10,2) NOT NULL,
   `comprobante` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_compra_proveedor` (`id_proveedor`),
-  CONSTRAINT `fk_compra_proveedor` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `fk_compra_usuario` (`id_usuario`),
+  CONSTRAINT `fk_compra_proveedor` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_compra_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 9. Tabla Detalle Compras
@@ -144,6 +147,8 @@ CREATE TABLE IF NOT EXISTS `ventas` (
   CONSTRAINT `fk_venta_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+ALTER TABLE `ventas` ADD INDEX `idx_ventas_fecha` (`fecha`);
+
 -- 11. Tabla Detalle Ventas
 CREATE TABLE IF NOT EXISTS `detalle_ventas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -171,6 +176,8 @@ CREATE TABLE IF NOT EXISTS `movimientos_inventario` (
   KEY `fk_movimiento_producto` (`id_producto`),
   CONSTRAINT `fk_movimiento_producto` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `movimientos_inventario` ADD INDEX `idx_mov_inv_fecha` (`fecha`);
 
 -- 13. Tabla Configuración
 CREATE TABLE IF NOT EXISTS `configuracion` (
@@ -200,7 +207,50 @@ CREATE TABLE IF NOT EXISTS `impresoras` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 15. Tabla Password Resets
+-- 15. Tabla Movimientos de Caja
+CREATE TABLE IF NOT EXISTS `movimientos_caja` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL,
+  `tipo` enum('Entrada','Salida') NOT NULL,
+  `concepto` varchar(255) NOT NULL,
+  `monto` decimal(10,2) NOT NULL,
+  `fecha` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_mov_caja_usuario` (`id_usuario`),
+  KEY `idx_mov_caja_fecha` (`fecha`),
+  CONSTRAINT `fk_mov_caja_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 16. Tabla Cortes de Caja (Reporte Z)
+CREATE TABLE IF NOT EXISTS `cortes_caja` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL,
+  `fecha_inicio` datetime NOT NULL,
+  `fecha_fin` datetime NOT NULL,
+  `ventas_brutas` decimal(10,2) NOT NULL DEFAULT 0,
+  `descuentos` decimal(10,2) NOT NULL DEFAULT 0,
+  `ventas_netas` decimal(10,2) NOT NULL DEFAULT 0,
+  `total_efectivo` decimal(10,2) NOT NULL DEFAULT 0,
+  `total_tarjeta` decimal(10,2) NOT NULL DEFAULT 0,
+  `total_transferencia` decimal(10,2) NOT NULL DEFAULT 0,
+  `fondo_inicial` decimal(10,2) NOT NULL DEFAULT 0,
+  `ingresos_caja` decimal(10,2) NOT NULL DEFAULT 0,
+  `egresos_caja` decimal(10,2) NOT NULL DEFAULT 0,
+  `efectivo_esperado` decimal(10,2) NOT NULL DEFAULT 0,
+  `efectivo_real` decimal(10,2) NOT NULL DEFAULT 0,
+  `diferencia` decimal(10,2) NOT NULL DEFAULT 0,
+  `tickets_emitidos` int(11) NOT NULL DEFAULT 0,
+  `ticket_promedio` decimal(10,2) NOT NULL DEFAULT 0,
+  `primer_ticket` varchar(20) DEFAULT NULL,
+  `ultimo_ticket` varchar(20) DEFAULT NULL,
+  `fecha_corte` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_corte_usuario` (`id_usuario`),
+  KEY `idx_corte_fecha` (`fecha_inicio`, `fecha_fin`),
+  CONSTRAINT `fk_corte_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 17. Tabla Password Resets
 CREATE TABLE IF NOT EXISTS `password_resets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL,

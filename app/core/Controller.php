@@ -23,4 +23,19 @@ class Controller {
             echo json_encode(['status' => 'error', 'message' => 'View not found: ' . $view]);
         }
     }
+
+    // Get CSRF token for views
+    public function getCsrfToken() {
+        return generateCsrfToken();
+    }
+
+    // Validate CSRF token from POST
+    public function validateCsrf() {
+        $token = $_POST['csrf_token'] ?? '';
+        if (!validateCsrfToken($token)) {
+            http_response_code(403);
+            echo json_encode(['status' => 'error', 'message' => 'CSRF validation failed']);
+            exit;
+        }
+    }
 }

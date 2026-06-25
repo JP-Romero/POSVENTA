@@ -3,6 +3,7 @@
   <div class="card card-body bg-light mt-2">
     <h2>Editar Cliente</h2>
     <form action="<?php echo URLROOT; ?>/clients/edit/<?php echo $data['id']; ?>" method="post">
+      <?= csrfField() ?>
       <div class="mb-3">
         <label for="nombre" class="form-label">Nombre: <sup>*</sup></label>
         <input type="text" name="nombre" class="form-control <?php echo (!empty($data['nombre_err'])) ? 'is-invalid' : ''; ?>" value="<?php echo $data['nombre']; ?>">

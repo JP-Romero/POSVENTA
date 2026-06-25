@@ -27,6 +27,7 @@
                     </div>
                     <div class="card-body">
                         <form action="<?= URLROOT ?>/settings" method="POST" enctype="multipart/form-data">
+                            <?= csrfField() ?>
                             <input type="hidden" name="action" value="update_general">
                             
                             <div class="row mb-3">
@@ -194,6 +195,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="<?= URLROOT ?>/settings?tab=impresoras" method="POST" id="printerForm">
+                <?= csrfField() ?>
                 <input type="hidden" name="action" value="add_printer" id="printerAction">
                 <input type="hidden" name="imp_id" id="printerId">
                 <div class="modal-header">

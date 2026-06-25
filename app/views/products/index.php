@@ -5,6 +5,7 @@
     </div>
     <div class="col-md-8 text-end">
         <form action="<?= URLROOT ?>/products/printBarcodeBatch" method="POST" id="batchPrintForm" class="d-inline">
+            <?= csrfField() ?>
             <button type="submit" class="btn btn-info" id="btnBatchPrint" disabled>
                 <i class="fa fa-print me-1"></i> Imprimir Etiquetas Seleccionadas
             </button>

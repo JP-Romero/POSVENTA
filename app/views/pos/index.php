@@ -9,7 +9,7 @@
             <span>POSVENTA LIBRERÍA</span>
         </div>
         <div class="pos-header-info">
-            <span class="pos-user"><i class="fas fa-user"></i> <?= $_SESSION['user_name'] ?? 'Usuario' ?></span>
+            <span class="pos-user"><i class="fas fa-user"></i> <?= htmlspecialchars($_SESSION['user_nombre'] ?? 'Usuario', ENT_QUOTES, 'UTF-8') ?></span>
             <span class="pos-invoice">#<?= $data['invoiceNumber'] ?></span>
         </div>
         <div class="pos-header-shortcuts">
@@ -104,6 +104,13 @@
     </div>
 </div>
 
+<script>
+const POSVENTA_CONFIG = {
+    URLROOT: '<?= URLROOT ?>',
+    IVA_RATE: <?= ($data['iva'] ?? 15) / 100 ?>,
+    CSRF_TOKEN: '<?= generateCsrfToken() ?>'
+};
+</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= URLROOT ?>/js/pos-v2.js"></script>
 

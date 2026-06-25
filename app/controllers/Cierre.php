@@ -67,6 +67,8 @@ class Cierre extends Controller {
 
     public function registrarMovimiento() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->validateCsrf();
+
             $data = [
                 'tipo' => trim($_POST['tipo']),
                 'concepto' => trim($_POST['concepto']),
@@ -84,6 +86,8 @@ class Cierre extends Controller {
 
     public function cerrarTurno() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->validateCsrf();
+
             $efectivo_real = trim($_POST['efectivo_real']);
             $efectivo_esperado = trim($_POST['efectivo_esperado']);
             

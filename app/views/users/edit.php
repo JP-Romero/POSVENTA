@@ -10,6 +10,7 @@
             </div>
             
             <form action="<?= URLROOT ?>/users/edit/<?= $data['id'] ?>" method="POST">
+                <?= csrfField() ?>
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
                     <input type="text" class="form-control <?= !empty($data['nombre_err']) ? 'is-invalid' : '' ?>" id="nombre" name="nombre" value="<?= h($data['nombre']) ?>" required>

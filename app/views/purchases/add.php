@@ -144,7 +144,8 @@
             id_proveedor: id_proveedor,
             comprobante: comprobante,
             total: total,
-            items: items
+            items: items,
+            csrf_token: '<?= generateCsrfToken() ?>'
         };
 
         fetch('<?php echo URLROOT; ?>/purchases/add', {

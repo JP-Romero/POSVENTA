@@ -44,6 +44,7 @@
                 </div>
                 
                 <form action="<?= URLROOT ?>/products/import" method="POST" enctype="multipart/form-data">
+                    <?= csrfField() ?>
                     <div class="mb-3">
                         <label for="import_file" class="form-label">Archivo a Importar <span class="text-danger">*</span></label>
                         <input type="file" class="form-control" id="import_file" name="import_file" accept=".csv,.xlsx,.xls" required>

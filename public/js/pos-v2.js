@@ -1,6 +1,6 @@
 // POS V2.0 - Hybrid Librería Design
 let cart = [];
-const IVA_RATE = <?= $data['iva'] / 100 ?>;
+const IVA_RATE = POSVENTA_CONFIG.IVA_RATE;
 let currentCategory = 'all';
 
 // Initialize
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Load products
 function loadProducts() {
-    fetch('<?= URLROOT ?>/pos/searchProduct?q=')
+    fetch(POSVENTA_CONFIG.URLROOT + '/pos/searchProduct?q=')
         .then(res => res.json())
         .then(products => {
             const grid = document.getElementById('products-grid');
@@ -146,6 +146,7 @@ function handlePayment(type) {
         impuesto: tax,
         total: total,
         auto_print: true,
+        csrf_token: POSVENTA_CONFIG.CSRF_TOKEN,
         items: cart.map(item => ({
             id_producto: item.id,
             cantidad: item.quantity,
@@ -159,7 +160,7 @@ function handlePayment(type) {
     btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Procesando...';
     btn.disabled = true;
     
-    fetch('<?= URLROOT ?>/pos/save', {
+    fetch(POSVENTA_CONFIG.URLROOT + '/pos/save', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {'Content-Type': 'application/json'}
@@ -192,7 +193,11 @@ function handlePayment(type) {
 
 // Print last receipt
 function printLastReceipt() {
-    fetch('<?= URLROOT ?>/pos/printLastReceipt', { method: 'POST' })
+    fetch(POSVENTA_CONFIG.URLROOT + '/pos/printLastReceipt', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({csrf_token: POSVENTA_CONFIG.CSRF_TOKEN})
+    })
         .then(res => res.json())
         .then(res => {
             if (res.success) {

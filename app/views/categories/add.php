@@ -4,6 +4,7 @@
     <h2>Agregar Categoría</h2>
     <p>Cree una nueva categoría para sus productos</p>
     <form action="<?php echo URLROOT; ?>/categories/add" method="post">
+      <?= csrfField() ?>
       <div class="mb-3">
         <label for="nombre" class="form-label">Nombre: <sup>*</sup></label>
         <input type="text" name="nombre" class="form-control form-control-lg <?php echo (!empty($data['nombre_err'])) ? 'is-invalid' : ''; ?>" value="<?php echo $data['nombre']; ?>">

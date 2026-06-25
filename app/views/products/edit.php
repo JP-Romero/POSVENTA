@@ -4,6 +4,7 @@
     <h2>Editar Producto</h2>
     <p>Modifique los datos del producto</p>
     <form action="<?php echo URLROOT; ?>/products/edit/<?php echo $data['id']; ?>" method="post" enctype="multipart/form-data">
+      <?= csrfField() ?>
       <div class="row">
         <div class="col-md-4 mb-3">
             <label for="codigo_interno" class="form-label">Código Interno:</label>

@@ -21,8 +21,9 @@ class Purchase {
             $this->db->beginTransaction();
 
             // 1. Insert into compras
-            $this->db->query('INSERT INTO compras (id_proveedor, total, comprobante) VALUES (:id_proveedor, :total, :comprobante)');
+            $this->db->query('INSERT INTO compras (id_proveedor, id_usuario, total, comprobante) VALUES (:id_proveedor, :id_usuario, :total, :comprobante)');
             $this->db->bind(':id_proveedor', $data['id_proveedor']);
+            $this->db->bind(':id_usuario', $_SESSION['user_id']);
             $this->db->bind(':total', $data['total']);
             $this->db->bind(':comprobante', $data['comprobante']);
 

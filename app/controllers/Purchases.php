@@ -27,11 +27,14 @@ class Purchases extends Controller {
 
     public function add() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // This would normally handle the AJAX post or a complex form post
-            // For simplicity in this MVC, we assume a JSON post or a structured array
             $jsonData = json_decode(file_get_contents('php://input'), true);
 
             if ($jsonData) {
+                // CSRF validation
+                if (!isset($jsonData['csrf_token']) || !validateCsrfToken($jsonData['csrf_token'])) {
+                    echo json_encode(['status' => 'error', 'message' => 'CSRF validation failed']);
+                    exit;
+                }
                 if ($this->purchaseModel->savePurchase($jsonData)) {
                     echo json_encode(['status' => 'success']);
                 } else {

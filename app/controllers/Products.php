@@ -79,13 +79,15 @@ public function __construct(){
           $data['precio_venta_err'] = 'Ingrese el precio de venta';
         }
 
-        // Image upload handling
+        // Image upload handling (MIME validated server-side)
         if(!empty($_FILES['imagen']['name'])){
-            $allowed_types = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
-            $file_type = $_FILES['imagen']['type'];
+            $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $file_type = finfo_file($finfo, $_FILES['imagen']['tmp_name']);
+            finfo_close($finfo);
 
             if(in_array($file_type, $allowed_types)){
-                $filename = time() . '_' . $_FILES['imagen']['name'];
+                $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $_FILES['imagen']['name']);
                 $target = APPROOT . '/../public/img/products/' . $filename;
 
                 if(!file_exists(APPROOT . '/../public/img/products/')){
@@ -179,11 +181,13 @@ public function __construct(){
         }
 
         if(!empty($_FILES['imagen']['name'])){
-            $allowed_types = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
-            $file_type = $_FILES['imagen']['type'];
+            $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $file_type = finfo_file($finfo, $_FILES['imagen']['tmp_name']);
+            finfo_close($finfo);
 
             if(in_array($file_type, $allowed_types)){
-                $filename = time() . '_' . $_FILES['imagen']['name'];
+                $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $_FILES['imagen']['name']);
                 $target = APPROOT . '/../public/img/products/' . $filename;
 
                 if(move_uploaded_file($_FILES['imagen']['tmp_name'], $target)){
@@ -244,6 +248,10 @@ public function __construct(){
 
     public function delete($id){
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if (!validateCsrfToken($_POST['csrf_token'] ?? '')) {
+          echo json_encode(['success' => false, 'message' => 'CSRF validation failed']);
+          exit;
+        }
         if($this->productModel->deleteProduct($id)){
           echo json_encode(['success' => true]);
         } else {

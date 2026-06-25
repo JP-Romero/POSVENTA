@@ -4,6 +4,7 @@
     <h2>Agregar Producto</h2>
     <p>Complete los datos para registrar un nuevo producto</p>
     <form action="<?php echo URLROOT; ?>/products/add" method="post" enctype="multipart/form-data">
+      <?= csrfField() ?>
       <div class="row">
         <div class="col-md-4 mb-3">
             <label for="codigo_interno" class="form-label">Código Interno:</label>

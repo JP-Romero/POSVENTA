@@ -11,6 +11,11 @@ class Settings extends Controller {
         $tab = $_GET['tab'] ?? 'general';
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!validateCsrf($_POST['csrf_token'] ?? '')) {
+                flash('settings_message', 'Error de seguridad: token inválido. Intente nuevamente.', 'alert alert-danger');
+                redirect('settings?tab=' . ($_GET['tab'] ?? 'general'));
+                return;
+            }
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $action = $_POST['action'] ?? 'update_general';
             
@@ -24,10 +29,13 @@ class Settings extends Controller {
                     $this->db->bind(':correo', $_POST['correo']);
                     $this->db->bind(':iva', $_POST['iva']);
                     
-                    // Handle logo upload
+                    // Handle logo upload (MIME validated server-side)
                     if (!empty($_FILES['logo']['name'])) {
-                        $allowed = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-                        if (in_array($_FILES['logo']['type'], $allowed)) {
+                        $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                        $file_type = finfo_file($finfo, $_FILES['logo']['tmp_name']);
+                        finfo_close($finfo);
+                        if (in_array($file_type, $allowed)) {
                             $ext = pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION);
                             $filename = 'logo_' . time() . '.' . $ext;
                             $target = APPROOT . '/../public/img/logo/' . $filename;

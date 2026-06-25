@@ -140,7 +140,7 @@
             <div style="margin-top: 0.5rem; font-size: 0.9rem;">
                 Fecha: <?= date('d/m/Y H:i', strtotime($data['fecha_fin'])) ?>
             </div>
-            <div style="font-size: 0.9rem;">Cajero: <?= $_SESSION['user_name'] ?></div>
+            <div style="font-size: 0.9rem;">Cajero: <?= htmlspecialchars($_SESSION['user_nombre'] ?? 'Usuario', ENT_QUOTES, 'UTF-8') ?></div>
         </div>
 
         <div class="cierre-section">
@@ -239,6 +239,7 @@
         </div>
 
         <form action="<?= URLROOT ?>/cierre/cerrarTurno" method="POST" id="form-cierre">
+            <?= csrfField() ?>
             <div class="cierre-section" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 4px;">
                 <div class="cierre-section-title" style="margin-bottom: 0.5rem;">AUDITORÍA DE CAJA (Arqueo)</div>
                 <div class="form-group mb-2">
@@ -279,6 +280,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form action="<?= URLROOT ?>/cierre/registrarMovimiento" method="POST">
+                <?= csrfField() ?>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label>Tipo de Movimiento</label>

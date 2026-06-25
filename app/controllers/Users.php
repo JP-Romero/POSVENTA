@@ -217,6 +217,7 @@ class Users extends Controller {
     }
 
     public function createUserSession($user){
+      session_regenerate_id(true);
       $_SESSION['user_id'] = $user->id;
       $_SESSION['user_usuario'] = $user->usuario;
       $_SESSION['user_nombre'] = $user->nombre;

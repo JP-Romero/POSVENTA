@@ -4,6 +4,7 @@
        <div class="card card-body bg-light mt-5">
          <h2>Crear Usuario</h2>
          <form action="<?php echo URLROOT; ?>/users/add" method="post">
+           <?= csrfField() ?>
            <div class="mb-3">
              <label for="nombre" class="form-label">Nombre:</label>
              <input type="text" name="nombre" class="form-control" required>

@@ -50,6 +50,11 @@ class Pos extends Controller {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $jsonData = json_decode(file_get_contents('php://input'), true);
             if ($jsonData) {
+                // CSRF validation
+                if (!isset($jsonData['csrf_token']) || !validateCsrfToken($jsonData['csrf_token'])) {
+                    echo json_encode(['status' => 'error', 'message' => 'CSRF validation failed']);
+                    exit;
+                }
                 $sale_id = $this->saleModel->saveSale($jsonData);
                 if ($sale_id) {
                     $autoPrint = $jsonData['auto_print'] ?? false;
@@ -113,6 +118,14 @@ class Pos extends Controller {
     }
 
     public function printLastReceipt() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $jsonData = json_decode(file_get_contents('php://input'), true);
+            $token = $jsonData['csrf_token'] ?? '';
+            if (!validateCsrfToken($token)) {
+                echo json_encode(['success' => false, 'message' => 'CSRF validation failed']);
+                exit;
+            }
+        }
         $this->db->query('SELECT MAX(id) as last_id FROM ventas');
         $row = $this->db->single();
         if ($row->last_id) {
