@@ -244,23 +244,19 @@ public function __construct(){
 
     public function delete($id){
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        if(!isAdmin()){
-            flash('product_message', 'No tiene permisos para eliminar productos', 'alert alert-danger');
-            redirect('products');
-        }
-
-        $product = $this->productModel->getProductById($id);
-
         if($this->productModel->deleteProduct($id)){
+          echo json_encode(['success' => true]);
+        } else {
+          $product = $this->productModel->getProductById($id);
+          if(!$product){
+            redirect('products');
+          }
           if(!empty($product->imagen) && file_exists(APPROOT . '/../public/img/products/' . $product->imagen)){
             unlink(APPROOT . '/../public/img/products/' . $product->imagen);
           }
-          flash('product_message', 'Producto eliminado correctamente');
-          redirect('products');
-        } else {
-          flash('product_message', 'Error al eliminar producto', 'alert alert-danger');
-          redirect('products');
+          echo json_encode(['success' => false, 'message' => 'Error al eliminar producto']);
         }
+        exit;
       } else {
         redirect('products');
       }

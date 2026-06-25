@@ -111,12 +111,11 @@ public function __construct(){
     public function delete($id){
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if($this->providerModel->deleteProvider($id)){
-          flash('provider_message', 'Proveedor eliminado correctamente');
-          redirect('providers');
+          echo json_encode(['success' => true]);
         } else {
-          flash('provider_message', 'Error al eliminar proveedor', 'alert alert-danger');
-          redirect('providers');
+          echo json_encode(['success' => false, 'message' => 'Error al eliminar proveedor']);
         }
+        exit;
       } else {
         redirect('providers');
       }

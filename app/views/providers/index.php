@@ -65,9 +65,13 @@ $(document).ready(function () {
         const name = $(this).data('name');
         showConfirm('¿Eliminar el proveedor "' + name + '"?', function(result) {
             if (result) {
-                $.post('<?= URLROOT ?>/providers/delete/' + id, function(r) {
-                    location.reload();
-                });
+                $.post('<?= URLROOT ?>/providers/delete/' + id, { action: 'delete' }, function(r) {
+                    if (r.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + (r.message || 'No se pudo eliminar'));
+                    }
+                }, 'json');
             }
         });
     });

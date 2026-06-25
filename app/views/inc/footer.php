@@ -2,12 +2,12 @@
     </main>
 
 <!-- Confirm Modal -->
-<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title" id="confirmModalLabel">¿Confirmar acción?</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <h5 class="modal-title">¿Confirmar acción?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body py-4">
                 <div class="d-flex align-items-center">
@@ -47,18 +47,29 @@
     }
     setInterval(updateClock, 1000);
     updateClock();
+</script>
+<script>
+// Modern confirm function using modal
+window.showConfirm = function(message, callback) {
+    var msgEl = document.getElementById('confirmModalMessage');
+    var yesBtn = document.getElementById('confirmModalYes');
+    var modalEl = document.getElementById('confirmModal');
     
-    // Modern confirm function using modal
-    window.showConfirm = function(message, callback) {
-        document.getElementById('confirmModalMessage').textContent = message;
-        document.getElementById('confirmModalYes').onclick = function() {
-            callback(true);
-            bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
-        };
-        const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
-        modal.show();
-        return false;
+    if (!msgEl || !yesBtn || !modalEl) {
+        console.error('Modal elements not found');
+        return;
+    }
+    
+    msgEl.textContent = message;
+    yesBtn.onclick = function() {
+        callback(true);
+        var modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
     };
+    var modal = new bootstrap.Modal(modalEl);
+    modal.show();
+    return false;
+};
 </script>
 </body>
 </html>
