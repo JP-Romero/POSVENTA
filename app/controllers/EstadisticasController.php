@@ -1,5 +1,5 @@
 <?php
-class Estadisticas extends Controller {
+class EstadisticasController extends Controller {
     private $saleModel;
 
     public function __construct() {

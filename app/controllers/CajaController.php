@@ -1,5 +1,5 @@
 <?php
-class Caja extends Controller {
+class CajaController extends Controller {
     private $cajaModel;
     private $saleModel;
 

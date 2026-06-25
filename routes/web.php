@@ -11,8 +11,8 @@ use App\Controllers\InventoryController;
 use App\Controllers\ReportsController;
 use App\Controllers\SettingsController;
 use App\Controllers\PosController;
-use App\Controllers\Caja;
-use App\Controllers\Estadisticas;
+use App\Controllers\CajaController;
+use App\Controllers\EstadisticasController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\AdminMiddleware;
 
@@ -88,13 +88,13 @@ $router->get('sales/invoice/{id}', SalesController::class . '@invoice');
 $router->get('sales/invoice-pdf/{id}', SalesController::class . '@invoicePdf');
 
 // Caja / Reporte Z
-$router->get('caja', Caja::class . '@index');
-$router->post('caja/registrarMovimiento', Caja::class . '@registrarMovimiento');
-$router->post('caja/cerrarTurno', Caja::class . '@cerrarTurno');
+$router->get('caja', CajaController::class . '@index');
+$router->post('caja/registrarMovimiento', CajaController::class . '@registrarMovimiento');
+$router->post('caja/cerrarTurno', CajaController::class . '@cerrarTurno');
 
 // Estadisticas
-$router->get('estadisticas', Estadisticas::class . '@index');
-$router->get('estadisticas/obtenerDatos', Estadisticas::class . '@obtenerDatos');
+$router->get('estadisticas', EstadisticasController::class . '@index');
+$router->get('estadisticas/obtenerDatos', EstadisticasController::class . '@obtenerDatos');
 
 
 // Inventory
