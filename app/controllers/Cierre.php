@@ -14,10 +14,15 @@ class Cierre extends Controller {
 
     public function abrirCaja() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $jsonData = json_decode(file_get_contents('php://input'), true);
-            if ($jsonData) {
+            // Support both JSON and FormData
+            $postData = json_decode(file_get_contents('php://input'), true);
+            if (!$postData) {
+                $postData = $_POST;
+            }
+
+            if (!empty($postData)) {
                 // CSRF validation
-                if (!isset($jsonData['csrf_token']) || !validateCsrfToken($jsonData['csrf_token'])) {
+                if (!isset($postData['csrf_token']) || !validateCsrfToken($postData['csrf_token'])) {
                     echo json_encode(['status' => 'error', 'message' => 'CSRF validation failed']);
                     exit;
                 }
@@ -25,14 +30,16 @@ class Cierre extends Controller {
                 $data = [
                     'tipo' => 'Entrada',
                     'concepto' => 'Fondo Inicial',
-                    'monto' => $jsonData['monto'] ?? 0
+                    'monto' => $postData['monto'] ?? 0
                 ];
                 
                 if ($this->cajaModel->addMovimiento($data)) {
                     echo json_encode(['status' => 'success']);
                 } else {
-                    echo json_encode(['status' => 'error']);
+                    echo json_encode(['status' => 'error', 'message' => 'Error saving to database']);
                 }
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'No data received']);
             }
             exit;
         }
@@ -157,7 +164,13 @@ class Cierre extends Controller {
             $id_corte = $this->cajaModel->saveCorte($data);
 
             if ($id_corte) {
-                echo json_encode(['status' => 'success', 'id' => $id_corte]);
+                echo json_encode([
+                    'status' => 'success', 
+                    'id' => $id_corte,
+                    'esperado' => $efectivo_esperado,
+                    'real' => $efectivo_real,
+                    'diferencia' => $efectivo_real - $efectivo_esperado
+                ]);
             } else {
                 echo json_encode(['status' => 'error']);
             }
