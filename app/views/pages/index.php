@@ -74,7 +74,7 @@
     </a>
     
     <!-- Punto de Venta -->
-    <a href="<?= URLROOT; ?>/pos" class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-cyan-500 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[160px] md:col-span-1 lg:col-span-1">
+    <a href="<?= URLROOT; ?>/pos" class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-cyan-500 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[160px]">
         <div class="p-4 bg-cyan-50 rounded-xl text-cyan-600 transition-colors duration-300 mb-4 group-hover-bg-cyan-600 group-hover-text-white">
             <i data-lucide="monitor" class="w-8 h-8"></i>
         </div>
