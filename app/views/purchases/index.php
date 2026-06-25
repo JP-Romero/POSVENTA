@@ -10,35 +10,37 @@
     </div>
   </div>
   <?php flash('purchase_message'); ?>
-  <div class="card card-body bg-light">
-    <table id="purchases-table" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Proveedor</th>
-                <th>Comprobante</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($data['purchases'] as $purchase) : ?>
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+        <table id="purchases-table" class="table table-hover mb-0">
+            <thead class="table-light">
                 <tr>
-                    <td><?php echo $purchase->fecha; ?></td>
-                    <td><?php echo $purchase->proveedor_nombre; ?></td>
-                    <td><?php echo $purchase->comprobante; ?></td>
-                    <td>$<?php echo number_format($purchase->total, 2); ?></td>
+                    <th>Fecha</th>
+                    <th>Proveedor</th>
+                    <th>Comprobante</th>
+                    <th>Total</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach($data['purchases'] as $purchase) : ?>
+                    <tr>
+                        <td><?php echo h($purchase->fecha); ?></td>
+                        <td><?php echo h($purchase->proveedor_nombre); ?></td>
+                        <td><?php echo h($purchase->comprobante); ?></td>
+                        <td class="fw-bold"><?php echo fmt($purchase->total); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        </div>
+    </div>
   </div>
 
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
   <script>
     $(document).ready(function () {
         $('#purchases-table').DataTable({
+            "order": [[0, "desc"]],
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
             }

@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>500 - Error del servidor</title>
     <style>
+        :root {
+            --error-bg: #f5f5f5;
+            --error-text: #666;
+            --error-primary: #e74c3c;
+            --error-link: #3498db;
+        }
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -12,7 +18,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f5f5f5;
+            background-color: var(--error-bg);
         }
         .error-container {
             text-align: center;
@@ -20,15 +26,15 @@
         }
         h1 {
             font-size: 72px;
-            color: #e74c3c;
+            color: var(--error-primary);
             margin: 0;
         }
         p {
             font-size: 24px;
-            color: #666;
+            color: var(--error-text);
         }
         a {
-            color: #3498db;
+            color: var(--error-link);
             text-decoration: none;
         }
         a:hover {

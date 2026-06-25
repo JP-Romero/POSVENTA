@@ -9,6 +9,7 @@
 
 <div class="card shadow-sm">
     <div class="card-body p-0">
+        <div class="table-responsive">
         <table id="sales-table" class="table table-hover mb-0">
             <thead class="table-light">
                 <tr>
@@ -24,19 +25,19 @@
                 <?php foreach($data['sales'] as $sale) : ?>
                     <tr>
                         <td><?= date('d/m/Y H:i', strtotime($sale->fecha)) ?></td>
-                        <td><strong><?= $sale->numero_factura ?></strong></td>
-                        <td><?= $sale->cliente_nombre ?></td>
-                        <td><?= $sale->usuario_nombre ?></td>
+                        <td><strong><?= h($sale->numero_factura) ?></strong></td>
+                        <td><?= h($sale->cliente_nombre) ?></td>
+                        <td><?= h($sale->usuario_nombre) ?></td>
                         <td class="fw-bold"><?= fmt($sale->total) ?></td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <a href="<?= URLROOT ?>/sales/invoice/<?= $sale->id ?>" target="_blank" class="btn btn-outline-info" title="Ver Factura HTML">
+                                <a href="<?= URLROOT ?>/sales/invoice/<?= $sale->id ?>" target="_blank" class="btn btn-outline-info" title="Ver Factura HTML" aria-label="Ver factura">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="<?= URLROOT ?>/sales/invoicePdf/<?= $sale->id ?>" target="_blank" class="btn btn-outline-danger" title="Descargar PDF">
+                                <a href="<?= URLROOT ?>/sales/invoicePdf/<?= $sale->id ?>" target="_blank" class="btn btn-outline-danger" title="Descargar PDF" aria-label="Descargar PDF">
                                     <i class="fa fa-file-pdf"></i>
                                 </a>
-                                <a href="<?= URLROOT ?>/sales/printReceipt/<?= $sale->id ?>" class="btn btn-outline-success" title="Imprimir Ticket Térmico">
+                                <a href="<?= URLROOT ?>/sales/printReceipt/<?= $sale->id ?>" class="btn btn-outline-success" title="Imprimir Ticket Térmico" aria-label="Imprimir ticket">
                                     <i class="fa fa-print"></i>
                                 </a>
                             </div>
@@ -45,6 +46,7 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 

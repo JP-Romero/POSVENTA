@@ -3,8 +3,8 @@
 <style>
 /* Dark theme for Estadisticas */
 .stats-container {
-    background-color: #1a1a1a;
-    color: #e0e0e0;
+    background-color: var(--dark-bg-primary, #1a1a1a);
+    color: var(--dark-text-primary, #e0e0e0);
     min-height: calc(100vh - 60px);
     padding: 2rem;
     font-family: 'Inter', sans-serif;
@@ -18,13 +18,13 @@
 .stats-title {
     font-weight: 700;
     font-size: 1.5rem;
-    color: #fff;
+    color: var(--dark-text-inverse, #fff);
     margin: 0;
 }
 .stats-tabs {
     display: flex;
     gap: 0.5rem;
-    background: #222;
+    background: var(--dark-bg-secondary, #222);
     padding: 0.5rem;
     border-radius: 8px;
     overflow-x: auto;
@@ -32,7 +32,7 @@
 .stats-tab {
     background: transparent;
     border: none;
-    color: #aaa;
+    color: var(--dark-text-muted, #aaa);
     padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
@@ -40,44 +40,44 @@
     transition: all 0.3s;
 }
 .stats-tab.active {
-    background: #e74c3c;
+    background: var(--bs-danger, #e74c3c);
     color: #fff;
 }
 .stats-tab:hover:not(.active) {
-    background: #333;
-    color: #fff;
+    background: var(--dark-bg-tertiary, #333);
+    color: var(--dark-text-inverse, #fff);
 }
 .stats-card {
-    background: #252525;
+    background: var(--dark-bg-tertiary, #252525);
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 .stats-card-title {
-    color: #f39c12;
+    color: var(--bs-warning, #f39c12);
     font-weight: bold;
     font-size: 1.1rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid var(--dark-border-color, #444);
     padding-bottom: 0.5rem;
 }
 .stats-row {
     display: flex;
     justify-content: space-between;
     padding: 0.8rem 0;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--dark-border-subtle, #333);
 }
 .stats-row:last-child {
     border-bottom: none;
 }
 .stats-val {
-    color: #2ecc71;
+    color: var(--bs-success, #2ecc71);
     font-weight: bold;
 }
 .btn-print {
-    background: #3498db;
+    background: var(--bs-primary, #3498db);
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
@@ -85,7 +85,7 @@
     font-weight: bold;
 }
 .btn-print:hover {
-    background: #2980b9;
+    background: var(--bs-primary-darker, #2980b9);
 }
 </style>
 
@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // TODO: Implement Print functionality connecting to a controller endpoint
     document.getElementById('btn-imprimir').addEventListener('click', function() {
-        alert('Funcionalidad de impresión en desarrollo...');
+        Swal.fire({ icon: 'info', title: 'Impresión', text: 'Funcionalidad de impresión en desarrollo...' });
         // Here we would call an endpoint like /estadisticas/imprimir?periodo=hoy
     });
 });

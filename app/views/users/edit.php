@@ -3,12 +3,12 @@
 
 <div class="row">
     <div class="col-md-8 mx-auto">
-        <div class="card card-body bg-light mt-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2>Editar Usuario</h2>
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">Editar Usuario</h2>
                 <a href="<?= URLROOT ?>/users" class="btn btn-secondary"><i class="fa fa-backward"></i> Volver</a>
             </div>
-            
+            <div class="card-body">
             <form action="<?= URLROOT ?>/users/edit/<?= $data['id'] ?>" method="POST">
                 <?= csrfField() ?>
                 <div class="mb-3">
@@ -70,6 +70,7 @@
                     <a href="<?= URLROOT ?>/users" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
+        </div>
         </div>
     </div>
 </div>

@@ -32,12 +32,13 @@
         }
     </script>
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/style.css">
+    <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/dark-mode.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <title><?php echo SITENAME; ?></title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <?php require APPROOT . '/views/inc/topbar.php'; ?>
-    <main class="w-100" id="mainContent" role="main" style="width: 100%;">
+    <main class="main-content" id="mainContent" role="main">
         <div class="page-content">

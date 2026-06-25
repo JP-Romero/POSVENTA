@@ -24,6 +24,7 @@
 <?php flash('product_message'); ?>
 <div class="card shadow-sm">
     <div class="card-body p-0">
+        <div class="table-responsive">
         <table id="products-table" class="table table-hover mb-0">
             <thead class="table-light">
                 <tr>
@@ -73,14 +74,14 @@
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <a href="<?= URLROOT ?>/products/edit/<?= $product->id ?>" class="btn btn-outline-warning" title="Editar">
+                                <a href="<?= URLROOT ?>/products/edit/<?= $product->id ?>" class="btn btn-outline-warning" title="Editar" aria-label="Editar producto">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="<?= URLROOT ?>/products/printBarcode/<?= $product->id ?>" class="btn btn-outline-info" title="Imprimir Etiqueta" target="_blank">
+                                <a href="<?= URLROOT ?>/products/printBarcode/<?= $product->id ?>" class="btn btn-outline-info" title="Imprimir Etiqueta" target="_blank" aria-label="Imprimir etiqueta">
                                     <i class="fa fa-barcode"></i>
                                 </a>
                                 <?php if(isAdmin()) : ?>
-                                <button type="button" class="btn btn-outline-danger delete-product" data-id="<?= $product->id ?>" data-name="<?= h($product->nombre) ?>" title="Eliminar">
+                                <button type="button" class="btn btn-outline-danger delete-product" data-id="<?= $product->id ?>" data-name="<?= h($product->nombre) ?>" title="Eliminar" aria-label="Eliminar producto">
                                     <i class="fa fa-trash"></i>
                                 </button>
                                 <?php endif; ?>
@@ -90,6 +91,7 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 

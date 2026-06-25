@@ -14,6 +14,7 @@
 
 <div class="card shadow-sm">
     <div class="card-body p-0">
+        <div class="table-responsive">
         <table id="clients-table" class="table table-hover mb-0">
             <thead class="table-light">
                 <tr>
@@ -33,10 +34,10 @@
                         <td><?= h($client->direccion ?? '—') ?></td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <a href="<?= URLROOT ?>/clients/edit/<?= $client->id ?>" class="btn btn-outline-warning" title="Editar">
+                                <a href="<?= URLROOT ?>/clients/edit/<?= $client->id ?>" class="btn btn-outline-warning" title="Editar" aria-label="Editar cliente">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="<?= URLROOT ?>/clients/history/<?= $client->id ?>" class="btn btn-outline-info" title="Ver Historial">
+                                <a href="<?= URLROOT ?>/clients/history/<?= $client->id ?>" class="btn btn-outline-info" title="Ver Historial" aria-label="Ver historial del cliente">
                                     <i class="fa fa-history"></i>
                                 </a>
                             </div>
@@ -45,6 +46,7 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 

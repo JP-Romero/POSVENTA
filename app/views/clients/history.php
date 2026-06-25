@@ -52,7 +52,7 @@
                         <td><?= h($sale->usuario_nombre) ?></td>
                         <td class="text-end fw-bold"><?= fmt($sale->total) ?></td>
                         <td>
-                            <button class="btn btn-sm btn-outline-info" onclick="showSaleDetails(<?= $sale->id ?>)">
+                            <button class="btn btn-sm btn-outline-info btn-sale-detail" data-sale-id="<?= $sale->id ?>">
                                 <i class="fa fa-eye"></i>
                             </button>
                         </td>
@@ -80,6 +80,11 @@
 </div>
 
 <script>
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.btn-sale-detail');
+    if (btn) showSaleDetails(btn.dataset.saleId);
+});
+
 function showSaleDetails(saleId) {
     const modal = new bootstrap.Modal(document.getElementById('saleDetailModal'));
     const content = document.getElementById('saleDetailContent');

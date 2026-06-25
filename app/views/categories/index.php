@@ -10,33 +10,40 @@
     </div>
   </div>
   <?php flash('category_message'); ?>
-  <div class="card card-body bg-light">
-    <table id="categories-table" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($data['categories'] as $category) : ?>
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+        <table id="categories-table" class="table table-hover mb-0">
+            <thead class="table-light">
                 <tr>
-                    <td><?php echo $category->nombre; ?></td>
-                    <td><?php echo $category->descripcion; ?></td>
-                    <td>
-                        <a href="<?php echo URLROOT; ?>/categories/edit/<?php echo $category->id; ?>" class="btn btn-warning btn-sm">Editar</a>
-                        <button type="button" class="btn btn-danger btn-sm delete-category" data-id="<?php echo $category->id; ?>" data-name="<?php echo h($category->nombre); ?>">Eliminar</button>
-                    </td>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th style="width: 150px;">Acciones</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach($data['categories'] as $category) : ?>
+                    <tr>
+                        <td><?php echo h($category->nombre); ?></td>
+                        <td><?php echo h($category->descripcion); ?></td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="<?php echo URLROOT; ?>/categories/edit/<?php echo $category->id; ?>" class="btn btn-outline-warning" title="Editar" aria-label="Editar categoría">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <button type="button" class="btn btn-outline-danger delete-category" data-id="<?php echo $category->id; ?>" data-name="<?php echo h($category->nombre); ?>" title="Eliminar" aria-label="Eliminar categoría">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        </div>
+    </div>
   </div>
 
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
   <script>
     $(document).ready(function () {
         $('#categories-table').DataTable({

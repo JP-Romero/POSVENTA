@@ -178,8 +178,7 @@
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
 
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Sales Trend Chart

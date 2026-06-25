@@ -9,8 +9,17 @@
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/style.css">
     <title><?php echo SITENAME; ?> - Login</title>
     <style>
+        :root {
+            --login-gradient-start: #667eea;
+            --login-gradient-end: #764ba2;
+            --login-card-bg: #fff;
+            --login-card-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            --login-footer-bg: #f8f9fa;
+            --login-footer-color: #6c757d;
+            --login-input-bg: #f8f9fa;
+        }
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--login-gradient-start) 0%, var(--login-gradient-end) 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -26,15 +35,15 @@
             padding: 20px;
         }
         .login-card {
-            background: white;
+            background: var(--login-card-bg);
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--login-card-shadow);
             overflow: hidden;
             width: 100%;
             max-width: 420px;
         }
         .login-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--login-gradient-start) 0%, var(--login-gradient-end) 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
@@ -57,14 +66,14 @@
             padding: 40px 30px;
         }
         .login-footer {
-            background: #f8f9fa;
+            background: var(--login-footer-bg);
             padding: 20px 30px;
             text-align: center;
             font-size: 13px;
-            color: #6c757d;
+            color: var(--login-footer-color);
         }
         .input-group-text {
-            background-color: #f8f9fa;
+            background-color: var(--login-input-bg);
             border-right: none;
         }
         .input-group .form-control {
@@ -78,13 +87,13 @@
             border-left: none;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--login-gradient-start) 0%, var(--login-gradient-end) 100%);
             border: none;
             padding: 12px;
             font-weight: 500;
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+            background: linear-gradient(135deg, color-mix(in srgb, var(--login-gradient-start), black 10%), color-mix(in srgb, var(--login-gradient-end), black 10%));
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }

@@ -3,15 +3,15 @@
 <style>
 /* Dark theme for Cierre similar to the requested images */
 .cierre-container {
-    background-color: #1a1a1a;
-    color: #e0e0e0;
+    background-color: var(--dark-bg-primary, #1a1a1a);
+    color: var(--dark-text-primary, #e0e0e0);
     min-height: calc(100vh - 60px);
     padding: 2rem;
     font-family: 'Inter', sans-serif;
 }
 .cierre-ticket {
-    background-color: #121212;
-    border: 1px solid #333;
+    background-color: var(--dark-bg-secondary, #121212);
+    border: 1px solid var(--dark-border-color, #333);
     border-radius: 8px;
     max-width: 500px;
     margin: 0 auto;
@@ -20,7 +20,7 @@
 }
 .cierre-header {
     text-align: center;
-    border-bottom: 1px dashed #555;
+    border-bottom: 1px dashed var(--dark-text-muted, #555);
     padding-bottom: 1rem;
     margin-bottom: 1rem;
 }
@@ -28,7 +28,7 @@
     font-weight: 700;
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
-    color: #fff;
+    color: var(--dark-text-inverse, #fff);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -36,8 +36,8 @@
     margin-bottom: 1.5rem;
 }
 .cierre-section-title {
-    background-color: #333;
-    color: #f39c12; /* Accent color like the screenshots */
+    background-color: var(--dark-bg-tertiary, #333);
+    color: var(--bs-warning, #f39c12);
     padding: 0.3rem 0.5rem;
     font-weight: bold;
     font-size: 0.9rem;
@@ -53,19 +53,19 @@
 }
 .cierre-row.total {
     font-weight: bold;
-    color: #fff;
-    border-top: 1px solid #444;
+    color: var(--dark-text-inverse, #fff);
+    border-top: 1px solid var(--dark-border-color, #444);
     padding-top: 0.5rem;
     margin-top: 0.5rem;
 }
 .cierre-row.net {
-    color: #2ecc71; /* Green for profit/net */
+    color: var(--bs-success, #2ecc71);
 }
 .cierre-row.expense {
-    color: #e74c3c; /* Red for expenses */
+    color: var(--bs-danger, #e74c3c);
 }
 .cierre-divider {
-    border-top: 1px dashed #555;
+    border-top: 1px dashed var(--dark-text-muted, #555);
     margin: 1rem 0;
 }
 .cierre-actions {
@@ -75,7 +75,7 @@
     margin-top: 2rem;
 }
 .btn-cierre {
-    background-color: #e74c3c;
+    background-color: var(--bs-danger, #e74c3c);
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
@@ -86,10 +86,10 @@
     transition: background 0.3s;
 }
 .btn-cierre:hover {
-    background-color: #c0392b;
+    background-color: var(--bs-danger-darker, #c0392b);
 }
 .btn-movimiento {
-    background-color: #3498db;
+    background-color: var(--bs-primary, #3498db);
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
@@ -100,7 +100,7 @@
     transition: background 0.3s;
 }
 .btn-movimiento:hover {
-    background-color: #2980b9;
+    background-color: var(--bs-primary-darker, #2980b9);
 }
 </style>
 
@@ -147,15 +147,15 @@
             <div class="cierre-section-title">1. RESUMEN DE VENTAS</div>
             <div class="cierre-row">
                 <span>Ventas Brutas:</span>
-                <span>$<?= number_format($data['resumen']->ventas_netas + $data['resumen']->descuentos ?? 0, 2) ?></span>
+                <span><?= fmt(($data['resumen']->ventas_netas ?? 0) + ($data['resumen']->descuentos ?? 0)) ?></span>
             </div>
             <div class="cierre-row expense">
                 <span>(-) Devoluciones/Descuentos:</span>
-                <span>-$<?= number_format($data['resumen']->descuentos ?? 0, 2) ?></span>
+                <span><?= fmt(-($data['resumen']->descuentos ?? 0)) ?></span>
             </div>
             <div class="cierre-row total net">
                 <span>VENTAS NETAS:</span>
-                <span>$<?= number_format($data['resumen']->ventas_netas ?? 0, 2) ?></span>
+                <span><?= fmt($data['resumen']->ventas_netas ?? 0) ?></span>
             </div>
         </div>
 
@@ -164,8 +164,8 @@
             <?php if(!empty($data['categorias'])): ?>
                 <?php foreach($data['categorias'] as $cat): ?>
                 <div class="cierre-row">
-                    <span><?= $cat->categoria ?>:</span>
-                    <span>$<?= number_format($cat->total, 2) ?></span>
+                    <span><?= h($cat->categoria) ?>:</span>
+                    <span><?= fmt($cat->total) ?></span>
                 </div>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -177,19 +177,19 @@
             <div class="cierre-section-title">3. MÉTODOS DE PAGO</div>
             <div class="cierre-row">
                 <span>Efectivo:</span>
-                <span>$<?= number_format($data['pagos']['Efectivo'], 2) ?></span>
+                <span><?= fmt($data['pagos']['Efectivo']) ?></span>
             </div>
             <div class="cierre-row">
                 <span>Tarjeta (Débito/Crédito):</span>
-                <span>$<?= number_format($data['pagos']['Tarjeta'], 2) ?></span>
+                <span><?= fmt($data['pagos']['Tarjeta']) ?></span>
             </div>
             <div class="cierre-row">
                 <span>Transferencia/QR:</span>
-                <span>$<?= number_format($data['pagos']['Transferencia'], 2) ?></span>
+                <span><?= fmt($data['pagos']['Transferencia']) ?></span>
             </div>
             <div class="cierre-row total">
                 <span>TOTAL RECAUDADO:</span>
-                <span>$<?= number_format($data['resumen']->ventas_netas ?? 0, 2) ?></span>
+                <span><?= fmt($data['resumen']->ventas_netas ?? 0) ?></span>
             </div>
         </div>
 
@@ -197,24 +197,24 @@
             <div class="cierre-section-title">4. MOVIMIENTOS DE EFECTIVO</div>
             <div class="cierre-row">
                 <span>(+) Fondo de Caja Inicial:</span>
-                <span>$<?= number_format($data['fondo_inicial'], 2) ?></span>
+                <span><?= fmt($data['fondo_inicial']) ?></span>
             </div>
             <div class="cierre-row">
                 <span>(+) Ventas en Efectivo:</span>
-                <span>$<?= number_format($data['pagos']['Efectivo'], 2) ?></span>
+                <span><?= fmt($data['pagos']['Efectivo']) ?></span>
             </div>
             <?php foreach($data['listaMovimientos'] as $mov): ?>
                 <?php if ($mov->concepto != 'Fondo Inicial' && $mov->concepto != 'Fondo de Caja Inicial'): ?>
                 <div class="cierre-row <?= $mov->tipo == 'Salida' ? 'expense' : 'net' ?>">
-                    <span><?= $mov->tipo == 'Entrada' ? '(+)' : '(-)' ?> <?= $mov->concepto ?>:</span>
-                    <span><?= $mov->tipo == 'Salida' ? '-' : '' ?>$<?= number_format($mov->monto, 2) ?></span>
+                    <span><?= $mov->tipo == 'Entrada' ? '(+)' : '(-)' ?> <?= h($mov->concepto) ?>:</span>
+                    <span><?= ($mov->tipo == 'Salida' ? '-' : '') ?><?= fmt($mov->monto, false) ?></span>
                 </div>
                 <?php endif; ?>
             <?php endforeach; ?>
             
             <div class="cierre-row total net" style="border-top: 1px dashed #555; padding-top: 0.5rem;">
                 <span>EFECTIVO ESPERADO EN CAJA:</span>
-                <span>$<?= number_format($data['efectivo_esperado'], 2) ?></span>
+                <span><?= fmt($data['efectivo_esperado']) ?></span>
             </div>
         </div>
 
@@ -222,19 +222,19 @@
             <div class="cierre-section-title">5. ESTADÍSTICAS DEL DÍA</div>
             <div class="cierre-row">
                 <span>Tickets Emitidos:</span>
-                <span><?= $data['resumen']->tickets_emitidos ?? 0 ?></span>
+                <span><?= (int)($data['resumen']->tickets_emitidos ?? 0) ?></span>
             </div>
             <div class="cierre-row">
                 <span>Ticket Promedio:</span>
-                <span>$<?= number_format(($data['resumen']->tickets_emitidos > 0 ? $data['resumen']->ventas_netas / $data['resumen']->tickets_emitidos : 0), 2) ?></span>
+                <span><?= fmt($data['resumen']->tickets_emitidos > 0 ? $data['resumen']->ventas_netas / $data['resumen']->tickets_emitidos : 0) ?></span>
             </div>
             <div class="cierre-row">
                 <span>Primer Ticket:</span>
-                <span><?= $data['resumen']->primer_ticket ?? 'N/A' ?></span>
+                <span><?= h($data['resumen']->primer_ticket ?? 'N/A') ?></span>
             </div>
             <div class="cierre-row">
                 <span>Último Ticket:</span>
-                <span><?= $data['resumen']->ultimo_ticket ?? 'N/A' ?></span>
+                <span><?= h($data['resumen']->ultimo_ticket ?? 'N/A') ?></span>
             </div>
         </div>
 
@@ -333,22 +333,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const formCierre = document.getElementById('form-cierre');
     formCierre.addEventListener('submit', function(e) {
         e.preventDefault();
-        if(!confirm('¿Estás seguro de que deseas cerrar la caja? Esto iniciará un nuevo turno.')) return;
-        
-        const formData = new FormData(this);
-        fetch(this.action, {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if(data.status === 'success') {
-                // TODO: Llamar a imprimir el reporte Z si es necesario
-                alert('Caja cerrada correctamente. Reporte Z generado con ID: #' + data.id);
-                window.location.href = '<?= URLROOT ?>/pos';
-            } else {
-                alert('Hubo un error al cerrar la caja');
-            }
+        Swal.fire({
+            title: '¿Cerrar la caja?',
+            text: 'Esto iniciará un nuevo turno.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sí, cerrar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (!result.isConfirmed) return;
+            const formData = new FormData(this);
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    Swal.fire({ icon: 'success', title: 'Caja cerrada', text: 'Reporte Z #' + data.id });
+                    window.location.href = '<?= URLROOT ?>/pos';
+                } else {
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'Hubo un error al cerrar la caja' });
+                }
+            });
         });
     });
 });

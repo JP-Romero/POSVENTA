@@ -1385,3 +1385,121 @@ html.dark-mode .bg-success.bg-opacity-10.text-success {
         border-color: #ccc !important;
     }
 }
+
+/* ============================================
+   POS ESTADISTICAS (stats-* components)
+   ============================================ */
+html.dark-mode .stats-container {
+    background-color: var(--dark-bg-secondary) !important;
+    color: var(--dark-text-primary) !important;
+}
+html.dark-mode .stats-title {
+    color: var(--dark-text-primary) !important;
+}
+html.dark-mode .stats-tabs {
+    background: var(--dark-bg-tertiary) !important;
+}
+html.dark-mode .stats-tab {
+    color: var(--dark-text-muted) !important;
+}
+html.dark-mode .stats-tab.active {
+    background: var(--bs-danger, #e74c3c) !important;
+    color: #fff !important;
+}
+html.dark-mode .stats-tab:hover:not(.active) {
+    background: var(--dark-bg-elevated) !important;
+    color: var(--dark-text-primary) !important;
+}
+html.dark-mode .stats-card {
+    background: var(--dark-bg-tertiary) !important;
+}
+html.dark-mode .stats-card-title {
+    color: var(--bs-warning, #fbbf24) !important;
+    border-bottom-color: var(--dark-border-color) !important;
+}
+html.dark-mode .stats-row {
+    border-bottom-color: var(--dark-border-subtle) !important;
+}
+html.dark-mode .stats-val {
+    color: var(--bs-success, #34d399) !important;
+}
+html.dark-mode .btn-print {
+    background: var(--bs-primary, #3b82f6) !important;
+}
+html.dark-mode .btn-print:hover {
+    background: #2563eb !important;
+}
+
+/* ============================================
+   POS CIERRE (cierre-* components)
+   ============================================ */
+html.dark-mode .cierre-container {
+    background-color: var(--dark-bg-secondary) !important;
+    color: var(--dark-text-primary) !important;
+}
+html.dark-mode .cierre-ticket {
+    background-color: var(--dark-bg-tertiary) !important;
+    border-color: var(--dark-border-color) !important;
+}
+html.dark-mode .cierre-header {
+    border-bottom-color: var(--dark-border-subtle) !important;
+}
+html.dark-mode .cierre-title {
+    color: var(--dark-text-primary) !important;
+}
+html.dark-mode .cierre-section-title {
+    background-color: var(--dark-bg-elevated) !important;
+    color: var(--bs-warning, #fbbf24) !important;
+}
+html.dark-mode .cierre-row {
+    color: var(--dark-text-primary) !important;
+}
+html.dark-mode .cierre-row.total {
+    color: var(--dark-text-primary) !important;
+    border-top-color: var(--dark-border-color) !important;
+}
+html.dark-mode .cierre-row.net {
+    color: var(--bs-success, #34d399) !important;
+}
+html.dark-mode .cierre-row.expense {
+    color: var(--bs-danger, #f87171) !important;
+}
+html.dark-mode .cierre-divider {
+    border-top-color: var(--dark-border-subtle) !important;
+}
+html.dark-mode .btn-cierre {
+    background-color: var(--bs-danger, #ef4444) !important;
+}
+html.dark-mode .btn-cierre:hover {
+    background-color: #dc2626 !important;
+}
+html.dark-mode .btn-movimiento {
+    background-color: var(--bs-primary, #3b82f6) !important;
+}
+html.dark-mode .btn-movimiento:hover {
+    background-color: #2563eb !important;
+}
+
+/* ============================================
+   LOGIN PAGE
+   ============================================ */
+html.dark-mode {
+    --login-gradient-start: #1e3a5f;
+    --login-gradient-end: #2d1b4e;
+    --login-card-bg: var(--dark-bg-secondary);
+    --login-card-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    --login-footer-bg: var(--dark-bg-tertiary);
+    --login-footer-color: var(--dark-text-muted);
+    --login-input-bg: var(--dark-bg-primary);
+}
+
+/* ============================================
+   ERROR PAGES (404, 500)
+   ============================================ */
+html.dark-mode {
+    --error-bg: var(--dark-bg-primary);
+    --error-text: var(--dark-text-secondary);
+    --error-primary: var(--bs-danger, #f87171);
+    --error-link: #60a5fa;
+}
+

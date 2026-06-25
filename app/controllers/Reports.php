@@ -84,6 +84,14 @@ class Reports extends Controller {
                           GROUP BY DATE(fecha) ORDER BY dia ASC');
         $purchases_by_date = $this->db->resultSet();
 
+        // Total compras del mes
+        $this->db->query('SELECT SUM(total) as total FROM compras WHERE MONTH(fecha) = MONTH(CURDATE()) AND YEAR(fecha) = YEAR(CURDATE())');
+        $month_purchases = $this->db->single()->total ?? 0;
+
+        // Total compras últimos 30 días
+        $this->db->query('SELECT SUM(total) as total FROM compras WHERE fecha >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)');
+        $last30_purchases = $this->db->single()->total ?? 0;
+
         $data = [
             'activeTab' => $tab,
             'fecha_inicio' => $fecha_inicio,
@@ -98,6 +106,8 @@ class Reports extends Controller {
             'out_of_stock' => $out_of_stock,
             'purchases_by_provider' => $purchases_by_provider,
             'purchases_by_date' => $purchases_by_date,
+            'month_purchases' => $month_purchases,
+            'last30_purchases' => $last30_purchases,
         ];
 
         $this->view('reports/index', $data);

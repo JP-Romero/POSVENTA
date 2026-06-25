@@ -1,7 +1,7 @@
 <aside id="sidebar" class="sidebar" role="navigation" aria-label="Menú principal">
     <div class="sidebar-header">
         <a href="<?= URLROOT ?>" class="sidebar-brand d-flex align-items-center px-3">
-            <i class="fa fa-store-alt me-2 fs-4" style="color: #fbbf24;"></i>
+            <i class="fa fa-store-alt me-2 fs-4 text-warning"></i>
             <span class="fw-bold fs-5">POSVENTA</span>
         </a>
         <button class="btn btn-sm btn-outline-light ms-auto me-2 d-md-none" id="sidebarClose" aria-label="Cerrar menú">
@@ -14,14 +14,14 @@
     <nav class="sidebar-nav flex-grow-1 px-2">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'dashboard') ? 'active' : '' ?>" href="<?= URLROOT ?>/pages/dashboard">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'dashboard') ? 'active' : '' ?>" href="<?= URLROOT ?>/pages/dashboard" <?= (isset($currentPage) && $currentPage === 'dashboard') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'pos') ? 'active' : '' ?>" href="<?= URLROOT ?>/pos">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'pos') ? 'active' : '' ?>" href="<?= URLROOT ?>/pos" <?= (isset($currentPage) && $currentPage === 'pos') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-cash-register"></i>
                     <span>Punto de Venta</span>
                 </a>
@@ -29,7 +29,7 @@
             
             <?php if(isAdmin()) : ?>
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'users') ? 'active' : '' ?>" href="<?= URLROOT ?>/users">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'users') ? 'active' : '' ?>" href="<?= URLROOT ?>/users" <?= (isset($currentPage) && $currentPage === 'users') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-users-cog"></i>
                     <span>Usuarios</span>
                 </a>
@@ -37,28 +37,28 @@
             <?php endif; ?>
             
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'categories') ? 'active' : '' ?>" href="<?= URLROOT ?>/categories">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'categories') ? 'active' : '' ?>" href="<?= URLROOT ?>/categories" <?= (isset($currentPage) && $currentPage === 'categories') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-tags"></i>
                     <span>Categorías</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'products') ? 'active' : '' ?>" href="<?= URLROOT ?>/products">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'products') ? 'active' : '' ?>" href="<?= URLROOT ?>/products" <?= (isset($currentPage) && $currentPage === 'products') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-box"></i>
                     <span>Productos</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'providers') ? 'active' : '' ?>" href="<?= URLROOT ?>/providers">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'providers') ? 'active' : '' ?>" href="<?= URLROOT ?>/providers" <?= (isset($currentPage) && $currentPage === 'providers') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-truck"></i>
                     <span>Proveedores</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'clients') ? 'active' : '' ?>" href="<?= URLROOT ?>/clients">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'clients') ? 'active' : '' ?>" href="<?= URLROOT ?>/clients" <?= (isset($currentPage) && $currentPage === 'clients') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-users"></i>
                     <span>Clientes</span>
                 </a>
@@ -66,7 +66,7 @@
             
             <?php if(isAdmin()) : ?>
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'purchases') ? 'active' : '' ?>" href="<?= URLROOT ?>/purchases">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'purchases') ? 'active' : '' ?>" href="<?= URLROOT ?>/purchases" <?= (isset($currentPage) && $currentPage === 'purchases') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-shopping-cart"></i>
                     <span>Compras</span>
                 </a>
@@ -83,13 +83,13 @@
                 <div class="collapse" id="inventoryCollapse">
                     <ul class="nav flex-column ps-4">
                         <li class="nav-item">
-                            <a class="nav-link <?= (isset($currentPage) && $currentPage === 'inventories') ? 'active' : '' ?>" href="<?= URLROOT ?>/inventories">
+                            <a class="nav-link <?= (isset($currentPage) && $currentPage === 'inventories') ? 'active' : '' ?>" href="<?= URLROOT ?>/inventories" <?= (isset($currentPage) && $currentPage === 'inventories') ? 'aria-current="page"' : '' ?>>
                                 <i class="fa fa-boxes"></i>
                                 <span>Existencias</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?= (isset($currentPage) && $currentPage === 'kardex') ? 'active' : '' ?>" href="<?= URLROOT ?>/inventories/kardex">
+                            <a class="nav-link <?= (isset($currentPage) && $currentPage === 'kardex') ? 'active' : '' ?>" href="<?= URLROOT ?>/inventories/kardex" <?= (isset($currentPage) && $currentPage === 'kardex') ? 'aria-current="page"' : '' ?>>
                                 <i class="fa fa-list-alt"></i>
                                 <span>Kardex</span>
                             </a>
@@ -99,7 +99,7 @@
             </li>
             
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'sales') ? 'active' : '' ?>" href="<?= URLROOT ?>/sales">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'sales') ? 'active' : '' ?>" href="<?= URLROOT ?>/sales" <?= (isset($currentPage) && $currentPage === 'sales') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-receipt"></i>
                     <span>Ventas</span>
                 </a>
@@ -107,14 +107,14 @@
             
             <?php if(isAdmin()) : ?>
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'reports') ? 'active' : '' ?>" href="<?= URLROOT ?>/reports">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'reports') ? 'active' : '' ?>" href="<?= URLROOT ?>/reports" <?= (isset($currentPage) && $currentPage === 'reports') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-chart-bar"></i>
                     <span>Reportes</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'settings') ? 'active' : '' ?>" href="<?= URLROOT ?>/settings">
+                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'settings') ? 'active' : '' ?>" href="<?= URLROOT ?>/settings" <?= (isset($currentPage) && $currentPage === 'settings') ? 'aria-current="page"' : '' ?>>
                     <i class="fa fa-cog"></i>
                     <span>Configuración</span>
                 </a>

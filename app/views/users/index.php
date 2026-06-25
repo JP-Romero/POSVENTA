@@ -36,10 +36,9 @@
                         </td>
                         <td>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" 
+                                <input class="form-check-input toggle-user-status" type="checkbox" 
                                     data-user-id="<?= $user->id ?>" 
-                                    <?= $user->estado ? 'checked' : '' ?>
-                                    onchange="toggleUserStatus(this)">
+                                    <?= $user->estado ? 'checked' : '' ?>>
                                 <label class="form-check-label ms-1">
                                     <?= $user->estado ? 'Activo' : 'Inactivo' ?>
                                 </label>
@@ -58,6 +57,11 @@
 </div>
 
 <script>
+document.addEventListener('change', function(e) {
+    const checkbox = e.target.closest('.toggle-user-status');
+    if (checkbox) toggleUserStatus(checkbox);
+});
+
 function toggleUserStatus(checkbox) {
     const userId = checkbox.dataset.userId;
     const originalState = checkbox.checked;
@@ -77,18 +81,17 @@ function toggleUserStatus(checkbox) {
             checkbox.checked = !originalState;
             label.textContent = checkbox.checked ? 'Activo' : 'Inactivo';
             checkbox.parentElement.querySelector('.form-check-input').checked = checkbox.checked;
-            // Update badge if needed
         } else {
             checkbox.checked = originalState;
             label.textContent = originalState ? 'Activo' : 'Inactivo';
-            alert('Error: ' + (res.message || 'No se pudo cambiar el estado'));
+            Swal.fire({ icon: 'error', title: 'Error', text: res.message || 'No se pudo cambiar el estado' });
         }
     })
     .catch(() => {
         checkbox.disabled = false;
         checkbox.checked = originalState;
         label.textContent = originalState ? 'Activo' : 'Inactivo';
-        alert('Error de conexión');
+        Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'No se pudo conectar con el servidor' });
     });
 }
 </script>

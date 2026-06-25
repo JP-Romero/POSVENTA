@@ -14,6 +14,7 @@
 
 <div class="card shadow-sm">
     <div class="card-body p-0">
+        <div class="table-responsive">
         <table id="providers-table" class="table table-hover mb-0">
             <thead class="table-light">
                 <tr>
@@ -33,13 +34,13 @@
                         <td><?= h($provider->correo ?? '—') ?></td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <a href="<?= URLROOT ?>/providers/edit/<?= $provider->id ?>" class="btn btn-outline-warning" title="Editar">
+                                <a href="<?= URLROOT ?>/providers/edit/<?= $provider->id ?>" class="btn btn-outline-warning" title="Editar" aria-label="Editar proveedor">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="<?= URLROOT ?>/providers/history/<?= $provider->id ?>" class="btn btn-outline-info" title="Ver Historial">
+                                <a href="<?= URLROOT ?>/providers/history/<?= $provider->id ?>" class="btn btn-outline-info" title="Ver Historial" aria-label="Ver historial del proveedor">
                                     <i class="fa fa-history"></i>
                                 </a>
-                                <button type="button" class="btn btn-outline-danger delete-provider" data-id="<?= $provider->id ?>" data-name="<?= h($provider->nombre) ?>" title="Eliminar">
+                                <button type="button" class="btn btn-outline-danger delete-provider" data-id="<?= $provider->id ?>" data-name="<?= h($provider->nombre) ?>" title="Eliminar" aria-label="Eliminar proveedor">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </div>
@@ -48,6 +49,7 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 
@@ -71,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (r.success) {
                         location.reload();
                     } else {
-                        alert('Error: ' + (r.message || 'No se pudo eliminar'));
+                        Swal.fire({ icon: 'error', title: 'Error', text: r.message || 'No se pudo eliminar' });
                     }
                 }, 'json');
             }

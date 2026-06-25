@@ -55,29 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Dark mode toggle
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const html = document.documentElement;
-    
-    if (darkModeToggle) {
-        // Restore theme from localStorage or system preference
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
-        
-        if (isDark) {
-            html.classList.add('dark-mode');
-            darkModeToggle.innerHTML = '<i class="fa fa-sun"></i>';
-        }
-        
-        darkModeToggle.addEventListener('click', function() {
-            html.classList.toggle('dark-mode');
-            const isDarkNow = html.classList.contains('dark-mode');
-            localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
-            darkModeToggle.innerHTML = isDarkNow ? '<i class="fa fa-sun"></i>' : '<i class="fa fa-moon"></i>';
-        });
-    }
-    
     // Auto-hide flash messages
     const flashMsg = document.getElementById('msg-flash');
     if (flashMsg) {

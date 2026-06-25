@@ -132,10 +132,10 @@
                                             <?php endif; ?>
                                         </td>
                                         <td>
-                                            <button class="btn btn-sm btn-outline-primary" onclick="editPrinter(<?= htmlspecialchars(json_encode($p)) ?>)">
+                                            <button class="btn btn-sm btn-outline-primary btn-edit-printer" data-printer='<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>'>
                                                 <i class="fa fa-edit"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-outline-success" onclick="testPrinter(<?= $p->id ?>)">
+                                            <button class="btn btn-sm btn-outline-success btn-test-printer" data-printer-id="<?= $p->id ?>">
                                                 <i class="fa fa-print"></i>
                                             </button>
                                             <button class="btn btn-sm btn-outline-danger delete-printer" data-id="<?= $p->id ?>" data-name="<?= h($p->nombre) ?>">
@@ -247,7 +247,11 @@
 </div>
 
 <script>
-function editPrinter(p) {
+// Edit printer via delegation
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.btn-edit-printer');
+    if (!btn) return;
+    const p = JSON.parse(btn.dataset.printer);
     document.getElementById('printerModalLabel').textContent = 'Editar Impresora';
     document.getElementById('printerAction').value = 'update_printer';
     document.getElementById('printerId').value = p.id;
@@ -256,20 +260,20 @@ function editPrinter(p) {
     document.getElementById('imp_conexion').value = p.conexion;
     document.getElementById('imp_ancho').value = p.ancho_papel;
     document.getElementById('imp_activa').checked = p.activa == 1;
-    
     new bootstrap.Modal(document.getElementById('printerModal')).show();
-}
+});
 
-function testPrinter(id) {
-    const btn = event.target.closest('button');
+// Test printer via delegation
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.btn-test-printer');
+    if (!btn) return;
+    const id = btn.dataset.printerId;
     const original = btn.innerHTML;
     btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
     btn.disabled = true;
-    
     const formData = new FormData();
     formData.append('action', 'test_printer');
     formData.append('imp_id', id);
-    
     fetch('<?= URLROOT ?>/settings?tab=impresoras', {
         method: 'POST',
         body: formData
@@ -278,18 +282,18 @@ function testPrinter(id) {
     .then(res => {
         btn.innerHTML = original;
         btn.disabled = false;
-        if (res.success) {
-            alert('✅ ' + res.message);
-        } else {
-            alert('❌ ' + res.message);
-        }
+        Swal.fire({
+            icon: res.success ? 'success' : 'error',
+            title: res.success ? 'Éxito' : 'Error',
+            text: res.message
+        });
     })
     .catch(() => {
         btn.innerHTML = original;
         btn.disabled = false;
-        alert('❌ Error de conexión');
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Error de conexión' });
     });
-}
+});
 
 // Reset modal on close
 document.getElementById('printerModal').addEventListener('hidden.bs.modal', function() {
@@ -305,8 +309,16 @@ document.addEventListener('click', function(e) {
         const btn = e.target.closest('.delete-printer');
         const id = btn.dataset.id;
         const name = btn.dataset.name;
-        showConfirm('¿Eliminar la impresora "' + name + '"?', function(result) {
-            if (result) {
+        Swal.fire({
+            title: '¿Eliminar la impresora "' + name + '"?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
                 const formData = new FormData();
                 formData.append('action', 'delete_printer');
                 formData.append('imp_id', id);
@@ -318,11 +330,12 @@ document.addEventListener('click', function(e) {
                 .then(res => {
                     if (res.success) {
                         btn.closest('tr').remove();
+                        Swal.fire({ icon: 'success', title: 'Eliminado', timer: 1500, showConfirmButton: false });
                     } else {
-                        alert('Error: ' + (res.message || 'No se pudo eliminar'));
+                        Swal.fire({ icon: 'error', title: 'Error', text: res.message || 'No se pudo eliminar' });
                     }
                 })
-                .catch(() => alert('Error de conexión'));
+                .catch(() => Swal.fire({ icon: 'error', title: 'Error', text: 'Error de conexión' }));
             }
         });
     }

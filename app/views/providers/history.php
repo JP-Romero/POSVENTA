@@ -52,7 +52,7 @@
                         <td><?= h($purchase->usuario_nombre) ?></td>
                         <td class="text-end fw-bold"><?= fmt($purchase->total) ?></td>
                         <td>
-                            <button class="btn btn-sm btn-outline-info" onclick="showPurchaseDetails(<?= $purchase->id ?>)">
+                            <button class="btn btn-sm btn-outline-info btn-purchase-detail" data-purchase-id="<?= $purchase->id ?>">
                                 <i class="fa fa-eye"></i>
                             </button>
                         </td>
@@ -80,6 +80,11 @@
 </div>
 
 <script>
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.btn-purchase-detail');
+    if (btn) showPurchaseDetails(btn.dataset.purchaseId);
+});
+
 function showPurchaseDetails(purchaseId) {
     const modal = new bootstrap.Modal(document.getElementById('purchaseDetailModal'));
     const content = document.getElementById('purchaseDetailContent');

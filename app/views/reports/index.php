@@ -170,11 +170,7 @@
                     <div class="card bg-info text-white shadow">
                         <div class="card-body">
                             <h5 class="card-title">Compras del Mes</h5>
-                            <?php 
-                            $this->db->query('SELECT SUM(total) as total FROM compras WHERE MONTH(fecha) = MONTH(CURDATE()) AND YEAR(fecha) = YEAR(CURDATE())');
-                            $month_purchases = $this->db->single()->total ?? 0;
-                            ?>
-                            <h2 class="display-4 fw-bold"><?= fmt($month_purchases) ?></h2>
+                            <h2 class="display-4 fw-bold"><?= fmt($data['month_purchases']) ?></h2>
                         </div>
                     </div>
                 </div>
@@ -182,11 +178,7 @@
                     <div class="card bg-light text-dark shadow">
                         <div class="card-body">
                             <h5 class="card-title">Compras Últimos 30 Días</h5>
-                            <?php 
-                            $this->db->query('SELECT SUM(total) as total FROM compras WHERE fecha >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)');
-                            $last30_purchases = $this->db->single()->total ?? 0;
-                            ?>
-                            <h2 class="display-4 fw-bold"><?= fmt($last30_purchases) ?></h2>
+                            <h2 class="display-4 fw-bold"><?= fmt($data['last30_purchases']) ?></h2>
                         </div>
                     </div>
                 </div>
@@ -250,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                y: { beginAtZero: true, ticks: { callback: v => 'C$ ' + v.toLocaleString() } }
+                y: { beginAtZero: true, ticks: { callback: v => '<?= getConfig('moneda_simbolo', 'C$') ?> ' + v.toLocaleString() } }
             }
         }
     });

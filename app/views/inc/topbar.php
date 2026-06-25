@@ -1,4 +1,4 @@
-<header id="topbar" class="topbar no-sidebar" role="banner" style="left: 0;">
+<header id="topbar" class="topbar" role="banner">
     <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center gap-3">
             <a href="<?= URLROOT ?>" class="btn btn-primary btn-sm d-flex align-items-center gap-2 fw-semibold" title="Ir al inicio">
