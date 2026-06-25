@@ -89,14 +89,14 @@
                 </button>
 
                 <div class="pos-actions-bottom">
-                    <button class="pos-btn-action" onclick="handlePayment('tarjeta')" title="Cobrar con tarjeta">
-                        <i class="fas fa-credit-card"></i>
+                    <button class="pos-btn-action" id="btn-tarjeta" aria-label="Cobrar con tarjeta" title="Cobrar con tarjeta">
+                        <i class="fas fa-credit-card" aria-hidden="true"></i>
                     </button>
-                    <button class="pos-btn-action" onclick="printLastReceipt()" title="Reimprimir">
-                        <i class="fas fa-print"></i>
+                    <button class="pos-btn-action" id="btn-reimprimir" aria-label="Reimprimir último ticket" title="Reimprimir">
+                        <i class="fas fa-print" aria-hidden="true"></i>
                     </button>
-                    <button class="pos-btn-action" onclick="clearCart()" title="Cancelar">
-                        <i class="fas fa-trash"></i>
+                    <button class="pos-btn-action" id="btn-cancelar" aria-label="Cancelar venta y vaciar carrito" title="Cancelar">
+                        <i class="fas fa-trash" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>

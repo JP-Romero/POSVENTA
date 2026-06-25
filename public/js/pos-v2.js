@@ -51,6 +51,35 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTotal();
         document.getElementById('search-input').focus();
     }
+    
+    // Bottom Action Listeners
+    document.getElementById('btn-tarjeta').addEventListener('click', () => handlePayment('tarjeta'));
+    document.getElementById('btn-reimprimir').addEventListener('click', () => printLastReceipt());
+    document.getElementById('btn-cancelar').addEventListener('click', () => clearCart());
+});
+
+// Event Delegation for Categories
+document.querySelector('.pos-categories').addEventListener('click', function(e) {
+    const btn = e.target.closest('.pos-cat-btn');
+    if (!btn) return;
+
+    document.querySelectorAll('.pos-cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCategory = btn.dataset.category;
+    loadProducts();
+});
+
+// Event Delegation for Products
+document.getElementById('products-grid').addEventListener('click', function(e) {
+    const card = e.target.closest('.pos-product-card');
+    if (!card) return;
+
+    const p = {
+        id: card.dataset.id,
+        nombre: card.dataset.nombre,
+        precio_venta: card.dataset.precio
+    };
+    addToCart(p);
 });
 
 // Load products
@@ -63,11 +92,11 @@ function loadProducts() {
             
             products.forEach(p => {
                 const imgHtml = p.imagen ? 
-                    `<img src="${p.imagen}" alt="${p.nombre}" onerror="this.outerHTML='<div class=\'pos-product-placeholder\'><i class=\'fas fa-book\'></i></div>'">` :
-                    '<div class="pos-product-placeholder"><i class="fas fa-book"></i></div>';
+                    `<img src="${p.imagen}" alt="${p.nombre}" onerror="this.outerHTML='<div class=\'pos-product-placeholder\'><i class=\'fas fa-book\' aria-hidden=\'true\'></i></div>'">` :
+                    '<div class="pos-product-placeholder"><i class="fas fa-book" aria-hidden="true"></i></div>';
             
                 html += `
-                    <div class="pos-product-card" onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+                    <div class="pos-product-card" tabindex="0" role="button" aria-label="Agregar ${p.nombre} al carrito" data-id="${p.id}" data-nombre="${p.nombre}" data-precio="${p.precio_venta}">
                         ${imgHtml}
                         <div class="pos-product-name">${p.nombre}</div>
                         <div class="pos-product-price">$${parseFloat(p.precio_venta).toFixed(2)}</div>
@@ -79,7 +108,7 @@ function loadProducts() {
         })
         .catch(err => {
             console.error('Error:', err);
-            document.getElementById('products-grid').innerHTML = '<div style="text-align:center;color:var(--gray);padding:20px;">Error al cargar productos</div>';
+            document.getElementById('products-grid').innerHTML = '<div class="text-center p-4 text-muted">Error al cargar productos</div>';
         });
 }
 
@@ -261,15 +290,7 @@ function printLastReceipt() {
         });
 }
 
-// Category click handlers
-document.querySelectorAll('.pos-cat-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.pos-cat-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        currentCategory = this.dataset.category;
-        loadProducts();
-    });
-});
+// (Category handlers replaced by event delegation)
 
 // Keyboard shortcuts
 document.addEventListener('keydown', function(e) {
