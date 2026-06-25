@@ -3,8 +3,8 @@
 <style>
 /* Dark theme for Estadisticas */
 .stats-container {
-    background-color: var(--dark-bg-primary, #1a1a1a);
-    color: var(--dark-text-primary, #e0e0e0);
+    background-color: #1a1a1a;
+    color: #e0e0e0;
     min-height: calc(100vh - 60px);
     padding: 2rem;
     font-family: 'Inter', sans-serif;
@@ -18,13 +18,13 @@
 .stats-title {
     font-weight: 700;
     font-size: 1.5rem;
-    color: var(--dark-text-inverse, #fff);
+    color: #fff;
     margin: 0;
 }
 .stats-tabs {
     display: flex;
     gap: 0.5rem;
-    background: var(--dark-bg-secondary, #222);
+    background: #222;
     padding: 0.5rem;
     border-radius: 8px;
     overflow-x: auto;
@@ -32,7 +32,7 @@
 .stats-tab {
     background: transparent;
     border: none;
-    color: var(--dark-text-muted, #aaa);
+    color: #aaa;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
@@ -44,11 +44,11 @@
     color: #fff;
 }
 .stats-tab:hover:not(.active) {
-    background: var(--dark-bg-tertiary, #333);
-    color: var(--dark-text-inverse, #fff);
+    background: #333;
+    color: #fff;
 }
 .stats-card {
-    background: var(--dark-bg-tertiary, #252525);
+    background: #252525;
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -60,14 +60,14 @@
     font-size: 1.1rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
-    border-bottom: 1px solid var(--dark-border-color, #444);
+    border-bottom: 1px solid #444;
     padding-bottom: 0.5rem;
 }
 .stats-row {
     display: flex;
     justify-content: space-between;
     padding: 0.8rem 0;
-    border-bottom: 1px solid var(--dark-border-subtle, #333);
+    border-bottom: 1px solid #333;
 }
 .stats-row:last-child {
     border-bottom: none;

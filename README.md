@@ -425,3 +425,15 @@ El sistema POSVENTA usa un layout **sin sidebar**, basado en **topbar + main-con
 - No implementar un sidebar ni wrapper basado en sidebar a futuro sin actualizar toda la capa de estilos y scripts asociados.
 
 Esta decisión mantiene la UI consistente con el diseño original, código más ligero y fácil de mantener, y evita riesgo de activar un sidebar no deseado.
+
+## Modo Oscuro
+
+El sistema POSVENTA **no soporta modo oscuro**. Se eliminó completamente:
+
+- `public/css/dark-mode.css` - eliminado
+- `public/js/dark-mode.js` - eliminado
+- Botón de alternancia en `topbar.php` - eliminado
+- Referencias a variables `--dark-*` en vistas PHP - reemplazadas por valores fijos
+- Todos los bloques `html.dark-mode` en `style.css` - eliminados
+
+El layout es **fijo en light mode** usando Bootstrap 5 y CSS personalizado con el sistema de elevación semántica (`--elev-*`). Cualquier implementación futura de modo oscuro debe partir desde cero, sin afectar la capa de estilos actual.

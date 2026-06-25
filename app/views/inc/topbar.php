@@ -59,9 +59,6 @@
                 </ul>
             </div>
             
-            <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle" aria-label="Alternar modo oscuro" title="Modo oscuro">
-                <i class="fa fa-moon"></i>
-            </button>
             
             <div class="dropdown ms-2">
                 <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">

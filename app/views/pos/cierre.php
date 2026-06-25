@@ -3,15 +3,15 @@
 <style>
 /* Dark theme for Cierre similar to the requested images */
 .cierre-container {
-    background-color: var(--dark-bg-primary, #1a1a1a);
-    color: var(--dark-text-primary, #e0e0e0);
+    background-color: #1a1a1a;
+    color: #e0e0e0;
     min-height: calc(100vh - 60px);
     padding: 2rem;
     font-family: 'Inter', sans-serif;
 }
 .cierre-ticket {
-    background-color: var(--dark-bg-secondary, #121212);
-    border: 1px solid var(--dark-border-color, #333);
+    background-color: #121212;
+    border: 1px solid #333;
     border-radius: 8px;
     max-width: 500px;
     margin: 0 auto;
@@ -20,7 +20,7 @@
 }
 .cierre-header {
     text-align: center;
-    border-bottom: 1px dashed var(--dark-text-muted, #555);
+    border-bottom: 1px dashed #555;
     padding-bottom: 1rem;
     margin-bottom: 1rem;
 }
@@ -28,7 +28,7 @@
     font-weight: 700;
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
-    color: var(--dark-text-inverse, #fff);
+    color: #fff;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -36,7 +36,7 @@
     margin-bottom: 1.5rem;
 }
 .cierre-section-title {
-    background-color: var(--dark-bg-tertiary, #333);
+    background-color: #333;
     color: var(--bs-warning, #f39c12);
     padding: 0.3rem 0.5rem;
     font-weight: bold;
@@ -53,8 +53,8 @@
 }
 .cierre-row.total {
     font-weight: bold;
-    color: var(--dark-text-inverse, #fff);
-    border-top: 1px solid var(--dark-border-color, #444);
+    color: #fff;
+    border-top: 1px solid #444;
     padding-top: 0.5rem;
     margin-top: 0.5rem;
 }
@@ -65,7 +65,7 @@
     color: var(--bs-danger, #e74c3c);
 }
 .cierre-divider {
-    border-top: 1px dashed var(--dark-text-muted, #555);
+    border-top: 1px dashed #555;
     margin: 1rem 0;
 }
 .cierre-actions {

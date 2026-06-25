@@ -11,18 +11,6 @@
     --elev-4: color-mix(in srgb, var(--elev-base), white 30%);
 }
 
-/* --- Dark Mode with Opacity-based Typography --- */
-html.dark-mode {
-    --bg-primary: var(--elev-base);
-    --bg-secondary: var(--elev-1);
-    --bg-tertiary: var(--elev-2);
-    --bg-elevated: var(--elev-3);
-    --text-primary: rgba(255, 255, 255, 0.95);
-    --text-secondary: rgba(255, 255, 255, 0.65);
-    --text-tertiary: rgba(255, 255, 255, 0.40);
-    --border-color: var(--elev-3);
-}
-
 /* Light Mode (default) */
 :root {
     --bg-primary: #f8fafc;
@@ -131,47 +119,12 @@ body {
     color: #64748b !important;
 }
 
-html.dark-mode .text-gray-900,
-html.dark-mode .text-gray-800,
-html.dark-mode .text-gray-700 {
-    color: #f1f5f9 !important;
-}
 
-html.dark-mode .text-gray-500 {
-    color: #94a3b8 !important;
-}
 
-html.dark-mode .dropdown-menu {
-    background: var(--bg-secondary) !important;
-}
 
-html.dark-mode .dropdown-item {
-    color: var(--text-primary) !important;
-}
 
-html.dark-mode .dropdown-item:hover {
-    background: var(--bg-tertiary) !important;
-}
 
-html.dark-mode a.text-gray-800:hover,
-html.dark-mode a.text-gray-700:hover,
-html.dark-mode .group:hover .text-gray-800 {
-    color: #93c5fd !important;
-}
 
-html.dark-mode .text-indigo-600,
-html.dark-mode .text-blue-600,
-html.dark-mode .text-emerald-600,
-html.dark-mode .text-amber-600,
-html.dark-mode .text-violet-600,
-html.dark-mode .text-sky-600,
-html.dark-mode .text-rose-600,
-html.dark-mode .text-orange-600,
-html.dark-mode .text-cyan-600,
-html.dark-mode .text-teal-600,
-html.dark-mode .text-purple-600 {
-    color: #93c5fd !important;
-}
 
 /* Background utilities using elevation system */
 .bg-white { background: var(--bg-secondary) !important; }
@@ -179,40 +132,28 @@ html.dark-mode .text-purple-600 {
 
 /* Semantic background families - darken/lighten via color-mix */
 .bg-primary-light { background: color-mix(in srgb, var(--elev-base), var(--primary) 12%) !important; }
-html.dark-mode .bg-primary-light { background: color-mix(in srgb, var(--elev-base), white 18%) !important; }
 
 .bg-indigo-50 { background: color-mix(in srgb, var(--elev-4), white 75%) !important; }
-html.dark-mode .bg-indigo-50 { background: color-mix(in srgb, var(--elev-2), var(--primary) 85%) !important; }
 
 .bg-blue-50 { background: color-mix(in srgb, var(--elev-4), white 80%) !important; }
-html.dark-mode .bg-blue-50 { background: color-mix(in srgb, var(--elev-2), var(--info) 70%) !important; }
 
 .bg-emerald-50 { background: color-mix(in srgb, var(--elev-4), white 78%) !important; }
-html.dark-mode .bg-emerald-50 { background: color-mix(in srgb, var(--elev-2), var(--success) 80%) !important; }
 
 .bg-amber-50 { background: color-mix(in srgb, var(--elev-4), white 82%) !important; }
-html.dark-mode .bg-amber-50 { background: color-mix(in srgb, var(--elev-2), var(--warning) 82%) !important; }
 
 .bg-violet-50 { background: color-mix(in srgb, var(--elev-4), white 72%) !important; }
-html.dark-mode .bg-violet-50 { background: color-mix(in srgb, var(--elev-2), var(--primary) 65%) !important; }
 
 .bg-sky-50 { background: color-mix(in srgb, var(--elev-4), white 76%) !important; }
-html.dark-mode .bg-sky-50 { background: color-mix(in srgb, var(--elev-2), var(--info) 72%) !important; }
 
 .bg-rose-50 { background: color-mix(in srgb, var(--elev-4), white 74%) !important; }
-html.dark-mode .bg-rose-50 { background: color-mix(in srgb, var(--elev-2), var(--danger) 68%) !important; }
 
 .bg-orange-50 { background: color-mix(in srgb, var(--elev-4), white 85%) !important; }
-html.dark-mode .bg-orange-50 { background: color-mix(in srgb, var(--elev-2), var(--warning) 70%) !important; }
 
 .bg-cyan-50 { background: color-mix(in srgb, var(--elev-4), white 70%) !important; }
-html.dark-mode .bg-cyan-50 { background: color-mix(in srgb, var(--elev-2), var(--info) 75%) !important; }
 
 .bg-teal-50 { background: color-mix(in srgb, var(--elev-4), white 68%) !important; }
-html.dark-mode .bg-teal-50 { background: color-mix(in srgb, var(--elev-2), var(--success) 72%) !important; }
 
 .bg-purple-50 { background: color-mix(in srgb, var(--elev-4), white 73%) !important; }
-html.dark-mode .bg-purple-50 { background: color-mix(in srgb, var(--elev-2), var(--primary) 62%) !important; }
 
 /* Border colors on hover */
 .group:hover .border-indigo-500 { border-color: #6366f1 !important; }
@@ -228,7 +169,6 @@ html.dark-mode .bg-purple-50 { background: color-mix(in srgb, var(--elev-2), var
 .group:hover .border-purple-500 { border-color: #a855f7 !important; }
 .group:hover .border-gray-500 { border-color: #6b7280 !important; }
 
-html.dark-mode .group:hover .border-indigo-500 { border-color: #818cf8 !important; }
 
 /* Group hover text colors */
 .group:hover .group-hover-text-indigo-600 { color: #4f46e5 !important; }
@@ -244,20 +184,6 @@ html.dark-mode .group:hover .border-indigo-500 { border-color: #818cf8 !importan
 .group:hover .group-hover-text-purple-600 { color: #9333ea !important; }
 .group:hover .group-hover-text-gray-700 { color: #374151 !important; }
 
-html.dark-mode .group:hover .group-hover-text-indigo-600,
-html.dark-mode .group:hover .group-hover-text-blue-600,
-html.dark-mode .group:hover .group-hover-text-emerald-600,
-html.dark-mode .group:hover .group-hover-text-amber-600,
-html.dark-mode .group:hover .group-hover-text-violet-600,
-html.dark-mode .group:hover .group-hover-text-sky-600,
-html.dark-mode .group:hover .group-hover-text-rose-600,
-html.dark-mode .group:hover .group-hover-text-orange-600,
-html.dark-mode .group:hover .group-hover-text-cyan-600,
-html.dark-mode .group:hover .group-hover-text-teal-600,
-html.dark-mode .group:hover .group-hover-text-purple-600,
-html.dark-mode .group:hover .group-hover-text-gray-700 {
-    color: #93c5fd !important;
-}
 
 /* Cards --- */
 .card {
@@ -339,22 +265,16 @@ html.dark-mode .group:hover .group-hover-text-gray-700 {
 
 /* Hover utility using elevation */
 .hover-elevate-10 { background: color-mix(in srgb, var(--bg-secondary), white 10%) !important; }
-html.dark-mode .hover-elevate-10 { background: color-mix(in srgb, var(--bg-secondary), white 8%) !important; }
 
 .hover-elevate-15 { background: color-mix(in srgb, var(--bg-secondary), white 15%) !important; }
-html.dark-mode .hover-elevate-15 { background: color-mix(in srgb, var(--bg-secondary), white 12%) !important; }
 
 /* Text hierarchy with opacity - WCAG compliant */
 .text-primary { color: var(--text-primary) !important; }
 .text-secondary { color: var(--text-secondary) !important; }
 .text-tertiary { color: var(--text-tertiary) !important; }
 
-html.dark-mode .text-gray-900,
-html.dark-mode .text-gray-800 { color: var(--text-primary) !important; }
 
-html.dark-mode .text-gray-700 { color: var(--text-secondary) !important; }
 
-html.dark-mode .text-gray-500 { color: var(--text-tertiary) !important; }
 
 /* Semantic color accents - derived from primary */
 .text-primary-accent { color: var(--primary) !important; }
@@ -362,10 +282,6 @@ html.dark-mode .text-gray-500 { color: var(--text-tertiary) !important; }
 .text-danger-accent { color: var(--danger) !important; }
 .text-warning-accent { color: var(--warning) !important; }
 
-html.dark-mode .text-primary-accent,
-html.dark-mode .text-success-accent,
-html.dark-mode .text-danger-accent,
-html.dark-mode .text-warning-accent { color: color-mix(in srgb, var(--primary), white 40%) !important; }
 
 /* --- Buttons --- */
 .btn {
