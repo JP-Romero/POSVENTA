@@ -411,3 +411,17 @@ Para cada fase entrega:
 - Instrucciones de instalación en XAMPP.
 
 No avances a la siguiente fase hasta finalizar completamente la actual.
+
+# NOTAS DE ARQUITECTURA
+
+## Layout
+
+El sistema POSVENTA usa un layout **sin sidebar**, basado en **topbar + main-content full width**. 
+
+- El archivo `sidebar.php` fue eliminado (previamente en `app/views/inc/`).
+- El archivo `navbar.php` (navbar Bootstrap clásico) fue eliminado.
+- La topbar (`topbar.php`) usa la clase `no-sidebar`.
+- Todo el contenido se renderiza dentro de `<main id="mainContent">` sin márgenes laterales.
+- No implementar un sidebar ni wrapper basado en sidebar a futuro sin actualizar toda la capa de estilos y scripts asociados.
+
+Esta decisión mantiene la UI consistente con el diseño original, código más ligero y fácil de mantener, y evita riesgo de activar un sidebar no deseado.

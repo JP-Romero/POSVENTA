@@ -12,6 +12,7 @@ class Pos extends Controller {
         $this->saleModel = $this->model('Sale');
         $this->productModel = $this->model('Product');
         $this->clientModel = $this->model('Client');
+        $this->cajaModel = $this->model('Caja');
         $this->db = new Database;
     }
 
@@ -31,7 +32,8 @@ class Pos extends Controller {
             'invoiceNumber' => $invoiceNumber,
             'iva' => $settings->iva ?? 0,
             'settings' => $settings,
-            'printer' => $printer
+            'printer' => $printer,
+            'cajaAbierta' => $this->cajaModel->isCajaAbierta()
         ];
 
         $this->view('pos/index', $data);

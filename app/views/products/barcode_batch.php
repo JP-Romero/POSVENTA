@@ -56,7 +56,6 @@
     }
     body { background: white !important; }
     #printVersion { display: block !important; }
-    .main-content { margin-left: 0 !important; width: 100% !important; }
     .page-content { padding: 0 !important; }
 }
 </style>

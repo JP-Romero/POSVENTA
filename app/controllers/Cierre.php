@@ -12,6 +12,32 @@ class Cierre extends Controller {
         $this->db = new Database;
     }
 
+    public function abrirCaja() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $jsonData = json_decode(file_get_contents('php://input'), true);
+            if ($jsonData) {
+                // CSRF validation
+                if (!isset($jsonData['csrf_token']) || !validateCsrfToken($jsonData['csrf_token'])) {
+                    echo json_encode(['status' => 'error', 'message' => 'CSRF validation failed']);
+                    exit;
+                }
+                
+                $data = [
+                    'tipo' => 'Entrada',
+                    'concepto' => 'Fondo Inicial',
+                    'monto' => $jsonData['monto'] ?? 0
+                ];
+                
+                if ($this->cajaModel->addMovimiento($data)) {
+                    echo json_encode(['status' => 'success']);
+                } else {
+                    echo json_encode(['status' => 'error']);
+                }
+            }
+            exit;
+        }
+    }
+
     public function index() {
         // Get the last cut off date to know when this shift started
         $ultimo_corte = $this->cajaModel->getUltimoCorte();

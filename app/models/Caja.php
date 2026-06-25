@@ -49,6 +49,18 @@
       return $this->db->single();
     }
 
+    // Verificar si la caja está abierta (hay un Fondo Inicial desde el último corte)
+    public function isCajaAbierta() {
+        $ultimo_corte = $this->getUltimoCorte();
+        $fecha_inicio = $ultimo_corte ? $ultimo_corte->fecha_fin : '1970-01-01 00:00:00';
+        
+        $this->db->query("SELECT COUNT(*) as count FROM movimientos_caja WHERE concepto = 'Fondo Inicial' AND fecha > :fecha_inicio");
+        $this->db->bind(':fecha_inicio', $fecha_inicio);
+        $result = $this->db->single();
+        
+        return $result->count > 0;
+    }
+
     // Guardar un nuevo corte de caja (Reporte Z)
     public function saveCorte($data){
       $this->db->query('INSERT INTO cortes_caja 

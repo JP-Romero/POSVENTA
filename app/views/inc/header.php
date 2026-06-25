@@ -38,7 +38,6 @@
     <title><?php echo SITENAME; ?></title>
 </head>
 <body>
-    <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <?php require APPROOT . '/views/inc/topbar.php'; ?>
-    <main class="main-content" id="mainContent" role="main">
+    <main id="mainContent" role="main">
         <div class="page-content">

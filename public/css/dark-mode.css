@@ -43,11 +43,11 @@ html.dark-mode span:not(.badge *) {
     color: var(--dark-text-primary);
 }
 
-html.dark-mode a:not(.btn):not(.nav-link):not(.page-link):not(.dropdown-item):not(.sidebar-brand) {
+html.dark-mode a:not(.btn):not(.nav-link):not(.page-link):not(.dropdown-item) {
     color: #60a5fa !important;
 }
 
-html.dark-mode a:not(.btn):not(.nav-link):not(.page-link):not(.dropdown-item):not(.sidebar-brand):hover {
+html.dark-mode a:not(.btn):not(.nav-link):not(.page-link):not(.dropdown-item):hover {
     color: #93c5fd !important;
 }
 
@@ -78,41 +78,6 @@ html.dark-mode hr {
 }
 
 /* ----- LAYOUT ----- */
-html.dark-mode .sidebar {
-    background: var(--dark-bg-secondary) !important;
-    border-right-color: var(--dark-border-color) !important;
-}
-
-html.dark-mode .sidebar-header {
-    border-bottom-color: var(--dark-border-color) !important;
-}
-
-html.dark-mode .sidebar-brand {
-    color: var(--dark-text-primary) !important;
-}
-
-html.dark-mode .sidebar-nav .nav-link {
-    color: var(--dark-text-secondary) !important;
-}
-
-html.dark-mode .sidebar-nav .nav-link:hover {
-    background: color-mix(in srgb, var(--dark-bg-tertiary), #3b82f6 15%) !important;
-    color: #93c5fd !important;
-}
-
-html.dark-mode .sidebar-nav .nav-link.active {
-    background: color-mix(in srgb, var(--dark-bg-tertiary), #3b82f6 25%) !important;
-    color: #93c5fd !important;
-}
-
-html.dark-mode .sidebar-footer {
-    border-top-color: var(--dark-border-color) !important;
-}
-
-html.dark-mode .sidebar-divider {
-    background: var(--dark-border-color) !important;
-}
-
 html.dark-mode .topbar {
     background: var(--dark-bg-secondary) !important;
     border-bottom-color: var(--dark-border-color) !important;
@@ -124,10 +89,6 @@ html.dark-mode .main-content {
 
 html.dark-mode .page-content {
     background: transparent;
-}
-
-html.dark-mode .wrapper {
-    background: var(--dark-bg-primary);
 }
 
 /* ----- COMPONENTES BOOTSTRAP ----- */
@@ -1138,11 +1099,6 @@ html.dark-mode .stat-card {
     border-color: var(--dark-border-color) !important;
 }
 
-/* Sidebar modern (if used) */
-html.dark-mode .sidebar-modern {
-    background: var(--dark-bg-secondary) !important;
-}
-
 /* Flash messages */
 html.dark-mode #msg-flash {
     color: var(--dark-text-primary);
@@ -1357,7 +1313,7 @@ html.dark-mode .table > thead.table-light > tr > th {
     color: var(--dark-text-secondary) !important;
 }
 
-/* Fix for avatar text in sidebar */
+/* Fix for avatar text in topbar/user dropdown */
 html.dark-mode .avatar.bg-primary.text-white {
     background: #3b82f6 !important;
     color: #fff !important;

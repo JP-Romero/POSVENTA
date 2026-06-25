@@ -104,11 +104,61 @@
     </div>
 </div>
 
+<!-- Modal Apertura de Caja -->
+<div class="modal fade" id="aperturaCajaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="formAperturaCaja">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fa fa-cash-register me-2"></i> Apertura de Caja</h5>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted mb-4">Para iniciar el turno y realizar ventas, ingresa el monto del Fondo Inicial (efectivo base en caja).</p>
+                    <div class="form-group mb-3">
+                        <label class="form-label fw-bold">Monto Inicial:</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" name="monto" id="monto_apertura" step="0.01" min="0" required placeholder="0.00">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="submit" class="btn btn-primary w-100" id="btn-abrir-caja">
+                        <i class="fa fa-check-circle me-2"></i> Abrir Turno
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Preview Ticket -->
+<div class="modal fade" id="previewTicketModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white border-0">
+                <h5 class="modal-title"><i class="fa fa-receipt me-2"></i> Ticket de Venta</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0" style="height: 400px;">
+                <iframe id="iframeTicket" src="" style="width:100%; height:100%; border:none;"></iframe>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('iframeTicket').contentWindow.print()">
+                    <i class="fa fa-print me-2"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 const POSVENTA_CONFIG = {
     URLROOT: '<?= URLROOT ?>',
     IVA_RATE: <?= ($data['iva'] ?? 15) / 100 ?>,
-    CSRF_TOKEN: '<?= generateCsrfToken() ?>'
+    CSRF_TOKEN: '<?= generateCsrfToken() ?>',
+    cajaAbierta: <?= isset($data['cajaAbierta']) && $data['cajaAbierta'] ? 'true' : 'false' ?>
 };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

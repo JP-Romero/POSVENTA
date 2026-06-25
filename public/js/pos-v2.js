@@ -4,10 +4,53 @@ const IVA_RATE = POSVENTA_CONFIG.IVA_RATE;
 let currentCategory = 'all';
 
 // Initialize
-document.addEventListener('DOMContentLoaded', function() {
-    loadProducts();
-    updateTotal();
-    document.getElementById('search-input').focus();
+document.addEventListener('DOMContentLoaded', () => {
+    // Verificar si la caja está abierta
+    if (!POSVENTA_CONFIG.cajaAbierta) {
+        const aperturaModal = new bootstrap.Modal(document.getElementById('aperturaCajaModal'), {
+            backdrop: 'static',
+            keyboard: false
+        });
+        aperturaModal.show();
+        
+        document.getElementById('formAperturaCaja').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-abrir-caja');
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa fa-spinner fa-spin me-2"></i> Procesando...';
+            btn.disabled = true;
+            
+            const formData = new FormData(this);
+            // Append CSRF since it's not in the form
+            formData.append('csrf_token', POSVENTA_CONFIG.CSRF_TOKEN);
+            
+            fetch(POSVENTA_CONFIG.URLROOT + '/cierre/abrirCaja', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(res => {
+                if(res.status === 'success') {
+                    Swal.fire('Éxito', 'Turno abierto correctamente', 'success').then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire('Error', res.message || 'Error al abrir caja', 'error');
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                }
+            })
+            .catch(err => {
+                Swal.fire('Error', 'Error de red', 'error');
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            });
+        });
+    } else {
+        loadProducts();
+        updateTotal();
+        document.getElementById('search-input').focus();
+    }
 });
 
 // Load products
@@ -171,14 +214,6 @@ function handlePayment(type) {
         btn.disabled = false;
         
         if(res.status === 'success') {
-            Swal.fire({
-                icon: 'success',
-                title: '¡Venta completada!',
-                text: 'Total: $' + total.toFixed(2),
-                timer: 2000,
-                showConfirmButton: false
-            });
-            
             cart = [];
             renderCart();
             updateTotal();
@@ -187,7 +222,20 @@ function handlePayment(type) {
             if (res.invoiceNumber) {
                 document.querySelector('.pos-invoice').textContent = '#' + res.invoiceNumber;
             }
+
+            // Show Ticket Preview Modal instead of Toast
+            const iframe = document.getElementById('iframeTicket');
+            iframe.src = POSVENTA_CONFIG.URLROOT + '/sales/invoice/' + res.id;
+            const previewModal = new bootstrap.Modal(document.getElementById('previewTicketModal'));
+            previewModal.show();
+        } else {
+            Swal.fire('Error', res.message || 'No se pudo procesar la venta', 'error');
         }
+    })
+    .catch(err => {
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+        Swal.fire('Error', 'Error de red', 'error');
     });
 }
 
