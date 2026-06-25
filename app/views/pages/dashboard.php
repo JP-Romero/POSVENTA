@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
-                            <h6 class="text-white-75 mb-1">Total Productos</h6>
+                            <h6 class="text-dark opacity-75 mb-1">Total Productos</h6>
                         </div>
                         <div class="icon-auto">
                             <i class="fa fa-boxes fa-2x"></i>
@@ -36,11 +36,11 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-warning text-white h-100">
+            <div class="card bg-warning text-dark h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
-                            <h6 class="text-white-75 mb-1">Stock Bajo</h6>
+                            <h6 class="text-dark opacity-75 mb-1">Stock Bajo</h6>
                         </div>
                         <div class="icon-auto">
                             <i class="fa fa-exclamation-triangle fa-2x"></i>
@@ -56,7 +56,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
-                            <h6 class="text-white-75 mb-1">Ventas Diarias</h6>
+                            <h6 class="text-dark opacity-75 mb-1">Ventas Diarias</h6>
                         </div>
                         <div class="icon-auto">
                             <i class="fa fa-dollar-sign fa-2x"></i>
@@ -68,11 +68,11 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-info text-white h-100">
+            <div class="card bg-info text-dark h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
-                            <h6 class="text-white-75 mb-1">Ventas Recientes</h6>
+                            <h6 class="text-dark opacity-75 mb-1">Ventas Recientes</h6>
                         </div>
                         <div class="icon-auto">
                             <i class="fa fa-clock-rotate-left fa-2x"></i>

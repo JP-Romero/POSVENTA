@@ -245,8 +245,8 @@
                 <div class="form-group mb-2">
                     <label style="font-size: 0.9rem;">Efectivo Real Contado:</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-dark text-white border-secondary">$</span>
-                        <input type="number" step="0.01" id="efectivo_real" name="efectivo_real" class="form-control bg-dark text-white border-secondary" required placeholder="0.00">
+                        <span class="input-group-text border-secondary">$</span>
+                        <input type="number" step="0.01" id="efectivo_real" name="efectivo_real" class="form-control border-secondary" required placeholder="0.00">
                     </div>
                 </div>
                 <div class="cierre-row" style="margin-top: 0.5rem;">
@@ -274,7 +274,7 @@
 <!-- Modal Movimiento -->
 <div class="modal fade" id="movimientoModal" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content bg-dark text-white">
+        <div class="modal-content bg-secondary text-white">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title">Registrar Movimiento de Caja</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -284,20 +284,21 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label>Tipo de Movimiento</label>
-                        <select name="tipo" class="form-select bg-dark text-white border-secondary" required>
+                        <select name="tipo" class="form-select border-secondary" required>
                             <option value="Salida">Salida (Gasto, Retiro, Proveedor)</option>
                             <option value="Entrada">Entrada (Fondo inicial, Ingreso extra)</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label>Concepto / Descripción</label>
-                        <input type="text" name="concepto" class="form-control bg-dark text-white border-secondary" required placeholder="Ej. Pago de Hojas, Fondo Inicial">
+                        <input type="text" name="concepto" class="form-control border-secondary" required placeholder="Ej. Pago de Hojas, Fondo Inicial">
                     </div>
+                    
                     <div class="mb-3">
-                        <label>Monto</label>
+                        <label class="form-label text-white-50">Monto</label>
                         <div class="input-group">
-                            <span class="input-group-text bg-dark text-white border-secondary">$</span>
-                            <input type="number" step="0.01" name="monto" class="form-control bg-dark text-white border-secondary" required min="0.01">
+                            <span class="input-group-text border-secondary">$</span>
+                            <input type="number" step="0.01" name="monto" class="form-control border-secondary" required min="0.01">
                         </div>
                     </div>
                 </div>

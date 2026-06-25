@@ -136,7 +136,7 @@
 <div class="modal fade" id="previewTicketModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
-            <div class="modal-header bg-dark text-white border-0">
+            <div class="modal-header bg-secondary text-white border-0">
                 <h5 class="modal-title"><i class="fa fa-receipt me-2"></i> Ticket de Venta</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

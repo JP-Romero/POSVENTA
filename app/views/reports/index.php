@@ -167,7 +167,7 @@
         <div class="tab-pane fade" id="compras" role="tabpanel" aria-labelledby="compras-tab">
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <div class="card bg-info text-white shadow">
+                    <div class="card bg-info text-dark shadow">
                         <div class="card-body">
                             <h5 class="card-title">Compras del Mes</h5>
                             <h2 class="display-4 fw-bold"><?= fmt($data['month_purchases']) ?></h2>
