@@ -52,12 +52,14 @@
 </div>
 
 <script>
-$(document).ready(function () {
-    $('#providers-table').DataTable({
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
-        }
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof $ !== 'undefined' && $('#providers-table').length) {
+        $('#providers-table').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+            }
+        });
+    }
     
     // Delete provider confirmation
     $(document).on('click', '.delete-provider', function() {
