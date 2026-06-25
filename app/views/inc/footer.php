@@ -63,8 +63,12 @@ window.showConfirm = function(message, callback) {
     msgEl.textContent = message;
     yesBtn.onclick = function() {
         callback(true);
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        if (modal) modal.hide();
+        modalEl.classList.remove('show');
+        modalEl.setAttribute('aria-hidden', 'true');
+        modalEl.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        var backdrop = document.querySelector('.modal-backdrop');
+        if (backdrop) backdrop.remove();
     };
     var modal = new bootstrap.Modal(modalEl);
     modal.show();
