@@ -97,20 +97,6 @@
                     <span>Punto de Venta</span>
                 </a>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'caja') ? 'active' : '' ?>" href="<?= URLROOT ?>/caja">
-                    <i class="fa fa-lock"></i>
-                    <span>Cierre de Caja</span>
-                </a>
-            </li>
-            
-            <li class="nav-item">
-                <a class="nav-link <?= (isset($currentPage) && $currentPage === 'estadisticas') ? 'active' : '' ?>" href="<?= URLROOT ?>/estadisticas">
-                    <i class="fa fa-chart-line"></i>
-                    <span>Estadísticas</span>
-                </a>
-            </li>
             
             <li class="nav-item">
                 <a class="nav-link <?= (isset($currentPage) && $currentPage === 'sales') ? 'active' : '' ?>" href="<?= URLROOT ?>/sales">

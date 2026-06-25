@@ -89,8 +89,35 @@
 }
 </style>
 
-<div class="stats-container">
-    <div class="stats-header">
+<div class="row mb-3">
+    <div class="col-md-6">
+        <h1>Reportes y Estadísticas</h1>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white">
+        <ul class="nav nav-tabs" id="reportsTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" href="<?= URLROOT ?>/reports">Ventas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= URLROOT ?>/reports">Inventario</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= URLROOT ?>/reports">Compras</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= URLROOT ?>/caja">Cierre de Caja</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="<?= URLROOT ?>/estadisticas">Estadísticas</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body p-0">
+        <div class="stats-container">
+            <div class="stats-header">
         <h1 class="stats-title">ESTADÍSTICAS</h1>
         <button class="btn-print" id="btn-imprimir">
             <i class="fas fa-print"></i> Imprimir Reporte
@@ -143,6 +170,8 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
     </div>
 </div>
 
