@@ -82,4 +82,61 @@ class Sale {
         $row = $this->db->single();
         return $row->numero_factura ?? null;
     }
+
+    // --- MÉTODOS PARA REPORTE Z Y ESTADÍSTICAS ---
+
+    public function getResumenVentas($fecha_inicio, $fecha_fin) {
+        $this->db->query("SELECT 
+                            COUNT(id) as tickets_emitidos,
+                            MIN(numero_factura) as primer_ticket,
+                            MAX(numero_factura) as ultimo_ticket,
+                            SUM(total) as ventas_netas,
+                            (SELECT SUM(descuento) FROM detalle_ventas dv INNER JOIN ventas v2 ON dv.id_venta = v2.id WHERE v2.fecha >= :f1 AND v2.fecha <= :f2) as descuentos
+                          FROM ventas 
+                          WHERE fecha >= :fecha_inicio AND fecha <= :fecha_fin");
+        $this->db->bind(':fecha_inicio', $fecha_inicio);
+        $this->db->bind(':fecha_fin', $fecha_fin);
+        $this->db->bind(':f1', $fecha_inicio);
+        $this->db->bind(':f2', $fecha_fin);
+        return $this->db->single();
+    }
+
+    public function getVentasPorMetodoPago($fecha_inicio, $fecha_fin) {
+        $this->db->query("SELECT metodo_pago, SUM(total) as total
+                          FROM ventas 
+                          WHERE fecha >= :fecha_inicio AND fecha <= :fecha_fin
+                          GROUP BY metodo_pago");
+        $this->db->bind(':fecha_inicio', $fecha_inicio);
+        $this->db->bind(':fecha_fin', $fecha_fin);
+        return $this->db->resultSet();
+    }
+
+    public function getVentasPorCategoria($fecha_inicio, $fecha_fin) {
+        $this->db->query("SELECT c.nombre as categoria, SUM(dv.cantidad * dv.precio_venta - dv.descuento) as total, SUM(dv.cantidad) as piezas
+                          FROM detalle_ventas dv
+                          INNER JOIN ventas v ON dv.id_venta = v.id
+                          INNER JOIN productos p ON dv.id_producto = p.id
+                          INNER JOIN categorias c ON p.id_categoria = c.id
+                          WHERE v.fecha >= :fecha_inicio AND v.fecha <= :fecha_fin
+                          GROUP BY c.id
+                          ORDER BY total DESC");
+        $this->db->bind(':fecha_inicio', $fecha_inicio);
+        $this->db->bind(':fecha_fin', $fecha_fin);
+        return $this->db->resultSet();
+    }
+
+    public function getProductosMasVendidos($fecha_inicio, $fecha_fin, $limit = 10) {
+        $this->db->query("SELECT p.nombre as producto, SUM(dv.cantidad) as cantidad, SUM(dv.cantidad * dv.precio_venta - dv.descuento) as total
+                          FROM detalle_ventas dv
+                          INNER JOIN ventas v ON dv.id_venta = v.id
+                          INNER JOIN productos p ON dv.id_producto = p.id
+                          WHERE v.fecha >= :fecha_inicio AND v.fecha <= :fecha_fin
+                          GROUP BY p.id
+                          ORDER BY cantidad DESC
+                          LIMIT :limit");
+        $this->db->bind(':fecha_inicio', $fecha_inicio);
+        $this->db->bind(':fecha_fin', $fecha_fin);
+        $this->db->bind(':limit', $limit, 'int');
+        return $this->db->resultSet();
+    }
 }

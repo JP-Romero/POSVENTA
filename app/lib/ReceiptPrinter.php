@@ -290,6 +290,184 @@ class ReceiptPrinter
     }
     
     /**
+     * Imprimir Reporte Z (Corte de Caja)
+     */
+    public function printZReport(array $data, array $settings = [])
+    {
+        if (!$this->init()) return false;
+        
+        try {
+            $p = $this->printer;
+            $width = $this->paperWidth;
+            $cols = $width >= 80 ? 48 : 32;
+            
+            $p->setJustification(Printer::JUSTIFY_CENTER);
+            $p->selectPrintMode(Printer::MODE_FONT_A | Printer::MODE_DOUBLE_WIDTH | Printer::MODE_DOUBLE_HEIGHT);
+            $p->text("REPORTE Z\n");
+            $p->text("CORTE DE CAJA\n");
+            $p->selectPrintMode();
+            $p->text($settings['nombre_negocio'] ?? 'POSVENTA' . "\n");
+            $p->text($settings['direccion'] ?? '' . "\n");
+            $p->feed(1);
+            
+            $p->setJustification(Printer::JUSTIFY_LEFT);
+            $p->text("Fecha: " . date('d/m/Y H:i') . "\n");
+            $p->text("ID Cierre: #" . ($data['id'] ?? 'N/A') . "\n");
+            $p->text("Cajero: " . ($data['usuario'] ?? 'N/A') . "\n");
+            $p->text(str_repeat('-', $cols) . "\n");
+            
+            // Resumen Ventas
+            $p->setJustification(Printer::JUSTIFY_CENTER);
+            $p->text("1. RESUMEN DE VENTAS\n");
+            $p->setJustification(Printer::JUSTIFY_LEFT);
+            $p->text(sprintf("%-20s %11.2f\n", "Ventas Brutas:", $data['ventas_brutas']));
+            $p->text(sprintf("%-20s %11.2f\n", "(-) Descuentos:", -$data['descuentos']));
+            $p->text(str_repeat('-', $cols) . "\n");
+            $p->text(sprintf("%-20s %11.2f\n", "VENTAS NETAS:", $data['ventas_netas']));
+            $p->feed(1);
+
+            // Categorias
+            if (!empty($data['categorias'])) {
+                $p->setJustification(Printer::JUSTIFY_CENTER);
+                $p->text("2. VENTAS POR CATEGORIA\n");
+                $p->setJustification(Printer::JUSTIFY_LEFT);
+                foreach ($data['categorias'] as $cat) {
+                    $p->text(sprintf("%-20s %11.2f\n", mb_substr($cat->categoria, 0, 20), $cat->total));
+                }
+                $p->feed(1);
+            }
+            
+            // Metodos de pago
+            $p->setJustification(Printer::JUSTIFY_CENTER);
+            $p->text("3. METODOS DE PAGO\n");
+            $p->setJustification(Printer::JUSTIFY_LEFT);
+            $p->text(sprintf("%-20s %11.2f\n", "Efectivo:", $data['total_efectivo']));
+            $p->text(sprintf("%-20s %11.2f\n", "Tarjeta:", $data['total_tarjeta']));
+            $p->text(sprintf("%-20s %11.2f\n", "Transferencia:", $data['total_transferencia']));
+            $p->text(str_repeat('-', $cols) . "\n");
+            $p->text(sprintf("%-20s %11.2f\n", "TOTAL RECAUDADO:", $data['ventas_netas']));
+            $p->feed(1);
+
+            // Movimientos Efectivo
+            $p->setJustification(Printer::JUSTIFY_CENTER);
+            $p->text("4. MOVIMIENTOS DE EFECTIVO\n");
+            $p->setJustification(Printer::JUSTIFY_LEFT);
+            $p->text(sprintf("%-20s %11.2f\n", "(+) Fondo Inicial:", $data['fondo_inicial']));
+            $p->text(sprintf("%-20s %11.2f\n", "(+) Ventas Efectivo:", $data['total_efectivo']));
+            if (!empty($data['movimientos'])) {
+                foreach($data['movimientos'] as $mov) {
+                    if ($mov->concepto != 'Fondo Inicial') {
+                        $signo = $mov->tipo == 'Entrada' ? '(+)' : '(-)';
+                        $monto = $mov->tipo == 'Entrada' ? $mov->monto : -$mov->monto;
+                        $p->text(sprintf("%-20s %11.2f\n", mb_substr("$signo {$mov->concepto}", 0, 20), $monto));
+                    }
+                }
+            }
+            $p->text(str_repeat('-', $cols) . "\n");
+            $p->text(sprintf("%-20s %11.2f\n", "EFECTIVO ESPERADO:", $data['efectivo_esperado']));
+            $p->feed(1);
+
+            // Auditoria
+            $p->setJustification(Printer::JUSTIFY_CENTER);
+            $p->text("5. AUDITORIA DE CAJA\n");
+            $p->setJustification(Printer::JUSTIFY_LEFT);
+            $p->text(sprintf("%-20s %11.2f\n", "Efectivo Real:", $data['efectivo_real']));
+            $p->text(sprintf("%-20s %11.2f\n", "Diferencia:", $data['diferencia']));
+            $estado = $data['diferencia'] == 0 ? "Balanceado" : ($data['diferencia'] > 0 ? "Sobrante" : "Faltante");
+            $p->text("Estado: $estado\n");
+            $p->feed(1);
+
+            // Estadisticas
+            $p->setJustification(Printer::JUSTIFY_CENTER);
+            $p->text("6. ESTADISTICAS DEL DIA\n");
+            $p->setJustification(Printer::JUSTIFY_LEFT);
+            $p->text(sprintf("%-20s %11s\n", "Tickets Emitidos:", $data['tickets_emitidos']));
+            $p->text(sprintf("%-20s %11.2f\n", "Ticket Promedio:", $data['ticket_promedio']));
+            if ($data['primer_ticket']) $p->text("Primer Ticket: {$data['primer_ticket']}\n");
+            if ($data['ultimo_ticket']) $p->text("Ultimo Ticket: {$data['ultimo_ticket']}\n");
+            
+            $p->feed(3);
+            $p->setJustification(Printer::JUSTIFY_CENTER);
+            $p->text(str_repeat('_', 20) . "\n");
+            $p->text("FIRMA RESPONSABLE\n");
+            $p->text($data['usuario'] ?? 'Cajero' . "\n");
+            
+            $p->feed(2);
+            $p->cut();
+            
+            return true;
+        } catch (\Exception $e) {
+            error_log('ReceiptPrinter printZReport error: ' . $e->getMessage());
+            return false;
+        } finally {
+            $this->close();
+        }
+    }
+
+    /**
+     * Imprimir Estadísticas Generales
+     */
+    public function printEstadisticas(array $data, array $settings = [])
+    {
+        if (!$this->init()) return false;
+        
+        try {
+            $p = $this->printer;
+            $width = $this->paperWidth;
+            $cols = $width >= 80 ? 48 : 32;
+            
+            $p->setJustification(Printer::JUSTIFY_CENTER);
+            $p->selectPrintMode(Printer::MODE_FONT_A | Printer::MODE_DOUBLE_WIDTH | Printer::MODE_DOUBLE_HEIGHT);
+            $p->text("ESTADISTICAS\n");
+            $p->selectPrintMode();
+            $p->text($settings['nombre_negocio'] ?? 'POSVENTA' . "\n");
+            $p->text("Periodo: " . ($data['periodo_nombre'] ?? 'General') . "\n");
+            $p->feed(1);
+            
+            $p->setJustification(Printer::JUSTIFY_LEFT);
+            $p->text(str_repeat('-', $cols) . "\n");
+            
+            // Resumen
+            $p->text(sprintf("%-20s %11.2f\n", "Total Recaudado:", $data['resumen']['total_recaudado']));
+            $p->text(sprintf("%-20s %11s\n", "Tickets Cobrados:", $data['resumen']['tickets_cobrados']));
+            $p->text(sprintf("%-20s %11s\n", "Piezas Vendidas:", $data['resumen']['piezas_vendidas']));
+            $p->feed(1);
+
+            // Categorias
+            if (!empty($data['categorias'])) {
+                $p->setJustification(Printer::JUSTIFY_CENTER);
+                $p->text("POR CATEGORIA\n");
+                $p->setJustification(Printer::JUSTIFY_LEFT);
+                foreach ($data['categorias'] as $cat) {
+                    $p->text(sprintf("%-20s %11.2f\n", mb_substr($cat->categoria, 0, 20), $cat->total));
+                }
+                $p->feed(1);
+            }
+
+            // Mas vendidos
+            if (!empty($data['mas_vendidos'])) {
+                $p->setJustification(Printer::JUSTIFY_CENTER);
+                $p->text("TOP MAS VENDIDOS\n");
+                $p->setJustification(Printer::JUSTIFY_LEFT);
+                foreach ($data['mas_vendidos'] as $prod) {
+                    $p->text(sprintf("%s\n", mb_substr($prod->producto, 0, $cols)));
+                    $p->text(sprintf("  Cant: %-5s Total: %8.2f\n", $prod->cantidad, $prod->total));
+                }
+            }
+            
+            $p->feed(2);
+            $p->cut();
+            
+            return true;
+        } catch (\Exception $e) {
+            error_log('ReceiptPrinter printEstadisticas error: ' . $e->getMessage());
+            return false;
+        } finally {
+            $this->close();
+        }
+    }
+    
+    /**
      * Test print
      */
     public function testPrint()

@@ -11,6 +11,8 @@ use App\Controllers\InventoryController;
 use App\Controllers\ReportsController;
 use App\Controllers\SettingsController;
 use App\Controllers\PosController;
+use App\Controllers\Caja;
+use App\Controllers\Estadisticas;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\AdminMiddleware;
 
@@ -84,6 +86,16 @@ $router->post('pos/printLastReceipt', PosController::class . '@printLastReceipt'
 $router->get('pos/getFrequentProducts', PosController::class . '@getFrequentProducts');
 $router->get('sales/invoice/{id}', SalesController::class . '@invoice');
 $router->get('sales/invoice-pdf/{id}', SalesController::class . '@invoicePdf');
+
+// Caja / Reporte Z
+$router->get('caja', Caja::class . '@index');
+$router->post('caja/registrarMovimiento', Caja::class . '@registrarMovimiento');
+$router->post('caja/cerrarTurno', Caja::class . '@cerrarTurno');
+
+// Estadisticas
+$router->get('estadisticas', Estadisticas::class . '@index');
+$router->get('estadisticas/obtenerDatos', Estadisticas::class . '@obtenerDatos');
+
 
 // Inventory
 $router->get('inventory', InventoryController::class . '@index');
