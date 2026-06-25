@@ -21,7 +21,9 @@
     "url": "https://github.com/JP-Romero/POSVENTA/issues"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "autoprefixer": "^10.5.1",
+    "axe-playwright": "^2.2.2",
     "postcss": "^8.5.15",
     "tailwindcss": "^4.3.1"
   }
