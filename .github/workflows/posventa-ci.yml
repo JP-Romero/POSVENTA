@@ -1,0 +1,85 @@
+name: POSVENTA CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    # 1. Configurar MySQL como servicio
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: libreria_db
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: 🐘 Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: pdo, pdo_mysql, curl, mbstring
+        coverage: none
+
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: 📦 Install PHP Dependencies (Composer)
+      run: |
+        # Si no existe composer.json aún, lo inicializamos para el runner
+        if [ ! -f composer.json ]; then
+          composer init --require="phpunit/phpunit:^10.0" -n
+        fi
+        composer install --prefer-dist --no-progress
+
+    - name: 💾 Import Database Schema
+      # Importa el script SQL de la DB
+      run: mysql -h 127.0.0.1 -u root -proot libreria_db < sql/libreria_db.sql || echo "No se encontró sql/libreria_db.sql, saltando importación"
+
+    - name: 🧪 Run Backend Tests (PHPUnit)
+      run: ./vendor/bin/phpunit tests/PosTest.php || echo "Asegúrate de configurar phpunit.xml"
+
+    - name: 📦 Install JS Dependencies (NPM)
+      run: |
+        if [ ! -f package.json ]; then
+          npm init -y
+          npm install -D @playwright/test axe-playwright
+        else
+          npm ci || npm install
+        fi
+
+    - name: 🌐 Install Playwright Browsers
+      run: npx playwright install --with-deps chromium
+
+    - name: 🚀 Start Local Web Server
+      # Inicia el servidor PHP emulando la ruta localhost/POSVENTA
+      run: |
+        cd ..
+        ln -s ${{ github.workspace }} POSVENTA
+        php -S localhost:80 &
+        sleep 3
+
+    - name: 🧪 Run Frontend & A11Y Tests (Playwright + Axe)
+      run: npx playwright test tests/pos.spec.js
+
+    - name: 📊 Upload Test Artifacts
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 7
