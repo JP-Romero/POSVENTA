@@ -13,7 +13,7 @@
             <?php
             $dbNotification = new Database;
             // Obtener productos agotados (stock <= 0)
-            $dbNotification->query("SELECT id, nombre, codigo FROM productos WHERE stock <= 0 AND estado = 1 LIMIT 5");
+            $dbNotification->query("SELECT id, nombre, codigo_barras FROM productos WHERE stock <= 0 AND estado = 1 LIMIT 5");
             $agotados = $dbNotification->resultSet();
             $totalRealAgotados = count($agotados);
             if ($totalRealAgotados > 0) {
@@ -46,7 +46,7 @@
                                 </div>
                                 <div>
                                     <div class="fw-medium text-wrap" style="max-width: 220px; font-size: 0.9rem;"><?= htmlspecialchars($prod->nombre) ?></div>
-                                    <small class="text-muted">Cód: <?= htmlspecialchars($prod->codigo) ?> | Sin stock</small>
+                                    <small class="text-muted">Cód: <?= htmlspecialchars($prod->codigo_barras) ?> | Sin stock</small>
                                 </div>
                             </a>
                         </li>
