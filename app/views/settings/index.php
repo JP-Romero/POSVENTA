@@ -96,6 +96,23 @@
                             </div>
 
                             <div class="row mb-3">
+                                <label for="descuento" class="col-sm-2 col-form-label">Descuento (%) <span class="text-danger">*</span></label>
+                                <div class="col-sm-10">
+                                    <input type="number" step="0.01" min="0" max="100" class="form-control" id="descuento" name="descuento" value="<?= $data['settings']->descuento ?? 0.00 ?>" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Descuento Habilitado</label>
+                                <div class="col-sm-10">
+                                    <div class="form-check form-switch mt-2">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="descuento_enabled" name="descuento_enabled" value="1" <?= ($data['settings']->descuento_enabled ?? 0) ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="descuento_enabled">Aplicar descuento en el POS automáticamente</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
                                 <label for="exchange_rate" class="col-sm-2 col-form-label">Tasa de Cambio (1 USD = C$)</label>
                                 <div class="col-sm-4">
                                     <input type="number" step="0.0001" min="0" class="form-control" id="exchange_rate" name="exchange_rate" value="<?= $data['settings']->exchange_rate ?? '' ?>">

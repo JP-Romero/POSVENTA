@@ -69,6 +69,10 @@
                         <span>Subtotal</span>
                         <span id="subtotal">C$0.00</span>
                     </div>
+                    <div class="summary-row" id="discount-row" style="display: <?= ($data['descuento_enabled'] ?? 0) ? '' : 'none' ?>">
+                        <span>Descuento (<?= $data['descuento'] ?? 0 ?>%)</span>
+                        <span id="discount">-C$0.00</span>
+                    </div>
                     <div class="summary-row" id="tax-row" style="display: <?= ($data['iva_enabled'] ?? 1) ? '' : 'none' ?>">
                         <span>IVA (<?= $data['iva'] ?? 15 ?>%)</span>
                         <span id="tax">C$0.00</span>
@@ -299,6 +303,8 @@ const POSVENTA_CONFIG = {
     CURRENCY_SYMBOL: 'C$',
     IVA_RATE: <?= ($data['iva'] ?? 15) / 100 ?>,
     IVA_ENABLED: <?= ($data['iva_enabled'] ?? 1) ? 'true' : 'false' ?>,
+    DESCUENTO_RATE: <?= ($data['descuento'] ?? 0) / 100 ?>,
+    DESCUENTO_ENABLED: <?= ($data['descuento_enabled'] ?? 0) ? 'true' : 'false' ?>,
     EXCHANGE_RATE: <?= (float)($data['exchange_rate'] ?? 0) ?>,
     PAYMENT_METHODS: '<?= addslashes($data['payment_methods'] ?? 'efectivo,tarjeta') ?>',
     CSRF_TOKEN: '<?= generateCsrfToken() ?>',

@@ -21,13 +21,14 @@ class Settings extends Controller {
             switch ($action) {
                 case 'update_general':
                     $ivaEnabled = isset($_POST['iva_enabled']) ? 1 : 0;
+                    $descuentoEnabled = isset($_POST['descuento_enabled']) ? 1 : 0;
                     $paymentMethods = [];
                     if (isset($_POST['pm_efectivo'])) $paymentMethods[] = 'efectivo';
                     if (isset($_POST['pm_tarjeta'])) $paymentMethods[] = 'tarjeta';
                     if (isset($_POST['pm_dolar'])) $paymentMethods[] = 'dolar';
                     if (isset($_POST['pm_mixto'])) $paymentMethods[] = 'mixto';
 
-                    $this->db->query('UPDATE configuracion SET nombre_negocio = :nombre, ruc = :ruc, direccion = :direccion, telefono = :telefono, correo = :correo, iva = :iva, iva_enabled = :iva_enabled, exchange_rate = :exchange_rate, payment_methods = :payment_methods WHERE id = 1');
+                    $this->db->query('UPDATE configuracion SET nombre_negocio = :nombre, ruc = :ruc, direccion = :direccion, telefono = :telefono, correo = :correo, iva = :iva, iva_enabled = :iva_enabled, descuento = :descuento, descuento_enabled = :descuento_enabled, exchange_rate = :exchange_rate, payment_methods = :payment_methods WHERE id = 1');
                     $this->db->bind(':nombre', $_POST['nombre_negocio']);
                     $this->db->bind(':ruc', $_POST['ruc']);
                     $this->db->bind(':direccion', $_POST['direccion']);
@@ -35,6 +36,8 @@ class Settings extends Controller {
                     $this->db->bind(':correo', $_POST['correo']);
                     $this->db->bind(':iva', $_POST['iva']);
                     $this->db->bind(':iva_enabled', $ivaEnabled);
+                    $this->db->bind(':descuento', $_POST['descuento']);
+                    $this->db->bind(':descuento_enabled', $descuentoEnabled);
                     $this->db->bind(':exchange_rate', str_replace(',', '.', $_POST['exchange_rate']));
                     $this->db->bind(':payment_methods', implode(',', $paymentMethods));
                     

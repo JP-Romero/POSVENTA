@@ -41,6 +41,48 @@ class PosTest extends TestCase {
         $this->assertEquals(267.50, $total);
     }
 
+    public function testDiscountCalculationWithDiscountEnabled() {
+        $subtotal = 100.00;
+        $discountRate = 0.10; // 10%
+        $discountEnabled = true;
+
+        $discount = $discountEnabled ? $subtotal * $discountRate : 0;
+        $subtotalWithDiscount = $subtotal - $discount;
+
+        $this->assertEquals(10.00, $discount);
+        $this->assertEquals(90.00, $subtotalWithDiscount);
+    }
+
+    public function testDiscountCalculationWithDiscountDisabled() {
+        $subtotal = 100.00;
+        $discountRate = 0.10; // 10%
+        $discountEnabled = false;
+
+        $discount = $discountEnabled ? $subtotal * $discountRate : 0;
+        $subtotalWithDiscount = $subtotal - $discount;
+
+        $this->assertEquals(0.00, $discount);
+        $this->assertEquals(100.00, $subtotalWithDiscount);
+    }
+
+    public function testTaxCalculatedOnDiscountedSubtotal() {
+        $subtotal = 100.00;
+        $discountRate = 0.10; // 10%
+        $discountEnabled = true;
+        $ivaRate = 0.15;
+        $ivaEnabled = true;
+
+        $discount = $discountEnabled ? $subtotal * $discountRate : 0;
+        $subtotalWithDiscount = $subtotal - $discount;
+        $tax = $ivaEnabled ? $subtotalWithDiscount * $ivaRate : 0;
+        $total = $subtotalWithDiscount + $tax;
+
+        $this->assertEquals(10.00, $discount);
+        $this->assertEquals(90.00, $subtotalWithDiscount);
+        $this->assertEquals(13.50, $tax); // 15% of 90
+        $this->assertEquals(103.50, $total);
+    }
+
     // --- USD Conversion logic ---
 
     public function testUsdConversionWithExchangeRate() {

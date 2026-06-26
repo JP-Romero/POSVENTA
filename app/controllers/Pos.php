@@ -36,6 +36,8 @@ class Pos extends Controller {
             'invoiceNumber' => $invoiceNumber,
             'iva' => $settings->iva ?? 0,
             'iva_enabled' => $settings->iva_enabled ?? 1,
+            'descuento' => $settings->descuento ?? 0,
+            'descuento_enabled' => $settings->descuento_enabled ?? 0,
             'exchange_rate' => $settings->exchange_rate ?? 0,
             'payment_methods' => $settings->payment_methods ?? 'efectivo,tarjeta,mixto',
             'settings' => $settings,

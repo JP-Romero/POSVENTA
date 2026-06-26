@@ -1,6 +1,8 @@
 const CURRENCY = POSVENTA_CONFIG.CURRENCY_SYMBOL || 'C$';
 const IVA_RATE = POSVENTA_CONFIG.IVA_RATE;
 const IVA_ENABLED = POSVENTA_CONFIG.IVA_ENABLED;
+const DESCUENTO_RATE = POSVENTA_CONFIG.DESCUENTO_RATE || 0;
+const DESCUENTO_ENABLED = POSVENTA_CONFIG.DESCUENTO_ENABLED || false;
 const EXCHANGE_RATE = POSVENTA_CONFIG.EXCHANGE_RATE;
 const PAYMENT_METHODS = POSVENTA_CONFIG.PAYMENT_METHODS.split(',').map(s => s.trim());
 let cart = [];
@@ -200,9 +202,17 @@ function renderCart() {
 
 function updateTotal() {
     const subtotal = cart.reduce((s, i) => s + i.precio * i.quantity, 0);
-    const tax = IVA_ENABLED ? subtotal * IVA_RATE : 0;
-    const total = subtotal + tax;
+    const discount = DESCUENTO_ENABLED ? subtotal * DESCUENTO_RATE : 0;
+    const subtotalWithDiscount = subtotal - discount;
+    const tax = IVA_ENABLED ? subtotalWithDiscount * IVA_RATE : 0;
+    const total = subtotalWithDiscount + tax;
     document.getElementById('subtotal').textContent = fmt(subtotal);
+    if (DESCUENTO_ENABLED) {
+        document.getElementById('discount-row').style.display = '';
+        document.getElementById('discount').textContent = '-' + fmt(discount);
+    } else {
+        document.getElementById('discount-row').style.display = 'none';
+    }
     document.getElementById('tax').textContent = fmt(tax);
     document.getElementById('total-amount').textContent = fmt(total);
     const dolarRow = document.getElementById('dolar-total-row');
@@ -247,18 +257,29 @@ function handlePayment(type) {
 
 function getPaymentData(type, recibido) {
     const subtotal = cart.reduce((s, i) => s + i.precio * i.quantity, 0);
-    const tax = IVA_ENABLED ? subtotal * IVA_RATE : 0;
-    const total = Number((subtotal + tax).toFixed(2));
+    const discount = DESCUENTO_ENABLED ? subtotal * DESCUENTO_RATE : 0;
+    const subtotalWithDiscount = subtotal - discount;
+    const tax = IVA_ENABLED ? subtotalWithDiscount * IVA_RATE : 0;
+    const total = Number((subtotalWithDiscount + tax).toFixed(2));
     const cambio = Number((recibido - total).toFixed(2));
     let data = {
         id_cliente: document.getElementById('id_cliente').value,
-        subtotal: Number(subtotal.toFixed(2)),
+        subtotal: Number(subtotalWithDiscount.toFixed(2)),
         impuesto: Number(tax.toFixed(2)),
         total,
         efectivo_recibido: recibido,
         cambio: cambio >= 0 ? cambio : 0,
         auto_print: true,
-        items: cart.map(i => ({id_producto: i.id, cantidad: i.quantity, precio_venta: i.precio, descuento: 0}))
+        items: cart.map(i => {
+            const lineTotal = i.precio * i.quantity;
+            const itemDiscount = DESCUENTO_ENABLED ? lineTotal * DESCUENTO_RATE : 0;
+            return {
+                id_producto: i.id,
+                cantidad: i.quantity,
+                precio_venta: i.precio,
+                descuento: Number(itemDiscount.toFixed(2))
+            };
+        })
     };
     if (type === 'efectivo') {
         data.metodo_pago = 'Efectivo';
@@ -283,11 +304,13 @@ function getPaymentData(type, recibido) {
 
 function submitSaleWithPayment(type, total, pagoEfectivo, pagoTarjeta, pagoDolar, pagoDolarEquiv, totalDolares, tasaCambio, efectivoRecibido, cambio) {
     const subtotal = cart.reduce((s, i) => s + i.precio * i.quantity, 0);
-    const tax = IVA_ENABLED ? subtotal * IVA_RATE : 0;
+    const discount = DESCUENTO_ENABLED ? subtotal * DESCUENTO_RATE : 0;
+    const subtotalWithDiscount = subtotal - discount;
+    const tax = IVA_ENABLED ? subtotalWithDiscount * IVA_RATE : 0;
     submitSale({
         id_cliente: document.getElementById('id_cliente').value,
         metodo_pago: type === 'tarjeta' ? 'Tarjeta' : type,
-        subtotal: Number(subtotal.toFixed(2)),
+        subtotal: Number(subtotalWithDiscount.toFixed(2)),
         impuesto: Number(tax.toFixed(2)),
         total,
         pago_efectivo: pagoEfectivo,
@@ -299,7 +322,16 @@ function submitSaleWithPayment(type, total, pagoEfectivo, pagoTarjeta, pagoDolar
         efectivo_recibido: efectivoRecibido,
         cambio: cambio,
         auto_print: true,
-        items: cart.map(i => ({id_producto: i.id, cantidad: i.quantity, precio_venta: i.precio, descuento: 0}))
+        items: cart.map(i => {
+            const lineTotal = i.precio * i.quantity;
+            const itemDiscount = DESCUENTO_ENABLED ? lineTotal * DESCUENTO_RATE : 0;
+            return {
+                id_producto: i.id,
+                cantidad: i.quantity,
+                precio_venta: i.precio,
+                descuento: Number(itemDiscount.toFixed(2))
+            };
+        })
     });
 }
 
@@ -384,7 +416,9 @@ function openSplitModal() {
 
 function getTotal() {
     const s = cart.reduce((sum, i) => sum + i.precio * i.quantity, 0);
-    return Number((s + (IVA_ENABLED ? s * IVA_RATE : 0)).toFixed(2));
+    const discount = DESCUENTO_ENABLED ? s * DESCUENTO_RATE : 0;
+    const subtotalWithDiscount = s - discount;
+    return Number((subtotalWithDiscount + (IVA_ENABLED ? subtotalWithDiscount * IVA_RATE : 0)).toFixed(2));
 }
 
 function validateSplit() {
@@ -437,16 +471,27 @@ function confirmSplitPayment() {
     
     bootstrap.Modal.getInstance(document.getElementById('splitPaymentModal')).hide();
     const s = cart.reduce((sum, i) => sum + i.precio * i.quantity, 0);
-    const tax = IVA_ENABLED ? s * IVA_RATE : 0;
+    const discount = DESCUENTO_ENABLED ? s * DESCUENTO_RATE : 0;
+    const subtotalWithDiscount = s - discount;
+    const tax = IVA_ENABLED ? subtotalWithDiscount * IVA_RATE : 0;
     submitSale({
         id_cliente: document.getElementById('id_cliente').value, metodo_pago: 'Mixto',
-        subtotal: Number(s.toFixed(2)), impuesto: Number(tax.toFixed(2)), total,
+        subtotal: Number(subtotalWithDiscount.toFixed(2)), impuesto: Number(tax.toFixed(2)), total,
         pago_efectivo: Number(efectivoAplicado.toFixed(2)), pago_tarjeta: Number(tarjeta.toFixed(2)),
         pago_dolar: Number(dolarEquiv.toFixed(2)), pago_dolar_equiv: Number(dolarEquiv.toFixed(2)),
         total_dolares: totalDolares, tasa_cambio: EXCHANGE_RATE,
         efectivo_recibido: recibido, cambio: Number(cambio.toFixed(2)),
         auto_print: true,
-        items: cart.map(i => ({id_producto: i.id, cantidad: i.quantity, precio_venta: i.precio, descuento: 0}))
+        items: cart.map(i => {
+            const lineTotal = i.precio * i.quantity;
+            const itemDiscount = DESCUENTO_ENABLED ? lineTotal * DESCUENTO_RATE : 0;
+            return {
+                id_producto: i.id,
+                cantidad: i.quantity,
+                precio_venta: i.precio,
+                descuento: Number(itemDiscount.toFixed(2))
+            };
+        })
     });
 }
 
