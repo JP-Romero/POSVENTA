@@ -76,6 +76,19 @@ class Database {
         return $this->stmt->fetch(PDO::FETCH_OBJ);
     }
 
+    // Get result set as array of associative arrays
+    public function resultSetArray() {
+        $this->execute();
+        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Get single record as associative array
+    public function singleArray() {
+        $this->execute();
+        $row = $this->stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: [];
+    }
+
     // Get row count
     public function rowCount() {
         return $this->stmt->rowCount();
