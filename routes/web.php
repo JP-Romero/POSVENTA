@@ -110,3 +110,15 @@ $router->post('reports/inventory', ReportsController::class . '@inventory');
 // Settings
 $router->get('settings', SettingsController::class . '@index');
 $router->post('settings', SettingsController::class . '@update');
+
+// Executive Module (Business Intelligence)
+$router->get('executive', 'Executive@index');
+$router->get('executive/resume', 'Executive@resume');
+$router->get('executive/inventory', 'Executive@inventory');
+$router->get('executive/profitability', 'Executive@profitability');
+$router->get('executive/kpi', 'Executive@kpi');
+$router->get('executive/trends', 'Executive@trends');
+$router->get('executive/audit', 'Executive@audit');
+$router->get('executive/apiChartData', 'Executive@apiChartData');
+$router->get('executive/apiResumeData', 'Executive@apiResumeData');
+$router->get('executive/exportProfitability', 'Executive@exportProfitability');
