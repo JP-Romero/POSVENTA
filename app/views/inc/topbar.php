@@ -10,52 +10,59 @@
         
         <div class="d-flex align-items-center gap-2">
             <div id="clockDisplay" class="fw-bold" style="font-family: monospace; font-size: 1.1rem;"></div>
+            <?php
+            $dbNotification = new Database;
+            // Obtener productos agotados (stock <= 0)
+            $dbNotification->query("SELECT id, nombre, codigo FROM productos WHERE stock <= 0 AND estado = 1 LIMIT 5");
+            $agotados = $dbNotification->resultSet();
+            $totalRealAgotados = count($agotados);
+            if ($totalRealAgotados > 0) {
+                // Obtener total real si supera el límite de 5
+                $dbNotification->query("SELECT COUNT(*) as total FROM productos WHERE stock <= 0 AND estado = 1");
+                $totalRealAgotados = $dbNotification->single()->total;
+            }
+            ?>
             <div class="dropdown position-relative">
                 <button class="btn btn-outline-secondary btn-sm position-relative" id="notificationsToggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notificaciones">
                     <i class="fa fa-bell"></i>
-                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle" id="notificationBadge" style="display: none;">3</span>
+                    <?php if($totalRealAgotados > 0): ?>
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle" id="notificationBadge"><?= $totalRealAgotados ?></span>
+                    <?php endif; ?>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="notificationsToggle" style="min-width: 320px;">
                     <li class="dropdown-header d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0">Notificaciones</h6>
-                        <a href="#" class="btn btn-sm btn-link p-0">Marcar todo</a>
+                        <h6 class="mb-0">Productos Agotados</h6>
+                        <?php if($totalRealAgotados > 0): ?>
+                        <span class="badge bg-danger"><?= $totalRealAgotados ?> Alertas</span>
+                        <?php endif; ?>
                     </li>
                     <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-start" href="#">
-                            <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-2 me-3">
-                                <i class="fa fa-exclamation-triangle"></i>
+                    <?php if($totalRealAgotados > 0): ?>
+                        <?php foreach($agotados as $prod): ?>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-start" href="<?= URLROOT ?>/products">
+                                <div class="bg-danger bg-opacity-10 text-danger rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                    <i class="fa fa-exclamation-circle"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-medium text-wrap" style="max-width: 220px; font-size: 0.9rem;"><?= htmlspecialchars($prod->nombre) ?></div>
+                                    <small class="text-muted">Cód: <?= htmlspecialchars($prod->codigo) ?> | Sin stock</small>
+                                </div>
+                            </a>
+                        </li>
+                        <?php endforeach; ?>
+                        <?php if($totalRealAgotados > 5): ?>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-center text-primary fw-semibold py-2" href="<?= URLROOT ?>/products">Ver los <?= $totalRealAgotados ?> productos</a></li>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <li>
+                            <div class="dropdown-item text-center text-muted py-3">
+                                <i class="fa fa-check-circle text-success fs-4 mb-2 d-block"></i>
+                                Todo al día.<br>No hay productos agotados.
                             </div>
-                            <div>
-                                <div class="fw-medium">Stock bajo detectado</div>
-                                <small class="text-muted">5 productos por debajo del mínimo</small>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-start" href="#">
-                            <div class="bg-info bg-opacity-10 text-info rounded-circle p-2 me-3">
-                                <i class="fa fa-truck"></i>
-                            </div>
-                            <div>
-                                <div class="fw-medium">Nueva compra registrada</div>
-                                <small class="text-muted">Compra #C-0012 por C$ 15,000</small>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-start" href="#">
-                            <div class="bg-success bg-opacity-10 text-success rounded-circle p-2 me-3">
-                                <i class="fa fa-user-plus"></i>
-                            </div>
-                            <div>
-                                <div class="fw-medium">Nuevo cliente</div>
-                                <small class="text-muted">Juan Pérez registrado</small>
-                            </div>
-                        </a>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-center" href="#">Ver todas las notificaciones</a></li>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
             
