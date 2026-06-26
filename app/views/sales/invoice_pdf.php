@@ -63,7 +63,15 @@
         </div>
         <div class="info-box">
             <label>Método Pago</label>
-            <span><span class="badge badge-<?= $sale->metodo_pago === 'Efectivo' ? 'success' : 'info' ?>"><?= $sale->metodo_pago ?></span></span>
+            <span>
+                <?php
+                $parts = [];
+                if (($sale->pago_efectivo ?? 0) > 0) $parts[] = 'Efectivo $' . fmt($sale->pago_efectivo);
+                if (($sale->pago_tarjeta ?? 0) > 0) $parts[] = 'Tarjeta $' . fmt($sale->pago_tarjeta);
+                if (($sale->pago_dolar ?? 0) > 0) $parts[] = 'Dólar $' . fmt($sale->pago_dolar) . ' (' . fmt($sale->total_dolares ?? 0) . ' USD)';
+                echo implode(' + ', $parts) ?: h($sale->metodo_pago);
+                ?>
+            </span>
         </div>
         <div class="info-box">
             <label>Estado</label>
@@ -105,6 +113,12 @@
         <div class="total-row"><span>Descuento</span><span>-<?= fmt($sale->descuento) ?></span></div>
         <?php endif; ?>
         <div class="total-row total"><span>TOTAL</span><span><?= fmt($sale->total) ?></span></div>
+        <?php if (($sale->efectivo_recibido ?? 0) > 0): ?>
+        <div class="total-row"><span>Recibido</span><span><?= fmt($sale->efectivo_recibido) ?></span></div>
+        <?php endif; ?>
+        <?php if (($sale->cambio ?? 0) > 0): ?>
+        <div class="total-row"><span>Cambio</span><span><?= fmt($sale->cambio) ?></span></div>
+        <?php endif; ?>
     </div>
     
     <div class="footer">

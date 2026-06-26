@@ -1,21 +1,24 @@
 <?php $currentPage = 'dashboard'; require APPROOT . '/views/inc/header.php'; ?>
 
 <!-- Dashboard de Botones Grandes y Elegantes -->
-<div class="mb-8 pt-16 mt-4">
-    <h2 class="text-2xl font-bold text-gray-900 mb-text-900">¿Qué deseas hacer hoy?</h2>
-    <p class="text-sm text-gray-600 mb-text-500 mt-1">Selecciona una de las opciones del módulo del sistema.</p>
+<div class="mb-6 pt-6">
+    <h2 class="text-xl md:text-2xl font-bold text-gray-900">
+        ¡Bienvenido/a, <?= htmlspecialchars($_SESSION['user_nombre'] ?? 'Usuario'); ?>! <span class="font-medium text-gray-700">¿Qué deseas hacer hoy?</span>
+    </h2>
 </div>
 
 <!-- Rejilla de Botones Grandes y Elegantes -->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    
-    <!-- Dashboard -->
-    <a href="<?= URLROOT; ?>/pages/dashboard" class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-indigo-500 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[160px]">
-        <div class="p-4 bg-indigo-50 rounded-xl text-indigo-600 transition-colors duration-300 mb-4 group-hover-bg-indigo-600 group-hover-text-white">
-            <i data-lucide="gauge" class="w-8 h-8"></i>
+
+    <?php if(isAdmin()): ?>
+    <!-- Centro Ejecutivo -->
+    <a href="<?= URLROOT; ?>/executive" class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-yellow-500 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[160px]">
+        <div class="p-4 bg-yellow-50 rounded-xl text-yellow-600 transition-colors duration-300 mb-4 group-hover-bg-yellow-600 group-hover-text-white">
+            <i data-lucide="briefcase" class="w-8 h-8"></i>
         </div>
-        <span class="text-base font-semibold text-gray-800 group-hover-text-indigo-600 transition-colors">Dashboard</span>
+        <span class="text-base font-semibold text-gray-800 group-hover-text-yellow-600 transition-colors">Centro Ejecutivo</span>
     </a>
+    <?php endif; ?>
     
     <!-- Punto de Venta -->
     <a href="<?= URLROOT; ?>/pos" class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-cyan-500 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[160px]">
@@ -90,13 +93,6 @@
         <span class="text-base font-semibold text-gray-800 group-hover-text-teal-600 transition-colors">Ventas</span>
     </a>
     
-    <!-- Reportes -->
-    <a href="<?= URLROOT; ?>/reports" class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-purple-500 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[160px]">
-        <div class="p-4 bg-purple-50 rounded-xl text-purple-600 transition-colors duration-300 mb-4 group-hover-bg-purple-600 group-hover-text-white">
-            <i data-lucide="bar-chart-3" class="w-8 h-8"></i>
-        </div>
-        <span class="text-base font-semibold text-gray-800 group-hover-text-purple-600 transition-colors">Reportes</span>
-    </a>
     
     <!-- Configuración -->
     <a href="<?= URLROOT; ?>/settings" class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-gray-500 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[160px]">

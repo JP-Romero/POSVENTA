@@ -61,14 +61,14 @@ class Cierre extends Controller {
         $listaMovimientos = $this->cajaModel->getMovimientos($fecha_inicio, $fecha_fin);
 
         // Map payment methods to simple array
-        $pagos = ['Efectivo' => 0, 'Tarjeta' => 0, 'Transferencia' => 0];
+        $pagos = ['Efectivo' => 0, 'Tarjeta' => 0, 'Dólar' => 0, 'Mixto' => 0, 'Transferencia' => 0];
         foreach ($ventasMetodosPago as $pago) {
             $pagos[$pago->metodo_pago] = (float)$pago->total;
         }
 
         // Calculate expected cash
         // Efectivo esperado = Efectivo de ventas + Fondo/Entradas - Salidas
-        $ventas_efectivo = $pagos['Efectivo'];
+        $ventas_efectivo = $pagos['Efectivo'] + $pagos['Mixto'];
         $entradas = $movimientosTotales->total_entradas ?? 0;
         $salidas = $movimientosTotales->total_salidas ?? 0;
         
@@ -133,7 +133,7 @@ class Cierre extends Controller {
             $ventasMetodosPago = $this->saleModel->getVentasPorMetodoPago($fecha_inicio, $fecha_fin);
             $movimientosTotales = $this->cajaModel->getTotalesMovimientos($fecha_inicio, $fecha_fin);
             
-            $pagos = ['Efectivo' => 0, 'Tarjeta' => 0, 'Transferencia' => 0];
+            $pagos = ['Efectivo' => 0, 'Tarjeta' => 0, 'Dólar' => 0, 'Mixto' => 0, 'Transferencia' => 0];
             foreach ($ventasMetodosPago as $pago) {
                 $pagos[$pago->metodo_pago] = (float)$pago->total;
             }
@@ -146,8 +146,9 @@ class Cierre extends Controller {
                 'ventas_brutas' => $ventas_brutas,
                 'descuentos' => $resumenVentas->descuentos ?? 0,
                 'ventas_netas' => $resumenVentas->ventas_netas ?? 0,
-                'total_efectivo' => $pagos['Efectivo'],
+                'total_efectivo' => $pagos['Efectivo'] + $pagos['Mixto'],
                 'total_tarjeta' => $pagos['Tarjeta'],
+                'total_dolar' => $pagos['Dólar'],
                 'total_transferencia' => $pagos['Transferencia'],
                 'fondo_inicial' => 0, // Simplified, assume included in ingresos
                 'ingresos_caja' => $movimientosTotales->total_entradas ?? 0,

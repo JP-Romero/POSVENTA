@@ -19,17 +19,39 @@ class Sale {
         try {
             $this->db->beginTransaction();
 
-            // 1. Insert into ventas
-            $this->db->query('INSERT INTO ventas (id_usuario, id_cliente, numero_factura, subtotal, impuesto, total, metodo_pago)
-                              VALUES (:id_usuario, :id_cliente, :numero_factura, :subtotal, :impuesto, :total, :metodo_pago)');
+            // Generate invoice number securely at the time of sale
+            $this->db->query('SELECT MAX(id) as last_id FROM ventas');
+            $row = $this->db->single();
+            $next = ($row->last_id ?? 0) + 1;
+            $numero_factura = 'FAC-' . str_pad($next, 6, '0', STR_PAD_LEFT);
+
+            $pagoEfectivo = $data['pago_efectivo'] ?? 0;
+            $pagoTarjeta = $data['pago_tarjeta'] ?? 0;
+            $pagoDolar = $data['pago_dolar'] ?? 0;
+            $pagoDolarEquiv = $data['pago_dolar_equiv'] ?? 0;
+            $totalDolares = $data['total_dolares'] ?? 0;
+            $tasaCambio = $data['tasa_cambio'] ?? 0;
+            $efectivoRecibido = $data['efectivo_recibido'] ?? 0;
+            $cambio = $data['cambio'] ?? 0;
+
+            $this->db->query('INSERT INTO ventas (id_usuario, id_cliente, numero_factura, subtotal, impuesto, total, metodo_pago, pago_efectivo, pago_tarjeta, pago_dolar, pago_dolar_equiv, total_dolares, tasa_cambio, efectivo_recibido, cambio)
+                              VALUES (:id_usuario, :id_cliente, :numero_factura, :subtotal, :impuesto, :total, :metodo_pago, :pago_efectivo, :pago_tarjeta, :pago_dolar, :pago_dolar_equiv, :total_dolares, :tasa_cambio, :efectivo_recibido, :cambio)');
 
             $this->db->bind(':id_usuario', $_SESSION['user_id']);
             $this->db->bind(':id_cliente', $data['id_cliente']);
-            $this->db->bind(':numero_factura', $data['numero_factura']);
+            $this->db->bind(':numero_factura', $numero_factura);
             $this->db->bind(':subtotal', $data['subtotal']);
             $this->db->bind(':impuesto', $data['impuesto']);
             $this->db->bind(':total', $data['total']);
             $this->db->bind(':metodo_pago', $data['metodo_pago']);
+            $this->db->bind(':pago_efectivo', $pagoEfectivo);
+            $this->db->bind(':pago_tarjeta', $pagoTarjeta);
+            $this->db->bind(':pago_dolar', $pagoDolar);
+            $this->db->bind(':pago_dolar_equiv', $pagoDolarEquiv);
+            $this->db->bind(':total_dolares', $totalDolares);
+            $this->db->bind(':tasa_cambio', $tasaCambio);
+            $this->db->bind(':efectivo_recibido', $efectivoRecibido);
+            $this->db->bind(':cambio', $cambio);
 
             if (!$this->db->execute()) return false;
 
@@ -38,10 +60,16 @@ class Sale {
 
             // 2. Insert details and update stock
             foreach ($data['items'] as $item) {
-                $this->db->query('INSERT INTO detalle_ventas (id_venta, id_producto, cantidad, precio_venta, descuento)
-                                  VALUES (:id_venta, :id_producto, :cantidad, :precio_venta, :descuento)');
+                // Fetch current cost
+                $this->db->query('SELECT precio_compra FROM productos WHERE id = :id');
+                $this->db->bind(':id', $item['id_producto']);
+                $costo = $this->db->single()->precio_compra ?? 0;
+
+                $this->db->query('INSERT INTO detalle_ventas (id_venta, id_producto, costo, cantidad, precio_venta, descuento)
+                                  VALUES (:id_venta, :id_producto, :costo, :cantidad, :precio_venta, :descuento)');
                 $this->db->bind(':id_venta', $sale_id);
                 $this->db->bind(':id_producto', $item['id_producto']);
+                $this->db->bind(':costo', $costo);
                 $this->db->bind(':cantidad', $item['cantidad']);
                 $this->db->bind(':precio_venta', $item['precio_venta']);
                 $this->db->bind(':descuento', $item['descuento']);
@@ -65,7 +93,7 @@ class Sale {
             return $sale_id;
         } catch (Exception $e) {
             $this->db->cancelTransaction();
-            return false;
+            throw $e; // Rethrow so it bubbles up or log it
         }
     }
 
@@ -136,7 +164,7 @@ class Sale {
                           LIMIT :limit");
         $this->db->bind(':fecha_inicio', $fecha_inicio);
         $this->db->bind(':fecha_fin', $fecha_fin);
-        $this->db->bind(':limit', $limit, 'int');
+        $this->db->bind(':limit', $limit);
         return $this->db->resultSet();
     }
 }

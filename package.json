@@ -1,8 +1,8 @@
 {
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/style.css --minify",
-    "watch:css": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/style.css --watch"
+    "build:css": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/tailwind-output.css --minify",
+    "watch:css": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/tailwind-output.css --watch"
   },
   "main": "index.js",
   "description": "Act�a como un Arquitecto de Software Senior, Desarrollador Full Stack Senior, Dise�ador UX/UI y Analista de Sistemas con m�s de 15 a�os de experiencia.",

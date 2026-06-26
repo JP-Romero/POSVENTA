@@ -5,7 +5,7 @@
         <h1>Historial de Compras: <?= h($data['provider']->nombre) ?></h1>
     </div>
     <div class="col-md-6 text-end">
-        <a href="<?= URLROOT ?>/providers" class="btn btn-secondary"><i class="fa fa-backward"></i> Volver</a>
+        <a href="<?= URLROOT ?>/providers" class="btn btn-outline-secondary"><i class="fa fa-backward"></i> Volver</a>
     </div>
 </div>
 

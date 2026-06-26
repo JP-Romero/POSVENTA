@@ -27,13 +27,21 @@ class Pos extends Controller {
         $this->db->query('SELECT * FROM impresoras WHERE activa = 1 LIMIT 1');
         $printer = $this->db->single();
 
+        // Load real categories from DB
+        $this->db->query('SELECT id, nombre FROM categorias ORDER BY nombre ASC');
+        $categories = $this->db->resultSet();
+
         $data = [
             'clients' => $clients,
             'invoiceNumber' => $invoiceNumber,
             'iva' => $settings->iva ?? 0,
+            'iva_enabled' => $settings->iva_enabled ?? 1,
+            'exchange_rate' => $settings->exchange_rate ?? 0,
+            'payment_methods' => $settings->payment_methods ?? 'efectivo,tarjeta,mixto',
             'settings' => $settings,
             'printer' => $printer,
-            'cajaAbierta' => $this->cajaModel->isCajaAbierta()
+            'cajaAbierta' => $this->cajaModel->isCajaAbierta(),
+            'categories' => $categories
         ];
 
         $this->view('pos/index', $data);
@@ -41,9 +49,54 @@ class Pos extends Controller {
 
     public function searchProduct() {
         $query = $_GET['q'] ?? '';
-        $this->db->query('SELECT * FROM productos WHERE (nombre LIKE :q OR codigo_barras = :code OR codigo_interno = :code) AND estado = 1 AND stock > 0');
-        $this->db->bind(':q', '%'.$query.'%');
-        $this->db->bind(':code', $query);
+        $categoriaId = $_GET['categoria_id'] ?? null;
+
+        // Special filter: más vendidos
+        if ($categoriaId === 'mas-vendidos') {
+            $sql = 'SELECT p.*, COUNT(dv.id) as ventas_count
+                    FROM productos p
+                    INNER JOIN detalle_ventas dv ON p.id = dv.id_producto
+                    WHERE p.estado = 1 AND p.stock > 0';
+            $params = [];
+            if ($query) {
+                $sql .= ' AND (p.nombre LIKE :q OR p.codigo_barras = :code OR p.codigo_interno = :code)';
+                $params[':q'] = '%' . $query . '%';
+                $params[':code'] = $query;
+            }
+            $sql .= ' GROUP BY p.id ORDER BY ventas_count DESC LIMIT 30';
+            $this->db->query($sql);
+            foreach ($params as $key => $val) {
+                $this->db->bind($key, $val);
+            }
+            $products = $this->db->resultSet();
+            echo json_encode($products);
+            exit;
+        }
+
+        // Base query
+        $sql = 'SELECT * FROM productos WHERE estado = 1 AND stock > 0';
+        $params = [];
+
+        if ($query) {
+            $sql .= ' AND (nombre LIKE :q OR codigo_barras = :code OR codigo_interno = :code)';
+            $params[':q'] = '%' . $query . '%';
+            $params[':code'] = $query;
+        }
+
+        // Special filter: ofertas (bajo margen = buen precio)
+        if ($categoriaId === 'ofertas') {
+            $sql .= ' AND precio_venta <= precio_compra * 1.2';
+        } elseif ($categoriaId && is_numeric($categoriaId)) {
+            $sql .= ' AND id_categoria = :categoria_id';
+            $params[':categoria_id'] = (int)$categoriaId;
+        }
+
+        $sql .= ' ORDER BY nombre ASC LIMIT 50';
+
+        $this->db->query($sql);
+        foreach ($params as $key => $val) {
+            $this->db->bind($key, $val);
+        }
         $products = $this->db->resultSet();
         echo json_encode($products);
     }
@@ -57,15 +110,20 @@ class Pos extends Controller {
                     echo json_encode(['status' => 'error', 'message' => 'CSRF validation failed']);
                     exit;
                 }
-                $sale_id = $this->saleModel->saveSale($jsonData);
-                if ($sale_id) {
-                    $autoPrint = $jsonData['auto_print'] ?? false;
-                    if ($autoPrint) {
-                        $this->printReceipt($sale_id);
+                try {
+                    $sale_id = $this->saleModel->saveSale($jsonData);
+                    if ($sale_id) {
+                        $autoPrint = $jsonData['auto_print'] ?? false;
+                        if ($autoPrint) {
+                            $this->printReceipt($sale_id);
+                        }
+                        $realInvoiceNumber = $this->saleModel->getInvoiceNumber($sale_id);
+                        echo json_encode(['status' => 'success', 'sale_id' => $sale_id, 'invoiceNumber' => $realInvoiceNumber]);
+                    } else {
+                        echo json_encode(['status' => 'error', 'message' => 'Sale failed. ID: ' . var_export($sale_id, true)]);
                     }
-                    echo json_encode(['status' => 'success', 'sale_id' => $sale_id, 'invoiceNumber' => $jsonData['numero_factura']]);
-                } else {
-                    echo json_encode(['status' => 'error']);
+                } catch (Exception $e) {
+                    echo json_encode(['status' => 'error', 'message' => 'Exception: ' . $e->getMessage()]);
                 }
                 exit;
             }
@@ -148,7 +206,7 @@ class Pos extends Controller {
                           GROUP BY p.id
                           ORDER BY ventas_count DESC, p.nombre ASC
                           LIMIT :limit');
-        $this->db->bind(':limit', $limit, 'int');
+        $this->db->bind(':limit', (int)$limit);
         $products = $this->db->resultSet();
         echo json_encode($products);
     }

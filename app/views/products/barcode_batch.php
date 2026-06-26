@@ -8,7 +8,7 @@
                 <button class="btn btn-primary" onclick="window.print()">
                     <i class="fa fa-print me-1"></i> Imprimir Todas
                 </button>
-                <a href="<?= URLROOT ?>/products" class="btn btn-secondary">Volver</a>
+                <a href="<?= URLROOT ?>/products" class="btn btn-outline-secondary">Volver</a>
             </div>
         </div>
         

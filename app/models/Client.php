@@ -25,7 +25,7 @@
       $this->db->bind(':direccion', $data['direccion']);
 
       if($this->db->execute()){
-        return true;
+        return $this->db->lastInsertId();
       } else {
         return false;
       }

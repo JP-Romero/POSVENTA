@@ -111,6 +111,52 @@
       ];
       $this->view('clients/history', $data);
     }
+
+    public function quickAdd(){
+      header('Content-Type: application/json');
+
+      if($_SERVER['REQUEST_METHOD'] !== 'POST'){
+        echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+        exit;
+      }
+
+      $json = json_decode(file_get_contents('php://input'), true);
+      if($json){
+        $_POST = $json;
+      }
+
+      $nombre = trim($_POST['nombre'] ?? '');
+      $telefono = trim($_POST['telefono'] ?? '');
+      $correo = trim($_POST['correo'] ?? '');
+      $direccion = trim($_POST['direccion'] ?? '');
+
+      if(empty($nombre)){
+        echo json_encode(['success' => false, 'message' => 'El nombre es obligatorio']);
+        exit;
+      }
+
+      $data = [
+        'nombre' => $nombre,
+        'telefono' => $telefono,
+        'correo' => $correo,
+        'direccion' => $direccion
+      ];
+
+      $newId = $this->clientModel->addClient($data);
+
+      if($newId){
+        echo json_encode([
+          'success' => true,
+          'client' => [
+            'id' => $newId,
+            'nombre' => $nombre
+          ]
+        ]);
+      } else {
+        echo json_encode(['success' => false, 'message' => 'Error al guardar el cliente']);
+      }
+      exit;
+    }
     
     public function apiSaleDetails($id){
       header('Content-Type: application/json');

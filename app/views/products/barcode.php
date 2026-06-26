@@ -9,7 +9,7 @@
                     <button class="btn btn-sm btn-outline-primary" onclick="window.print()">
                         <i class="fa fa-print me-1"></i> Imprimir
                     </button>
-                    <a href="<?= URLROOT ?>/products" class="btn btn-sm btn-secondary">Volver</a>
+                    <a href="<?= URLROOT ?>/products" class="btn btn-sm btn-outline-secondary">Volver</a>
                 </div>
             </div>
             <div class="card-body text-center p-4">

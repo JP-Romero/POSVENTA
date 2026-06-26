@@ -55,7 +55,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="fa fa-upload me-1"></i> Importar Productos
                         </button>
-                        <a href="<?= URLROOT ?>/products" class="btn btn-secondary">Cancelar</a>
+                        <a href="<?= URLROOT ?>/products" class="btn btn-outline-secondary">Cancelar</a>
                     </div>
                 </form>
             </div>

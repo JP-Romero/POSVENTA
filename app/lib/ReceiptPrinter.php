@@ -189,12 +189,25 @@ class ReceiptPrinter
             
             // --- Pago ---
             $p->setJustification(Printer::JUSTIFY_LEFT);
-            $p->text("Pago: {$sale['metodo_pago']}\n");
+            $metodo = $sale['metodo_pago'] ?? 'Efectivo';
+            $p->text("Pago: {$metodo}\n");
+
+            // Show split breakdown
+            if (($sale['pago_efectivo'] ?? 0) > 0) {
+                $p->text(sprintf("Efectivo: %8.2f\n", $sale['pago_efectivo']));
+            }
+            if (($sale['pago_tarjeta'] ?? 0) > 0) {
+                $p->text(sprintf("Tarjeta: %9.2f\n", $sale['pago_tarjeta']));
+            }
+            if (($sale['pago_dolar'] ?? 0) > 0) {
+                $p->text(sprintf("Dolar: %11.2f\n", $sale['pago_dolar']));
+                $p->text(sprintf("USD: %13.2f\n", $sale['total_dolares'] ?? 0));
+            }
             
-            if ($sale['metodo_pago'] === 'Efectivo' && !empty($sale['efectivo_recibido'])) {
-                $cambio = $sale['efectivo_recibido'] - $sale['total'];
+            $cashMethods = ['Efectivo', 'Dólar', 'Mixto'];
+            if (in_array($metodo, $cashMethods) && ($sale['efectivo_recibido'] ?? 0) > 0) {
                 $p->text(sprintf("Recibido: %10.2f\n", $sale['efectivo_recibido']));
-                $p->text(sprintf("Cambio: %11.2f\n", $cambio));
+                $p->text(sprintf("Cambio: %11.2f\n", $sale['cambio'] ?? 0));
             }
             
             $p->feed(1);

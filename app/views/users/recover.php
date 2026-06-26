@@ -39,7 +39,7 @@
             <?php endif; ?>
             
             <p class="text-muted small mb-4">Revise su bandeja de entrada (y spam). El enlace expira en 1 hora.</p>
-            <a href="<?= URLROOT ?>/users/login" class="btn btn-secondary w-100">Volver al Login</a>
+            <a href="<?= URLROOT ?>/users/login" class="btn btn-outline-secondary w-100">Volver al Login</a>
           </div>
         <?php endif; ?>
       </div>

@@ -245,13 +245,13 @@
                 <div class="form-group mb-2">
                     <label style="font-size: 0.9rem;">Efectivo Real Contado:</label>
                     <div class="input-group">
-                        <span class="input-group-text border-secondary">$</span>
+                        <span class="input-group-text border-secondary">C$</span>
                         <input type="number" step="0.01" id="efectivo_real" name="efectivo_real" class="form-control border-secondary" required placeholder="0.00">
                     </div>
                 </div>
                 <div class="cierre-row" style="margin-top: 0.5rem;">
                     <span>Diferencia (Sobrante/Faltante):</span>
-                    <span id="diferencia-texto">$0.00</span>
+                    <span id="diferencia-texto">C$0.00</span>
                 </div>
                 <input type="hidden" id="efectivo_esperado" name="efectivo_esperado" value="<?= $data['efectivo_esperado'] ?>">
             </div>
@@ -274,36 +274,36 @@
 <!-- Modal Movimiento -->
 <div class="modal fade" id="movimientoModal" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content bg-secondary text-white">
-            <div class="modal-header border-secondary">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title">Registrar Movimiento de Caja</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="<?= URLROOT ?>/cierre/registrarMovimiento" method="POST">
                 <?= csrfField() ?>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label>Tipo de Movimiento</label>
-                        <select name="tipo" class="form-select border-secondary" required>
+                        <label class="form-label">Tipo de Movimiento</label>
+                        <select name="tipo" class="form-select" required>
                             <option value="Salida">Salida (Gasto, Retiro, Proveedor)</option>
                             <option value="Entrada">Entrada (Fondo inicial, Ingreso extra)</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label>Concepto / Descripción</label>
-                        <input type="text" name="concepto" class="form-control border-secondary" required placeholder="Ej. Pago de Hojas, Fondo Inicial">
+                        <label class="form-label">Concepto / Descripción</label>
+                        <input type="text" name="concepto" class="form-control" required placeholder="Ej. Pago de Hojas, Fondo Inicial">
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label text-white-50">Monto</label>
+                        <label class="form-label">Monto</label>
                         <div class="input-group">
-                            <span class="input-group-text border-secondary">$</span>
-                            <input type="number" step="0.01" name="monto" class="form-control border-secondary" required min="0.01">
+                            <span class="input-group-text">C$</span>
+                            <input type="number" step="0.01" name="monto" class="form-control" required min="0.01">
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
             </form>
@@ -325,22 +325,22 @@
                 <div class="bg-light p-3 rounded text-start mb-4">
                     <div class="d-flex justify-content-between mb-2">
                         <span>Efectivo Esperado:</span>
-                        <strong id="modal-esperado">$0.00</strong>
+                        <strong id="modal-esperado">C$0.00</strong>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Efectivo Real (Contado):</span>
-                        <strong id="modal-real">$0.00</strong>
+                        <strong id="modal-real">C$0.00</strong>
                     </div>
                     <div class="d-flex justify-content-between border-top pt-2 mt-2">
                         <span>Diferencia (Sobrante/Faltante):</span>
-                        <strong id="modal-diferencia">$0.00</strong>
+                        <strong id="modal-diferencia">C$0.00</strong>
                     </div>
                 </div>
                 
                 <p class="text-muted small">Tu turno ha terminado. Puedes volver al inicio o imprimir tu reporte.</p>
             </div>
             <div class="modal-footer justify-content-center">
-                <a href="<?= URLROOT ?>/pages/dashboard" class="btn btn-secondary">
+                <a href="<?= URLROOT ?>/pages/index" class="btn btn-outline-secondary">
                     <i class="fa fa-home me-2"></i> Volver al Inicio
                 </a>
                 <button type="button" class="btn btn-primary" onclick="alert('Funcionalidad de impresión en desarrollo');">

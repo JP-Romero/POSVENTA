@@ -84,7 +84,51 @@
                                     <input type="number" step="0.01" min="0" max="100" class="form-control" id="iva" name="iva" value="<?= $data['settings']->iva ?>" required>
                                 </div>
                             </div>
-                            
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">IVA Habilitado</label>
+                                <div class="col-sm-10">
+                                    <div class="form-check form-switch mt-2">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="iva_enabled" name="iva_enabled" value="1" <?= ($data['settings']->iva_enabled ?? 1) ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="iva_enabled">Calcular IVA en el POS automáticamente</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="exchange_rate" class="col-sm-2 col-form-label">Tasa de Cambio (1 USD = C$)</label>
+                                <div class="col-sm-4">
+                                    <input type="number" step="0.0001" min="0" class="form-control" id="exchange_rate" name="exchange_rate" value="<?= $data['settings']->exchange_rate ?? '' ?>">
+                                    <div class="form-text">Ej: 36.50 (solo si opera en dólares)</div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Métodos de Pago</label>
+                                <div class="col-sm-10">
+                                    <?php
+                                    $activeMethods = explode(',', $data['settings']->payment_methods ?? '');
+                                    ?>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="pm_efectivo" name="pm_efectivo" value="1" <?= in_array('efectivo', $activeMethods) || empty($activeMethods) ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="pm_efectivo">Efectivo</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="pm_tarjeta" name="pm_tarjeta" value="1" <?= in_array('tarjeta', $activeMethods) || empty($activeMethods) ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="pm_tarjeta">Tarjeta</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="pm_dolar" name="pm_dolar" value="1" <?= in_array('dolar', $activeMethods) ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="pm_dolar">Dólar</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="pm_mixto" name="pm_mixto" value="1" <?= in_array('mixto', $activeMethods) || empty($activeMethods) ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="pm_mixto">Mixto (Efectivo + Tarjeta)</label>
+                                    </div>
+                                    <div class="form-text">Seleccione los métodos que aparecerán en el POS</div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-sm-10 offset-sm-2">
                                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
@@ -238,7 +282,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>

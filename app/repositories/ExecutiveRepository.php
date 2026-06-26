@@ -99,8 +99,6 @@ class ExecutiveRepository {
         $res = $this->db->single();
         return floatval($res->costo_ventas ?? 0);
     }
-}
-
 
     // ========== PROFITABILITY QUERIES ==========
     
@@ -251,11 +249,6 @@ class ExecutiveRepository {
             'mes_actual' => $currentMonth, 'mes_anterior' => $prevMonth,
             'anio_actual' => $currentYear, 'anio_anterior' => $prevYear];
     }
-        return ['mensual' => $prevMonth > 0 ? (($currentMonth - $prevMonth) / $prevMonth) * 100 : 0,
-            'anual' => $prevYear > 0 ? (($currentYear - $prevYear) / $prevYear) * 100 : 0,
-            'mes_actual' => $currentMonth, 'mes_anterior' => $prevMonth,
-            'anio_actual' => $currentYear, 'anio_anterior' => $prevYear];
-    }
     
     // ========== TREND QUERIES ==========
     
@@ -359,5 +352,4 @@ class ExecutiveRepository {
         
         return ($fieldMap[$sort] ?? 'utilidad') . " $order";
     }
-}
 }

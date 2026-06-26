@@ -6,7 +6,7 @@
         <div class="card shadow-sm mt-4">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h2 class="mb-0">Editar Usuario</h2>
-                <a href="<?= URLROOT ?>/users" class="btn btn-secondary"><i class="fa fa-backward"></i> Volver</a>
+                <a href="<?= URLROOT ?>/users" class="btn btn-outline-secondary"><i class="fa fa-backward"></i> Volver</a>
             </div>
             <div class="card-body">
             <form action="<?= URLROOT ?>/users/edit/<?= $data['id'] ?>" method="POST">
@@ -67,7 +67,7 @@
                 
                 <div class="d-flex gap-2 mt-4">
                     <button type="submit" class="btn btn-primary">Actualizar Usuario</button>
-                    <a href="<?= URLROOT ?>/users" class="btn btn-secondary">Cancelar</a>
+                    <a href="<?= URLROOT ?>/users" class="btn btn-outline-secondary">Cancelar</a>
                 </div>
             </form>
         </div>

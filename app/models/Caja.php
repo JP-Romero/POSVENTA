@@ -111,7 +111,7 @@
     // Obtener historial de cortes
     public function getCortes($limit = 50){
       $this->db->query('SELECT cc.*, u.nombre as usuario FROM cortes_caja cc INNER JOIN usuarios u ON cc.id_usuario = u.id ORDER BY cc.fecha_corte DESC LIMIT :limit');
-      $this->db->bind(':limit', $limit, 'int');
+      $this->db->bind(':limit', $limit);
       return $this->db->resultSet();
     }
   }
