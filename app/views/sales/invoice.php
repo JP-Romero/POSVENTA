@@ -30,84 +30,83 @@
         }
     </style>
 </head>
-<body onload="window.print()">
+<body>
 <pre>
-<div class="text-center">LIBRERÍA POS
+<?php
+$s = $data['sale'];
+$details = $data['details'];
+$subtitle = $s->numero_factura;
+$client = $s->cliente_nombre ?: 'Cliente General';
+$date = date('d/m/Y H:i', strtotime($s->fecha));
+$vendor = $s->usuario_nombre;
+$subtotal = $s->subtotal;
+$impuesto = $s->impuesto ?? 0;
+$descuento = max(0, ($subtotal + $impuesto) - $s->total);
+$total = $s->total;
+$recibido = $s->efectivo_recibido ?? 0;
+$cambio = $recibido - $total;
+$metodo = $s->metodo_pago ?? '';
+$itemCount = count($details);
+
+function padCenter($str, $width) {
+    $len = mb_strlen($str, 'UTF-8');
+    if ($len >= $width) return $str;
+    $pad = $width - $len;
+    $left = floor($pad/2);
+    return str_repeat(' ', $left) . $str . str_repeat(' ', $pad - $left);
+}
+?>
+LIBRERÍA POS
 Dirección: Calle Falsa 123
 Teléfono: 123-4567
 
-FACTURA: <?php echo $data['sale']->numero_factura; ?>
-</div>
-Cliente: <?php echo $data['sale']->cliente_nombre ?: 'Cliente General'; ?>
+FACTURA: <?= htmlspecialchars($subtitle) ?>
+Cliente: <?= htmlspecialchars($client) ?>
+Fecha: <?= htmlspecialchars($date) ?>
+Vendedor: <?= htmlspecialchars($vendor) ?>
 
-Fecha: <?php echo date('d/m/Y H:i', strtotime($data['sale']->fecha)); ?>
-
-Vendedor: <?php echo $data['sale']->usuario_nombre; ?>
-
-
-Descripción       Cant   Precio    Total
-----------------------------------------
-<?php foreach($data['details'] as $item) : ?>
-<?php 
-$desc = mb_substr($item->producto_nombre, 0, 17);
-$desc = $desc . str_repeat(' ', max(0, 17 - mb_strlen($desc, 'UTF-8')));
+<?php echo str_pad('Descripción', 20) . ' ' . str_pad('Cant', 4, ' ', STR_PAD_LEFT) . ' ' . str_pad('Precio', 9, ' ', STR_PAD_LEFT) . ' ' . str_pad('Total', 9, ' ', STR_PAD_LEFT); ?>
+<?php echo str_repeat('-', 45); ?>
+<?php foreach($details as $item): ?>
+<?php
+$desc = mb_substr($item->producto_nombre, 0, 20);
+$desc = $desc . str_repeat(' ', max(0, 20 - mb_strlen($desc, 'UTF-8')));
 $cant = str_pad($item->cantidad, 4, ' ', STR_PAD_LEFT);
 $precio = str_pad('C$' . number_format($item->precio_venta, 2), 9, ' ', STR_PAD_LEFT);
-$total = str_pad('C$' . number_format($item->cantidad * $item->precio_venta, 2), 9, ' ', STR_PAD_LEFT);
-echo "{$desc} {$cant} {$precio} {$total}\n";
+$tot = str_pad('C$' . number_format($item->cantidad * $item->precio_venta, 2), 9, ' ', STR_PAD_LEFT);
+echo "{$desc} {$cant} {$precio} {$tot}\n";
 ?>
 <?php endforeach; ?>
-----------------------------------------
-Subtotal: C$<?php echo number_format($data['sale']->subtotal, 2); ?>
+<?php echo str_repeat('-', 45); ?>
+Subtotal: C$<?= number_format($subtotal, 2) ?>
+Descuento: C$<?= number_format($descuento, 2) ?>
+Impuesto: C$<?= number_format($impuesto, 2) ?>
+<?php echo str_repeat('-', 45); ?>
+TOTAL:<?= str_repeat(' ', max(0, 45 - strlen('TOTAL:') - strlen('C$' . number_format($total,2)))) ?>C$<?= number_format($total, 2) ?>
+<?php echo str_repeat('-', 45); ?>
+Método Pago: <?= htmlspecialchars($metodo) ?>
+Recibido: C$<?= number_format($recibido, 2) ?>
+Cambio: C$<?= number_format($cambio, 2) ?>
+<?php echo str_repeat('-', 45); ?>
+Artículos vendidos: <?= $itemCount ?>
 
-<?php if ($data['sale']->impuesto > 0): ?>
-IVA:      C$<?php echo number_format($data['sale']->impuesto, 2); ?>
 
-<?php endif; ?>
-TOTAL:    C$<?php echo number_format($data['sale']->total, 2); ?>
-
-
-Forma de Pago:
 <?php
-$s = $data['sale'];
-$efectivo_aplicado = $s->pago_efectivo ?? 0;
-$tarjeta = $s->pago_tarjeta ?? 0;
-$dolar = $s->pago_dolar ?? 0;
-$recibido = $s->efectivo_recibido ?? 0;
-$cambio = $s->cambio ?? 0;
-
-if ($recibido > 0) echo "- Billete entregado: C$" . number_format($recibido, 2) . "\n";
-if ($efectivo_aplicado > 0) echo "- Efectivo aplicado: C$" . number_format($efectivo_aplicado, 2) . "\n";
-if ($cambio > 0) echo "- Vuelto: C$" . number_format($cambio, 2) . "\n";
-if ($tarjeta > 0) echo "- Tarjeta: C$" . number_format($tarjeta, 2) . "\n";
-if ($dolar > 0) echo "- Dólar: C$" . number_format($dolar, 2) . " (" . number_format($s->total_dolares ?? 0, 2) . " USD)\n";
-if ($recibido == 0 && $efectivo_aplicado == 0 && $tarjeta == 0 && $dolar == 0) {
-    echo "- " . htmlspecialchars($s->metodo_pago) . "\n";
+$lines = [
+    '¡Gracias por su compra!',
+    'Conserve este comprobante',
+    '',
+    'www.libreriapos.com'
+];
+foreach($lines as $line) {
+    if ($line === '') {
+        echo "\n";
+        continue;
+    }
+    echo padCenter($line, 45) . "\n";
 }
 ?>
-
-<?php if ($recibido > 0 || $efectivo_aplicado > 0): ?>
-Recibido en efec.: C$<?= number_format($recibido, 2) ?>
-
-Aplicado en efec.: C$<?= number_format($efectivo_aplicado, 2) ?>
-
-<?php endif; ?>
-<?php if ($cambio > 0): ?>
-Cambio entregado:  C$<?= number_format($cambio, 2) ?>
-
-<?php endif; ?>
-<?php if ($tarjeta > 0): ?>
-Cubierto c/tarjeta: C$<?= number_format($tarjeta, 2) ?>
-
-<?php endif; ?>
-
-<?php if (($s->tasa_cambio ?? 0) > 0): ?>
-Equivalente USD: &approx; $<?= number_format($s->total / $s->tasa_cambio, 2) ?>
-
-(TC: <?= number_format($s->tasa_cambio, 2) ?>)
-<?php endif; ?>
-
-<div class="text-center">¡Gracias por su compra!</div>
+<?php echo str_repeat('=', 45); ?>
 </pre>
 </body>
 </html>

@@ -212,9 +212,4 @@ class Pos extends Controller {
         $products = $this->db->resultSet();
         echo json_encode($products);
     }
-    public function printSale($sale_id) {
-        $result = $this->printReceipt($sale_id);
-        echo json_encode($result);
-        exit;
-    }
 }

@@ -83,6 +83,7 @@ $router->post('pos/process', PosController::class . '@process');
 $router->get('pos/searchProduct', PosController::class . '@searchProduct');
 $router->post('pos/save', PosController::class . '@save');
 $router->post('pos/printLastReceipt', PosController::class . '@printLastReceipt');
+$router->post('pos/printSale/{id}', PosController::class . '@printSale');
 $router->get('pos/getFrequentProducts', PosController::class . '@getFrequentProducts');
 $router->get('sales/invoice/{id}', SalesController::class . '@invoice');
 $router->get('sales/invoice-pdf/{id}', SalesController::class . '@invoicePdf');

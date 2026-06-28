@@ -1,3 +1,8 @@
+(function waitForConfig() {
+    if (typeof POSVENTA_CONFIG === 'undefined') {
+        setTimeout(arguments.callee, 50);
+        return;
+    }
 const CURRENCY = POSVENTA_CONFIG.CURRENCY_SYMBOL || 'C$';
 const IVA_RATE = POSVENTA_CONFIG.IVA_RATE;
 const IVA_ENABLED = POSVENTA_CONFIG.IVA_ENABLED;
@@ -553,3 +558,7 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'F12') { e.preventDefault(); handlePayment('efectivo'); }
     if (e.key === 'Escape') { clearCart(); }
 });
+
+})();
+
+
